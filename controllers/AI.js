@@ -1,60 +1,51 @@
-const brain =require('brain.js');
-const data=require('../db/data.json');
-const request = require('request');
-const network= new brain.recurrent.LSTM();
-const fs = require('fs');
+// const brain =require('brain.js');
+// const data=require('../db/data.json');
+// const network= new brain.recurrent.LSTM();
 
-const trainingData=data.map(item=>({
-    input: item.signs,
-    output: item.sickness
-}));
-network.train(trainingData,{
-    iterations:100,
-});
+// const trainingData=data.map(item=>({
+//     input: item.signs,
+//     output: item.sickness
+// }));
+// network.train(trainingData,{
+//     iterations:100,
+// });
 
-const Ask=async(req,res)=>{
-    try {
-        const {prompt}=req.body;
-        const output=network.run(prompt);
+const blogs=async(req,res)=>{
+    res.render('index',{title:'For you',classes:'opened',paths:[
+        {
+            id:1,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
+        },
+        {
+            id:2,
+            name:'Home',
+            url:'/home',
+            title:"Back Home"
+        }
+    ]})
+}
 
-        //google search the output
-        let options = {
-              'method': 'POST',
-              'url': 'https://google.serper.dev/search',
-              'headers': {
-                'X-API-KEY': '15afe59cd3f32c28b37219ee2d073b7348626de7',
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify({
-                "q": prompt,
-                "gl": "us",
-                "hl": "en",
-                "autocorrect": true
-            })
-            
-        };
-        request(options, (error, response) => {
-            if (error) {
-                res.status(404).send({msg:"No Internet"})
-            }else{
-                res.status(200).send({
-                    msg:output,
-                    ans:response.body
-                });
-            }
-        });
-                // res.status(200).send({
-                //     msg:output,
-                //     body:require('../search.json')
-                // });
-    } catch (error) {
-        res.status(400).send({
-            error:error.message,
-            msg:'Try again!',
-        })
-    }
+//gets a single blog
+const blog=(req,res)=>{
+    res.render('home',{title:'',classes:'closed',paths:[
+        {
+            id:1,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
+        },
+        {
+            id:2,
+            name:'Home',
+            url:'/home',
+            title:"Back Home"
+        }
+    ]})
 }
 
 module.exports={
-    Ask,
+    blogs,
+    blog
 }
