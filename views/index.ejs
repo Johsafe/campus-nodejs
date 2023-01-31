@@ -1,0 +1,68 @@
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+<body>
+    <%- include('./partials/nav.ejs')%>
+    <div id="about"></div>
+    <div class="index start">
+        <header>
+         <h1 class="title"></h1>
+         <p class="sub-title">Recommended based your interests</p>
+        </header>
+
+        <div class="blog-tag">
+            <div class="blog-item">
+                <div class="blog-title">
+                    <a href='assests/img1.jpg'><img src='assests/img1.jpg' alt="blog image"/></a>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, voluptate!</p>
+                </div>
+                <div class="snippet">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas tempora ratione dicta omnis nobis tempore suscipit ipsum, sequi explicabo excepturi beatae, illo iure quis inventore odit quia est! Corrupti, labore?</p>
+                    <a href="assests/img3.jpg">Find out more</a>
+                </div>    
+            </div>
+
+            <div class="blog-item">
+                <div class="blog-title">
+                    <a href='assests/img2.jpg'><img src='assests/img2.jpg' alt="blog image"/></a>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, voluptate!</p>
+                </div>
+                <div class="snippet">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas tempora ratione dicta omnis nobis tempore suscipit ipsum, sequi explicabo excepturi beatae, illo iure quis inventore odit quia est! Corrupti, labore?</p>
+                    <a href="assests/img2.jpg">Find out more</a>
+                </div>    
+            </div>
+
+            <div class="blog-item">
+                <div class="blog-title">
+                    <a href='assests/img3.jpg'><img src='assests/img3.jpg' alt="blog image"/></a>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, voluptate!</p>
+                </div>
+                <div class="snippet">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas tempora ratione dicta omnis nobis tempore suscipit ipsum, sequi explicabo excepturi beatae, illo iure quis inventore odit quia est! Corrupti, labore?</p>
+                    <a href="assests/img3.jpg">Find out more</a>
+                </div>
+            </div>
+
+           
+
+            
+            <div class="tag">
+                <p class="error">No internet!</p>
+            </div>
+        </div>
+     </div>
+    <%- include('./partials/float.ejs')%>
+    <%- include('./partials/footer.ejs')%>
+
+    <!-- script -->
+    <script>
+        //title
+        document.querySelector('.title').innerText='For you';
+
+        //error tag
+        setTimeout(()=>{
+           document.querySelector('.tag').style.display='none'
+       },3000)
+    </script>
+</body>
+</html>

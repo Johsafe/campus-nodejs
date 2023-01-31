@@ -1,0 +1,37 @@
+<nav>
+    <div class="nav-bar">
+        <div class="nav-top">
+            <a href="/" class="logo" title="Landing page"></a>
+            <input class="<%= classes%>" type="search" name="" placeholder="&#128269;  News Feed" id=""/>
+            <a onclick='showMenu()' href="#" class="menu-btn"><i class="fa fa-list"></i></a>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <div class="menu-bg" onclick="closeMenu()">
+                <div class="menu-list">
+                    <ul role="navigation">
+                        <%paths.map(path=>{%>
+                            <li onclick="closeMenu()" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
+                        <%})%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <ul role="navigation">
+                <%paths.map(path=>{%>
+                    <li onclick="closeMenu()" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
+                <%})%>
+            </ul>
+        </div>
+    </div>   
+</nav>
+
+<script>
+    document.querySelector('.logo').innerHTML=`<h2>Campus Blogs</h2>`
+
+    const showMenu=()=>{
+       document.querySelector('.menu-bg').style.display='block'
+    }
+    const closeMenu=()=>{
+       document.querySelector('.menu-bg').style.display='none'
+    }
+</script>

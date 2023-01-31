@@ -1,0 +1,22 @@
+[
+    {
+        "signs":"difficult-breathing, wheezing",
+        "sickness":"Asthma"
+    },
+    {
+        "signs":"backache, coughing",
+        "sickness":"Tuberculosis"
+    },
+    {
+        "signs":"vomiting, headache",
+        "sickness":"Malaria"
+    },
+    {
+        "signs":"stomachache, rashes",
+        "sickness":"Cholera"
+    },
+    {
+        "signs":"bad hearing, poor sight",
+        "sickness":"Aging"
+    }
+]
