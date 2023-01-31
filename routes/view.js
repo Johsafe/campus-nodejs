@@ -11,15 +11,15 @@ views.get('/home',(req,res)=>{
     res.render('home',{title:'Home',classes:'closed',paths:[
         {
             id:1,
-            name:'For you',
-            url:'/',
-            title:"Lastest Feeds"
-        },
-        {
-            id:2,
             name:'Home',
             url:'/home',
             title:"Back Home"
+        },
+        {
+            id:2,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
         }
     ]})
 });
@@ -32,15 +32,15 @@ views.use((req,res)=>{
     res.status(404).render('notfound',{title:'Not found',classes:'closed',paths:[
         {
             id:1,
-            name:'For you',
-            url:'/',
-            title:"Lastest Feeds"
-        },
-        {
-            id:2,
             name:'Home',
             url:'/home',
             title:"Back Home"
+        },
+        {
+            id:2,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
         }
     ]})
 })

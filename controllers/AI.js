@@ -15,33 +15,34 @@ const blogs=async(req,res)=>{
     res.render('index',{title:'For you',news,classes:'opened',paths:[
         {
             id:1,
-            name:'For you',
-            url:'/',
-            title:"Lastest Feeds"
-        },
-        {
-            id:2,
             name:'Home',
             url:'/home',
             title:"Back Home"
+        },
+        {
+            id:2,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
         }
     ]})
 }
 
 //gets a single blog
 const blog=(req,res)=>{
-    res.render('blog',{title:'Blog',classes:'closed',paths:[
+    const {id}=req.params
+    res.render('blog',{title:'Blog',$new:news[id],classes:'closed',paths:[
         {
             id:1,
-            name:'For you',
-            url:'/',
-            title:"Lastest Feeds"
-        },
-        {
-            id:2,
             name:'Home',
             url:'/home',
             title:"Back Home"
+        },
+        {
+            id:2,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
         }
     ]})
 }
