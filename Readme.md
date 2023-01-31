@@ -1,1 +1,1 @@
-# Stay Healthy 
+# Campus Blogs

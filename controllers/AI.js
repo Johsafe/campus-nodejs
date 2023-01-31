@@ -30,7 +30,7 @@ const blogs=async(req,res)=>{
 
 //gets a single blog
 const blog=(req,res)=>{
-    res.render('home',{title:'',classes:'closed',paths:[
+    res.render('blog',{title:'Blog',classes:'closed',paths:[
         {
             id:1,
             name:'For you',
