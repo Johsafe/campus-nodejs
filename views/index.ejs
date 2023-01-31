@@ -10,45 +10,25 @@
         </header>
 
         <div class="blog-tag">
-            <div class="blog-item">
-                <div class="blog-title">
-                    <a href='assests/img1.jpg'><img src='assests/img1.jpg' alt="blog image"/></a>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, voluptate!</p>
+            <%if(news.length>0){%>
+                <%news.forEach(item=>{%>
+                    <div class="blog-item">
+                        <div class="blog-title">
+                            <a href='<%=item.image%>'><img src='<%=item.image%>' alt="blog image"/></a>
+                            <p><%=item.title%></p>
+                        </div>
+                        <div class="snippet">
+                            <p><%=item.body%></p>
+                            <a href="/blogs/<%=item.id%>">Find out more</a>
+                        </div>    
+                    </div>
+        
+                <%})%>
+            <%}else{%>
+                <div class="tag">
+                    <p class="error">No internet!</p>
                 </div>
-                <div class="snippet">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas tempora ratione dicta omnis nobis tempore suscipit ipsum, sequi explicabo excepturi beatae, illo iure quis inventore odit quia est! Corrupti, labore?</p>
-                    <a href="assests/img3.jpg">Find out more</a>
-                </div>    
-            </div>
-
-            <div class="blog-item">
-                <div class="blog-title">
-                    <a href='assests/img2.jpg'><img src='assests/img2.jpg' alt="blog image"/></a>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, voluptate!</p>
-                </div>
-                <div class="snippet">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas tempora ratione dicta omnis nobis tempore suscipit ipsum, sequi explicabo excepturi beatae, illo iure quis inventore odit quia est! Corrupti, labore?</p>
-                    <a href="assests/img2.jpg">Find out more</a>
-                </div>    
-            </div>
-
-            <div class="blog-item">
-                <div class="blog-title">
-                    <a href='assests/img3.jpg'><img src='assests/img3.jpg' alt="blog image"/></a>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, voluptate!</p>
-                </div>
-                <div class="snippet">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas tempora ratione dicta omnis nobis tempore suscipit ipsum, sequi explicabo excepturi beatae, illo iure quis inventore odit quia est! Corrupti, labore?</p>
-                    <a href="assests/img3.jpg">Find out more</a>
-                </div>
-            </div>
-
-           
-
-            
-            <div class="tag">
-                <p class="error">No internet!</p>
-            </div>
+            <%}%>
         </div>
      </div>
     <%- include('./partials/float.ejs')%>

@@ -9,9 +9,10 @@
 // network.train(trainingData,{
 //     iterations:100,
 // });
+const news=require('../db/blogs.json');
 
 const blogs=async(req,res)=>{
-    res.render('index',{title:'For you',classes:'opened',paths:[
+    res.render('index',{title:'For you',news,classes:'opened',paths:[
         {
             id:1,
             name:'For you',

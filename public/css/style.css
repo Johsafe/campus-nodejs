@@ -152,6 +152,7 @@ nav{
 .blog-item .snippet{
     width: 400px;
     height: fit-content;
+    margin: 5px 30px;
 }
 .snippet p{
     margin-bottom: 20px;
