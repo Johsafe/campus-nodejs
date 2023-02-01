@@ -12,7 +12,7 @@ views.get('/home',(req,res)=>{
         {
             id:1,
             name:'Home',
-            url:'/home',
+            url:'/',
             title:"Back Home"
         },
         {
@@ -33,7 +33,7 @@ views.use((req,res)=>{
         {
             id:1,
             name:'Home',
-            url:'/home',
+            url:'/',
             title:"Back Home"
         },
         {

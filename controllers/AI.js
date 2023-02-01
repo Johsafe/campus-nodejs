@@ -16,7 +16,7 @@ const blogs=async(req,res)=>{
         {
             id:1,
             name:'Home',
-            url:'/home',
+            url:'/',
             title:"Back Home"
         },
         {
@@ -35,7 +35,7 @@ const blog=(req,res)=>{
         {
             id:1,
             name:'Home',
-            url:'/home',
+            url:'/',
             title:"Back Home"
         },
         {
