@@ -65,7 +65,7 @@
     }
 }
 
-@supports(backdrop-filter: blur(2rem)){
+@supports(backdrop-filter: blur(3rem)){
     .menu-list{
         background: hsl(0 0% 100% / 0.1);
         backdrop-filter: blur(3rem);

@@ -161,6 +161,12 @@ nav{
     text-decoration: underline;
     color: #676e8b;
 }
+.snippet sub{
+    position: relative;
+    top: 100px;
+    left: 150px;
+    bottom: 20px;
+}
 /* detail */
 .detail{
     display: flex;

@@ -20,6 +20,12 @@
         width: 80vw;
         height: fit-content;
     }
+    .snippet sub{
+       position: relative;
+       top: 0;
+       right: 0;
+       left: 10vw;
+    }
     .detail img {
         width: 90vw;
         height: 50vw;
@@ -59,7 +65,7 @@
     }
 }
 
-@supports(backdrop-filter: blur(2rem)){
+@supports(backdrop-filter: blur(3rem)){
     .menu-list{
         background: hsl(0 0% 100% / 0.1);
         backdrop-filter: blur(3rem);
