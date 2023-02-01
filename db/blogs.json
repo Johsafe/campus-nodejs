@@ -4,35 +4,35 @@
         "id":0,
         "title":"Rongo University – Goldmine of knowledge and innovation",
         "image":"assests/rongo.jpg",
-        "authorImage":"assests/img2.jpg",
-        "author":"Imran matano ngati",
-        "body":"Rongo University (RU), formerly Rongo University College is a public university and was awarded Charter to full fledge university by H.E. Hon. Uhuru Kenyatta, the President of the Republic of Kenya on 7th October 2016. The University derives its mandate from the Rongo University Charter of 7th October, 2016, which stipulates the objects and functions including teaching research and community service.\n The University is located at Kitere Hills situated in the South Western part of Kenya bordering Tanzania, in Rongo Sub-County, Migori County, Kenya. The University is 11 kilometres from Rongo Town, and 2.5 kilometres off Rongo– Migori- Highway. It is located in a gold mining and high Agricultural potential area.\n The university's vision lays o creating a world class technology driven University in learning and practice. Some of the core values found are intergrity and equity",
+        "authorImage":"assests/imran.jpeg",
+        "author":"Imran matano",
+        "body":"Rongo University (RU), formerly Rongo University College is a public university and was awarded Charter to full fledge university by H.E. Hon. Uhuru Kenyatta, the President of the Republic of Kenya on 7th October 2016. The University derives its mandate from the Rongo University Charter of 7th October, 2016, which stipulates the objects and functions including teaching research and community service.<br/><br/><h2>Location</h2> The University is located at Kitere Hills situated in the South Western part of Kenya bordering Tanzania, in Rongo Sub-County, Migori County, Kenya. The University is 11 kilometres from Rongo Town, and 2.5 kilometres off Rongo– Migori- Highway. It is located in a gold mining and high Agricultural potential area.<br/><br/><h2>Her vision</h2> The university's vision lays on creating a world class technology driven University in learning and practice. <br/><br/><h2>Core values</h2>Some of its core values found are: <ul><li>intergrity,</li> <li>equity</li></ul>",
          "date":"2/2/2023"
     },
     {
         "id":1,
-        "title":"Rongo University on Fire",
-        "image":"assests/img2.jpg",
-        "authorImage":"assests/img2.jpg",
-        "author":"Imran matano ngati",
-        "body":"Early this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.\nEarly this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.\nEarly this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.",
-         "date":"12/12/2020"
+        "title":"Google Solution challenge Info Session",
+        "image":"assests/solution.png",
+        "authorImage":"assests/imran.jpeg",
+        "author":"Imran matano",
+        "body":"This will be an interactive session to discuss about Google solution challenge. <br/><br/><h2>The Agenda</h2> <ol style='margin:0 20px;'> <li>Go through the registration steps, requirements and schedule.</li> <li> Clear all doubts by carrying an interactive session with questions and answering activity.</li> <li> Understanding the judging criteria, workshops, prizes and more.</li></ol> <br/><h2>Facilitator</h2> <ol style='margin:0 20px;'><li>Derrickson Ndambuki : Android and web developer.</li> </ol> <br/><h2>Host</h2> <ul><li>Trizah Nabwire : UIUX Designer @SpaceYaTech. </li> </ul> <br/><h2>Organizers</h2><ol style='margin:0 20px;'> <li>Mori Keli : GDSC Lead</li> <li>Imran Matano : Marketing Lead</li> <li>Irene Macharia : Event Organizer.</li> </ol> <br/><br/>RSVP: <a style='color:purple;' href='https://gdsc.community.dev/e/mmzxe9/' target='_blank'>https://gdsc.community.dev/e/mmzxe9/</a> .<p>Venue: Rongo University - SSAE Computer Lab</p></p>Starting on: Fri, Jan 27, 2:00 PM</p>",
+         "date":"27/1/2023"
     },
     {
         "id":2,
-        "title":"Rongo University on Fire",
-        "image":"assests/img3.jpg",
-        "authorImage":"assests/img2.jpg",
-        "author":"Imran matano ngati",
-        "body":"Early this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.\nEarly this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.\nEarly this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.",
+        "title":"Rongo University Google Developer Student club",
+        "image":"assests/gdcs.jpg",
+        "authorImage":"assests/imran.jpeg",
+        "author":"Imran matano",
+        "body":"Google developer student club is a group of students that tries to bridge the gap between theory and practical application by carrying out weekly events, most events are held on every friday around 2:00pm in the afternoon. These students practive coding and problem-solving by creating projects. By doing this, students get to learn, grow and connect with each other. This club promotes an interractive learning where the event speaker emerges with his/her audience.<br/><br/>The Club Organizers are:<br/> <ol style='margin:0 20px;'><li>Mori Keli - GDSC Lead</li> <li>Trizah Nabwire - Technical Lead</li> <li>Imran Matano - Marketing Lead</li> <li>Irene Machari - Event Organizer</li> <li>Peninah - Secretary</li></ol><br/> Be free to join the Rongo University GDSC by viewing <a style='margin:0 5px; text-decoration:underline; color:purple;' href='https://gdsc.community.dev/rongo-university/' target='_blank'>GDSC Rongo</a>. <br/> For more info, call <b><a href='tel:0734720752'>0734720752</a></b>",
          "date":"12/12/2020"
     },
     {
         "id":3,
         "title":"Rongo University on Fire",
         "image":"assests/img4.jpg",
-        "authorImage":"assests/img2.jpg",
-        "author":"Imran matano ngati",
+        "authorImage":"assests/imran.jpeg",
+        "author":"Imran matano",
         "body":"Early this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.\nEarly this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.\nEarly this morning, Rongo University was face a tragedy events, a wild fire enter the school and destroy 88% on the school facilities.",
          "date":"12/12/2020"
     },
@@ -40,8 +40,8 @@
         "id":4,
         "title":"Rongo University Fresher's Night",
         "image":"assests/img5.jpg",
-        "authorImage":"assests/img2.jpg",
-        "author":"Imran matano ngati",
+        "authorImage":"assests/imran.jpeg",
+        "author":"Imran matano",
         "body":"On 12th Dec, Rongo University hosted its 31st fresher's night (a festival dedicated to celebrate your first year students).",
         "date":"12/12/2020"
     }

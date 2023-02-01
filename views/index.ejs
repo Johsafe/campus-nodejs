@@ -18,7 +18,7 @@
                             <p><%=item.title%></p>
                         </div>
                         <div class="snippet">
-                            <p><%=item.body.slice(0,400)%></p>
+                            <p data-body="<%=item.body.slice(0,260)%>" class="body"></p>
                             <a href="/blogs/<%=item.id%>">Find out more</a>
                             <sub>Written on: <%=item.date%></sub>
                         </div>    
@@ -44,6 +44,14 @@
         setTimeout(()=>{
            document.querySelector('.tag').style.display='none'
        },3000)
+
+       //body
+        const body=document.querySelectorAll('.body')
+        console.log(body)
+        for(let i=0; i<body.length;i++){
+            const bodyContent=`${body[i].dataset.body}`;
+            body[i].innerHTML=`${bodyContent}...`;
+        }
     </script>
 </body>
 </html>

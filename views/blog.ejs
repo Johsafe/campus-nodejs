@@ -12,7 +12,7 @@
                         <div class="info"><a href='<%= $new.authorImage%>'><img src='<%=$new.authorImage%>' alt='.'/></a> <b><%=$new.author%></b></div> 
                     </div>
                     <h1><%= $new.title%></h1>
-                    <p><%=$new.body%></p><br/>
+                    <p class="body" data-doc="<%=$new.body%>"></p><br/>
                     <sub>Article written on: <%=$new.date%></sub>
                 </div>
                 <%}else{%>
@@ -32,6 +32,11 @@
             setTimeout(()=>{
                 document.querySelector('.tag').style.display="none"
             },3000)
+
+            //body
+            const body=document.querySelector('.body')
+            const bodyContent=`${body.dataset.doc}`;
+            body.innerHTML=`${bodyContent}`;
         </script>
     </body>
     </html>

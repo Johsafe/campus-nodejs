@@ -63,6 +63,11 @@
     .nav-bar{
         padding: 20px;
     }
+    footer .footer-info{
+        display: flex;
+        flex-direction: column;
+        margin: 0 80px;
+    }
 }
 
 @supports(backdrop-filter: blur(3rem)){

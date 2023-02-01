@@ -233,8 +233,20 @@ nav{
 /* footer */
 footer{
     padding: 10px 20px 30px 30px;
-    /* background: #eee; */
-    background: var(--body-text);
+    background: #eee;
+    /* background: var(--body-text); */
+}
+footer .footer-info{
+    display: flex;
+    justify-content: space-around;
+}
+footer .social-media-links ul{
+    display: flex;
+    justify-content: center;
+}
+footer .social-media-links ul li{
+    padding: 0 15px;
+    font-size: larger;
 }
 .footer-links{
     padding:0 0 30px 0;
@@ -248,5 +260,5 @@ footer{
     cursor: pointer;
 }
 .footer-links ul li:hover{
-    color: var(--white);
+    color: var(--orange);
 }
