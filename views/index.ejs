@@ -8,7 +8,7 @@
          <h1 class="title"></h1>
          <p class="sub-title">Recommended based your interests</p>
         </header>
-
+        <div class="notify"></div>
         <div class="blog-tag">
             <%if(news.length>0){%>
                 <%news.forEach(item=>{%>
@@ -19,15 +19,17 @@
                         </div>
                         <div class="snippet">
                             <p data-body="<%=item.body.slice(0,260)%>" class="body"></p>
-                            <a href="/blogs/<%=item.id%>">Find out more</a>
+                            <a class="anchor-tag" data-link="/blogs/<%=item.id%>">Find out more</a>
                             <sub>Written on: <%=item.date%></sub>
                         </div>    
                     </div>
         
                 <%})%>
             <%}else{%>
-                <div class="tag">
-                    <p class="error">No internet!</p>
+                <div class="notify">
+                    <div class="tag">
+                        <p class="error">No internet!</p>
+                    </div>
                 </div>
             <%}%>
         </div>
@@ -42,7 +44,7 @@
 
         //error tag
         setTimeout(()=>{
-           document.querySelector('.tag').style.display='none'
+           document.querySelector('.notify').innerHTML=''
        },3000)
 
        //body
@@ -52,13 +54,25 @@
             body[i].innerHTML=`${bodyContent}...`;
         }
 
-        //goes to blog details
+        const notify=document.querySelector('.notify')
         const blogItem=document.querySelectorAll('.blog-item')
         blogItem.forEach(i=>{
             const blogLink=i.dataset.link
             i.addEventListener('click',()=>{
-            window.location.href=`${blogLink}`
-        })
+                if (localStorage.getItem('token')) {
+                    //goes to blog details
+                    window.location.href=`${blogLink}`
+                } else {
+                    notify.innerHTML=`
+                        <div class='tag' style="margin-top:50px;">
+                            <p class='error'>Please, login or sign up to access more information!</p>
+                        </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },5000)
+                }
+            })
         })
     </script>
 </body>

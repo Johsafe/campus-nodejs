@@ -1,5 +1,6 @@
 const express=require('express');
 const cors=require('cors');
+const mongoose=require('mongoose');
 require('dotenv').config();
 
 //intializing server
@@ -17,8 +18,14 @@ app.set('view engine','ejs');
 //ejs routes
 app.use(require('./routes/view'));
 
-const port=process.env.PORT||5000;
-//listening to server
-app.listen(port,()=>{
-    console.log(`Server running on Port ${port}`)
+mongoose.set('strictQuery', false);
+mongoose.connect(process.env.LOCALURI,{
+    useUnifiedTopology:true,
+    useNewUrlParser:true
+}).then(()=>{
+    //listening to server
+    const port=process.env.PORT||5000;
+    app.listen(port,()=>{
+        console.log(`Server running on Port ${port}`)
+    })
 })

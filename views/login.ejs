@@ -3,15 +3,16 @@
 <body>
     <%- include('./partials/nav.ejs')%>
     <div class="login start">
+        <div class="notify"></div>
         <form>
             <header style="margin: 0 0 40px 0;">
                 <h1>Login, Provide your credentials</h1>
                 <h1>Welcome Back!</h1>
             </header>
             <label for="email"><b>Email</b></label>
-            <input type="email" placeholder="kevin@gmail.com" id="email"/>
+            <input type="email" name="email" placeholder="kevin@gmail.com" id="email" required/>
             <label for="password"><b>Password</b></label>
-            <input type="password" id="password"/>
+            <input type="password" name="password" id="password" required/>
             <button><b>Submit</b></button>
             <p>Please provide valid credentials, or the system might lock you out.</p>
         </form>
@@ -25,7 +26,65 @@
     </div>
     <!-- script -->
     <script>
+        const notify=document.querySelector('.notify');
+        const form=document.querySelector('form');
+        form.addEventListener('submit',async(e)=>{
+            e.preventDefault()
+            try {
+                const url=`/api/login`
+                const response=await fetch(url,{
+                    method:"POST",
+                    headers:{
+                        "content-type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        email:form.email.value,
+                        password:form.password.value
+                    })
+                })
+                const parseRes=await response.json();
+                if(parseRes.error){
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class="error">${parseRes.error}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },3000)
+                }else{
+                    notify.innerHTML=`
+                    <div class='tag-success'>
+                        <p class="error">${parseRes.msg}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                        window.location.href='/'
+                    },2000)
+                    localStorage.setItem('token',parseRes.token)
+                    localStorage.setItem('first-name',parseRes.firstName)
+                    localStorage.setItem('last-name',parseRes.lastName)
+                    localStorage.setItem('email',parseRes.email)
+                }
+            } catch (error) {
+                // alert()
+                console.log(error.message)
+                notify.innerHTML=`
+                    <div class='tag'>
+                        <p class="error">No internet!</p>
+                    </div>
+                `
+                setTimeout(()=>{
+                    notify.innerHTML=''
+                },3000)
+            }
+        })
 
+            // redirect
+            if(localStorage.getItem('token')){
+                window.location.href='/'
+            }
     </script>
 </body>
 </html>

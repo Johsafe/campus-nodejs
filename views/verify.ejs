@@ -3,6 +3,7 @@
 <body>
     <%- include('./partials/nav.ejs')%>
     <div class="login start">
+        <div class="notify"></div>
         <form style="border: none;">
             <header style="margin: 0 0 40px 0;">
                 <h1>Welcome to campus blogs!</h1>
@@ -26,32 +27,63 @@
             } 
         },60000)
         //form submit
+        const notify=document.querySelector('.notify')
         const form=document.querySelector('form');
         form.addEventListener('submit',async(e)=>{
             e.preventDefault()
             try {
                 const code=form.code.value;
                 if(code.length===4){
-                    // const url=``;
-                    // const response=await fetch(url,{
-                    //     method:"POST",
-                    //     headers:{
-                    //         "content-type":'application/json'
-                    //     },
-                    //     body:JSON.stringify({
-                    //         email
-                    //     })
-                    // })
-                    window.location.href="/last"
+                    const url=`/api/code`;
+                    const response=await fetch(url,{
+                        method:"POST",
+                        headers:{
+                            "content-type":'application/json'
+                        },
+                        body:JSON.stringify({
+                            code:form.code.value
+                        })
+                    })
+                    const parseRes=await response.json()
+                    if(parseRes.error){
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class="error">${parseRes.error}</p>    
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    }else{
+                        window.location.href=parseRes.msg
+                    }
                 }else{
-                    alert("Enter the correct code!")
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class="error">Enter the correct code!</p>    
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },3000)
                 }
                 form.reset()
             } catch (error) {
-                alert(error.message)
+                notify.innerHTML=`
+                <div class='tag'>
+                    <p class="error">No internet!</p>    
+                </div>
+                        `
+                setTimeout(()=>{
+                    notify.innerHTML=''
+                },3000)
                 form.reset()
             }
         })
+            // redirect
+            if(localStorage.getItem('token')){
+                window.location.href='/'
+            }
     </script>
 </body>
 </html>

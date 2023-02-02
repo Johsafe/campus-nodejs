@@ -3,27 +3,99 @@
 <body>
     <%- include('./partials/nav.ejs')%>
     <div class="login start">
+        <div class="notify"></div>
         <form style="border: none;">
             <header style="margin: 0 0 40px 0;">
                 <h1>Hi! You are almost done.</h1>
             </header>
             <div style="width: 100px;">
                 <label for="first"><b>First Name</b></label>
-                <input type="text" id="first" required/>
+                <input type="text" name="first" id="first" required/>
                 <label for="last"><b>Last Name</b></label>
-                <input type="text" id="last" required/>
+                <input type="text" name="last" id="last" required/>
             </div>
             <label for="password"><b>Password</b></label>
-            <input type="password" id="password" required/>
+            <input type="password" name="password" id="password" required/>
             <label for="confirm"><b>Confirm Password</b></label>
-            <input type="password" id="confirm" required/>
+            <input type="password" name="confirm" id="confirm" required/>
             <button><b>Submit</b></button>
             <p>Almost there, fill in the form.</p>
         </form>
     </div>
     <!-- script -->
     <script>
-
+        const notify=document.querySelector('.notify')
+        const form=document.querySelector('form');
+        form.addEventListener('submit',async(e)=>{
+            e.preventDefault()
+            try {
+                const password=form.password.value;
+                const confirm=form.confirm.value;
+                if(confirm===password){
+                    const url='/api/';
+                    const response=await fetch(url,{
+                        method:"POST",
+                        headers:{
+                            'content-type':'application/json'
+                        },
+                        body:JSON.stringify({
+                            firstName:form.first.value,
+                            lastName:form.last.value,
+                            email:localStorage.getItem('email'),
+                            password:confirm
+                        })
+                    })
+                    const parseRes=await response.json();
+                    if(parseRes.error){
+                        notify.innerHTML=`
+                        <div class="tag">
+                            <p class="error">${parseRes.error}</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    }else{
+                        notify.innerHTML=`
+                            <div class='tag-success'>
+                                <p class='error'>${parseRes.msg}<p>
+                            </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                            window.location.href='/'
+                        },3000)
+                        localStorage.setItem('token',parseRes.token)
+                        localStorage.setItem('first-name',parseRes.firstName)
+                        localStorage.setItem('last-name',parseRes.lastName)
+                        localStorage.setItem('email',parseRes.email)
+                    }
+                }else{
+                    notify.innerHTML=`
+                        <div class='tag'>
+                            <p class='error'>Your passwords does not match!<p>
+                        </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },3000)
+                }
+            } catch (error) {
+                alert(error.message)
+                notify.innerHTML=`
+                    <div class='tag'>
+                        <p class='error'>No internet!<p>
+                    </div>
+                `
+                setTimeout(()=>{
+                    notify.innerHTML=''
+                },3000)
+            }
+        })
+            // redirect
+            if(localStorage.getItem('token')){
+                window.location.href='/'
+            }
     </script>
 </body>
 </html>

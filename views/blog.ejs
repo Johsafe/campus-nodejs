@@ -16,9 +16,11 @@
                     <sub>Article written on: <%=$new.date%></sub>
                 </div>
                 <%}else{%>
-                    <div class="tag">
-                        <p class="error">No Internet!</p>
-                    </div>
+                   <div class="notify">
+                        <div class="tag">
+                            <p class="error">No Internet!</p>
+                        </div>
+                   </div>
             <%}%>
            
 
@@ -30,13 +32,18 @@
         <script>
             //error message
             setTimeout(()=>{
-                document.querySelector('.tag').style.display="none"
+                document.querySelector('.notify').innerHTML=''
             },3000)
 
             //body
             const body=document.querySelector('.body')
             const bodyContent=`${body.dataset.doc}`;
             body.innerHTML=`${bodyContent}`;
+
+            // redirect
+            if(!localStorage.getItem('token')){
+                window.location.href='/'
+            }
         </script>
     </body>
     </html>

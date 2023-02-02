@@ -8,7 +8,7 @@ const {
 views.get('/',blogs);
 
 views.get('/home',(req,res)=>{
-    res.render('home',{title:'Home',classes:'closed',paths:[
+    res.render('home',{title:'Home',classes:'closed',js:"/js/main.js",paths:[
         {
             id:1,
             name:'For you',
@@ -19,18 +19,20 @@ views.get('/home',(req,res)=>{
             id:2,
             name:'Login',
             url:'/login',
+            class:'out',
             title:"Go to login page"
         },
         {
             id:3,
             name:'Sign up',
             url:'/register',
+            class:'out',
             title:"Go to Sign up page"
         }
     ]})
 });
 views.get('/register',(req,res)=>{
-    res.render('signUp',{title:'register',classes:'closed',paths:[
+    res.render('signUp',{title:'register',js:'/js/main.js',classes:'closed',paths:[
         {
             id:1,
             name:'Home',
@@ -47,12 +49,13 @@ views.get('/register',(req,res)=>{
             id:3,
             name:'Login',
             url:'/login',
+            class:'out',
             title:"Go to login page"
         }
     ]})
 });
 views.get('/verify',(req,res)=>{
-    res.render('verify',{title:'verify',classes:'closed',paths:[
+    res.render('verify',{title:'verify',js:'/js/main.js',classes:'closed',paths:[
         {
             id:1,
             name:'Home',
@@ -69,12 +72,13 @@ views.get('/verify',(req,res)=>{
             id:3,
             name:'Login',
             url:'/login',
+            class:'out',
             title:"Go to login page"
         }
     ]})
 });
 views.get('/last',(req,res)=>{
-    res.render('signUp2',{title:'Last step',classes:'closed',paths:[
+    res.render('signUp2',{title:'Last step',js:'/js/main.js',classes:'closed',paths:[
         {
             id:1,
             name:'Home',
@@ -91,12 +95,13 @@ views.get('/last',(req,res)=>{
             id:3,
             name:'Login',
             url:'/login',
+            class:'out',
             title:"Go to login page"
         }
     ]})
 });
 views.get('/login',(req,res)=>{
-    res.render('login',{title:'Login',classes:'closed',paths:[
+    res.render('login',{title:'Login',js:'/js/main.js',classes:'closed',paths:[
         {
             id:1,
             name:'Home',
@@ -113,6 +118,7 @@ views.get('/login',(req,res)=>{
             id:2,
             name:'Sign Up',
             url:'/register',
+            class:'out',
             title:"Go to sign up page"
         }
     ]})
@@ -123,7 +129,7 @@ views.use('/api',require('./API'));
 
 //rendering not found page
 views.use((req,res)=>{
-    res.status(404).render('notfound',{title:'Not found',classes:'closed',paths:[
+    res.status(404).render('notfound',{title:'Not found',js:'/js/main.js',classes:'closed',paths:[
         {
             id:1,
             name:'Home',

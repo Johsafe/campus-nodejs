@@ -10,9 +10,14 @@
 //     iterations:100,
 // });
 const news=require('../db/blogs.json');
+const User=require('../models/userModel');
+const bcrypt=require('bcryptjs');
+const jwt=require('jsonwebtoken');
+require('dotenv').config();
 
+//gets all blogs
 const blogs=async(req,res)=>{
-    res.render('index',{title:'For you',news,classes:'opened',paths:[
+    res.render('index',{title:'For you',js:'/js/main.js',news,classes:'opened',paths:[
         {
             id:1,
             name:'Home',
@@ -21,20 +26,16 @@ const blogs=async(req,res)=>{
         },
         {
             id:2,
-            name:'For you',
-            url:'/',
-            title:"Lastest Feeds"
-        },
-        {
-            id:3,
             name:'Login',
+            class:'out',
             url:'/login',
             title:"Go to login page"
         },
         {
-            id:4,
+            id:3,
             name:'Sign up',
             url:'/register',
+            class:'out',
             title:"Go to Sign up page"
         }
     ]})
@@ -43,7 +44,7 @@ const blogs=async(req,res)=>{
 //gets a single blog
 const blog=(req,res)=>{
     const {id}=req.params
-    res.render('blog',{title:'Blog',$new:news[id],classes:'closed',paths:[
+    res.render('blog',{title:'Blog',js:'/js/main.js',$new:news[id],classes:'closed',paths:[
         {
             id:1,
             name:'Home',
@@ -58,8 +59,131 @@ const blog=(req,res)=>{
         }
     ]})
 }
+const verify=async(req,res)=>{
+    try {
+        const {email}=req.body;
+        const userExist=await User.findOne({email});
+        //check if user exist in the db
+        if(userExist){
+            res.send({error:"User Exist!"})
+        }else{
+            res.send({
+                msg:"/verify",
+                email
+            })
+        }
+    } catch (error) {
+        res.status(500).send({error:error.message})
+    }
+}
+
+const verifyCode=async(req,res)=>{
+    try {
+        const {code}=req.body
+        if(code==='5656'){
+            res.send({msg:'/last'})
+        }else{
+            res.status(201).send({error:"Code doesn't match the sent code!"})
+        }
+        
+    } catch (error) {
+        res.status(500).send({error:error.message})
+    }
+}
+
+
+const register=async(req,res)=>{
+    try {
+        const {firstName,lastName,email,password}=req.body
+        if(firstName&&lastName&&email&&password){
+            //hashing the password
+            const salt=await bcrypt.genSalt(10);
+            const hashedPassword=await bcrypt.hash(password,salt);
+            //creating user account in db
+            const newUser=await User.create({
+                firstName,
+                lastName,
+                email,
+                password:hashedPassword
+            });
+            if(newUser){
+                res.status(200).send({
+                    msg:`Welcome ${newUser.firstName} ${newUser.lastName}`,
+                    _id:newUser.id,
+                    firstName:newUser.firstName,
+                    lastName:newUser.lastName,
+                    email:newUser.email,
+                    token:generateUserToken(newUser.id)
+                })
+            }else{
+                res.status(201).send({error:"Invalid user data!"})
+            }
+        }else{
+            res.status(401).send({error:"Enter the required fields!"})
+        }
+    } catch (error) {
+        res.status(500).send({error:error.message})
+    }
+}
+
+const login=async(req,res)=>{
+    try {
+        const {email,password}=req.body
+        if(email&&password){
+            const user=await User.findOne({email});
+            if(user&&(await bcrypt.compare(password,user.password))){
+                res.status(200).send({msg:`Welcome ${user.firstName} ${user.lastName}`,
+                    _id:user.id,
+                    firstName:user.firstName,
+                    lastName:user.lastName,
+                    email:user.email, 
+                    token:generateUserToken(user.id)
+                })
+            }else{
+                res.status(400).send({error:'Invalid Credentials'})
+            }
+        }else{
+            res.status(401).send({error:"Enter the required fields!"})
+        }
+    } catch (error) {
+        res.status(500).send({error:error.message})
+    }
+}
+
+//User auth Middlerware
+const protectUser=async(req,res,next)=>{
+    let token
+    if(req.headers.authorization&&req.headers.authorization.startsWith('Bearer')){
+        try{
+            //get token from headers
+            token=req.headers.authorization.split(' ')[1]
+            //verify token
+            const decoded=jwt.verify(token,process.env.JWT_SECRET);
+            //get user from the token
+            req.user=await User.findById(decoded.id).select('password')
+            next()
+  
+        }catch (error){
+            res.status(401).send({error:'Not Authorised☠'})
+        }
+    }
+    if(!token){
+      res.status(401).send({error:'No Token Available☠'})
+    }
+  };
+
+  //generate User token
+  const generateUserToken=(id)=>{
+    return jwt.sign({id},process.env.JWT_SECRET,{
+        expiresIn:'309d'
+    })
+  };
 
 module.exports={
+    register,
+    verify,
+    login,
     blogs,
+    verifyCode,
     blog
 }

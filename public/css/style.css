@@ -107,18 +107,26 @@ nav{
 .index .sub-title{
     padding: 10px 0;
 }
-.tag{
-    background: var(--body-text);
+.notify{
     position: fixed;
     top: 20vh;
-    left: 44vw;
+}
+.tag{
+    background: var(--red);
+    padding:10px 20px;
+    border-radius: 20px;
+    z-index: 110;
+    cursor: pointer;
+}
+.tag-success{
+    background: rgb(0, 128, 96);
     padding:10px 20px;
     border-radius: 20px;
     z-index: 110;
     cursor: pointer;
 }
 .error{
-    color: var(--orange);
+    color: var(--white);
 }
 .blog-tag{
     background: none;

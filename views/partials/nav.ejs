@@ -9,8 +9,9 @@
                 <div class="menu-list">
                     <ul role="navigation">
                         <%paths.map(path=>{%>
-                            <li onclick="closeMenu()" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
-                        <%})%>
+                            <li onclick="closeMenu()" class="link <%= path.class%>" data-class="<%= path.class%>" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
+                            <%})%>
+                            <li onclick="closeMenu()"><a href="#3" class="log-out" title="Log out">Log out</a></li>
                     </ul>
                 </div>
             </div>
@@ -18,8 +19,9 @@
         <div class="nav-links">
             <ul role="navigation">
                 <%paths.map(path=>{%>
-                    <li onclick="closeMenu()" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
-                <%})%>
+                    <li onclick="closeMenu()" class="link <%= path.class%>" data-class="<%= path.class%>" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
+                    <%})%>
+                    <li onclick="closeMenu()"><a class="log-out"  href="#3" title="Log out">Log out</a></li>
             </ul>
         </div>
     </div>   
@@ -34,4 +36,29 @@
     const closeMenu=()=>{
        document.querySelector('.menu-bg').style.display='none'
     }
+
+    const logOutBtn=document.querySelectorAll('.log-out')
+    logOutBtn.forEach(i=>{
+        if(!localStorage.getItem('token')){
+            i.style.display='none'
+        }
+        i.addEventListener('click',()=>{
+            window.location.href='/'
+            localStorage.removeItem('email')
+            localStorage.removeItem('token')
+            localStorage.removeItem('first-name')
+            localStorage.removeItem('last-name')
+        })
+    })
+   //set ui
+   const link=document.querySelectorAll('.link')
+   link.forEach(i=>{
+    const ui=i.dataset.class;
+    if(ui==='out'&&localStorage.getItem('token')){
+        const out=document.querySelectorAll('.out')
+        out.forEach(i=>{
+            i.style.display='none'
+        })
+    }
+   })
 </script>
