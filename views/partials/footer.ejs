@@ -6,8 +6,8 @@
                 <ul>
                     <li><a href="/home">Home</a></li>
                     <li><a href="/">For you</li>
-                    <li><a href="/login">Login</li>
-                    <li><a href="/register">Sign up</li>
+                    <li class="out"><a href="/login">Login</li>
+                    <li class="out"><a href="/register">Sign up</li>
                 </ul>
             </div>
         </div>
@@ -47,3 +47,9 @@
     </div>
     <p>&COPY; Campus Blog 2023</p>
 </footer>
+<script>
+    const out=document.querySelectorAll('.out')
+        out.forEach(i=>{
+            i.style.display='none'
+        })
+</script>
