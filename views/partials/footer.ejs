@@ -50,6 +50,10 @@
 <script>
     const out=document.querySelectorAll('.out')
         out.forEach(i=>{
-            i.style.display='none'
+           if(localStorage.getItem('token')){
+             i.style.display='none'
+           }else{
+             i.style.display='block'
+           }
         })
 </script>
