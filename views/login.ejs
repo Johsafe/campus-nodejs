@@ -1,0 +1,31 @@
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+<body>
+    <%- include('./partials/nav.ejs')%>
+    <div class="login start">
+        <form>
+            <header style="margin: 0 0 40px 0;">
+                <h1>Login, Provide your credentials</h1>
+                <h1>Welcome Back!</h1>
+            </header>
+            <label for="email"><b>Email</b></label>
+            <input type="email" placeholder="kevin@gmail.com" id="email"/>
+            <label for="password"><b>Password</b></label>
+            <input type="password" id="password"/>
+            <button><b>Submit</b></button>
+            <p>Please provide valid credentials, or the system might lock you out.</p>
+        </form>
+        <div class="other-provider">
+            <p style="text-align: center;">Or sign in with another provider:</p>
+            <div class="provider-btns">
+                <button><i class="fa fa-google"></i> Google</button>
+                <button><i class="fa fa-apple"></i> Apple</button>
+            </div>
+        </div>
+    </div>
+    <!-- script -->
+    <script>
+
+    </script>
+</body>
+</html>

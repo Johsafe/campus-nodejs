@@ -1,0 +1,57 @@
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+<body>
+    <%- include('./partials/nav.ejs')%>
+    <div class="login start">
+        <form style="border: none;">
+            <header style="margin: 0 0 40px 0;">
+                <h1>Welcome to campus blogs!</h1>
+                <h1>Let's get started.</h1>
+            </header>
+            <label for="code"><b>Enter code</b></label>
+            <input type="number" name="code" id="code"/>
+            <button><b>Submit</b></button>
+            <p>Please, Enter the code sent to the email you provided.</p>
+        </form>
+        
+        <p style="color: var(--body-text); font-size: small;">By continuing, you agree with our Terms of Service and Privacy Policy.</p>
+    </div>
+    <!-- script -->
+    <script>
+        //redirect if stays for long (1min)
+        setTimeout(()=>{
+            const confirm=window.confirm("Redirecting to Homepage")
+            if (confirm) {
+                window.location.href='/'
+            } 
+        },60000)
+        //form submit
+        const form=document.querySelector('form');
+        form.addEventListener('submit',async(e)=>{
+            e.preventDefault()
+            try {
+                const code=form.code.value;
+                if(code.length===4){
+                    // const url=``;
+                    // const response=await fetch(url,{
+                    //     method:"POST",
+                    //     headers:{
+                    //         "content-type":'application/json'
+                    //     },
+                    //     body:JSON.stringify({
+                    //         email
+                    //     })
+                    // })
+                    window.location.href="/last"
+                }else{
+                    alert("Enter the correct code!")
+                }
+                form.reset()
+            } catch (error) {
+                alert(error.message)
+                form.reset()
+            }
+        })
+    </script>
+</body>
+</html>

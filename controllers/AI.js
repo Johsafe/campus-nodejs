@@ -24,6 +24,18 @@ const blogs=async(req,res)=>{
             name:'For you',
             url:'/',
             title:"Lastest Feeds"
+        },
+        {
+            id:3,
+            name:'Login',
+            url:'/login',
+            title:"Go to login page"
+        },
+        {
+            id:4,
+            name:'Sign up',
+            url:'/register',
+            title:"Go to Sign up page"
         }
     ]})
 }

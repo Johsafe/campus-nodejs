@@ -1,0 +1,29 @@
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+<body>
+    <%- include('./partials/nav.ejs')%>
+    <div class="login start">
+        <form style="border: none;">
+            <header style="margin: 0 0 40px 0;">
+                <h1>Hi! You are almost done.</h1>
+            </header>
+            <div style="width: 100px;">
+                <label for="first"><b>First Name</b></label>
+                <input type="text" id="first" required/>
+                <label for="last"><b>Last Name</b></label>
+                <input type="text" id="last" required/>
+            </div>
+            <label for="password"><b>Password</b></label>
+            <input type="password" id="password" required/>
+            <label for="confirm"><b>Confirm Password</b></label>
+            <input type="password" id="confirm" required/>
+            <button><b>Submit</b></button>
+            <p>Almost there, fill in the form.</p>
+        </form>
+    </div>
+    <!-- script -->
+    <script>
+
+    </script>
+</body>
+</html>

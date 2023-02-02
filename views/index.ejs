@@ -12,7 +12,7 @@
         <div class="blog-tag">
             <%if(news.length>0){%>
                 <%news.forEach(item=>{%>
-                    <div class="blog-item">
+                    <div class="blog-item" data-link="/blogs/<%=item.id%>">
                         <div class="blog-title">
                             <a href='<%=item.image%>'><img src='<%=item.image%>' alt="blog image"/></a>
                             <p><%=item.title%></p>
@@ -47,11 +47,19 @@
 
        //body
         const body=document.querySelectorAll('.body')
-        console.log(body)
         for(let i=0; i<body.length;i++){
             const bodyContent=`${body[i].dataset.body}`;
             body[i].innerHTML=`${bodyContent}...`;
         }
+
+        //goes to blog details
+        const blogItem=document.querySelectorAll('.blog-item')
+        blogItem.forEach(i=>{
+            const blogLink=i.dataset.link
+            i.addEventListener('click',()=>{
+            window.location.href=`${blogLink}`
+        })
+        })
     </script>
 </body>
 </html>
