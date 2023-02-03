@@ -72,7 +72,18 @@
         width: 90vw;
     }
 }
-
+@media screen and (max-width:350px) {
+    .user-details{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 100px 50px 10px 50px;
+    }
+    .user-info .items{
+        display: flex;
+        flex-direction: column;
+    }
+}
 @supports(backdrop-filter: blur(3rem)){
     .menu-list{
         background: hsl(0 0% 100% / 0.1);

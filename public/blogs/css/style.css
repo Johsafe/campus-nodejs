@@ -320,6 +320,54 @@ footer .social-media-links ul li{
     font-size: medium;
     cursor: pointer;
 }
+/* dashboard css */
+
+.dashboard .other{
+    padding: 20px 50px;
+}
+.dashboard .other h3{
+    border-bottom: 1px solid #eee;
+    color: rgb(121, 120, 120);
+    margin-top: 20px;
+}
+.dashboard .other a{
+    margin: 15px 0;
+    color: #eee;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+.dashboard .other a:hover{
+    box-shadow: 0 5px 20px 0 rgb(11 7 110 / 30%);
+}
+.user-details{
+    padding: 100px 50px 60px 50px;
+    background: rgb(245, 243, 243);
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    cursor: pointer;
+}
+.user-details:hover{
+    box-shadow: 0 5px 20px 0 rgb(11 7 110 / 12%);
+}
+.user-info{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+.user-info .items{
+    display: flex;
+}
+.user-info .items .text{
+    display: flex;
+    flex-direction: column;
+    margin: 30px 15px;
+}
+.user-info img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
 
 /* //preloader */
 .preload{
