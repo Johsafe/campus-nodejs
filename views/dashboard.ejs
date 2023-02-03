@@ -6,6 +6,15 @@
         <div style="display: flex; justify-content: center;">
             <div class="notify"></div>
         </div>
+
+        <div class="get-verified-as-blogger-bg">
+            <div class="get-verified-as-blogger-div">
+                <div class="get-verified-as-blogger">
+                    <p>Inorder to get approval of post blogs and articles on the site you need to contact an admin.</p>
+                    <p>In your case, please contact <a style='color:green;' target="_blank"rel="noreferrer" href="https://api.whatsapp.com/send?phone=+*+254734720752*&text=%20*Hey,%20%Would%20%My%20%Campus%20%Blogs%20%Account%20%Verified*">0734720752</a> or <a style='color:green;' target="_blank"rel="noreferrer" href="https://chat.whatsapp.com/GyQ1aVOjILvDbtn95kwmVl" target="_blank" title="Whatsapp group" rel="noreferrer"><i class='fa fa-whatsapp'></i> Join our whatsapp group</a>.</p>
+                </div>
+            </div>
+        </div>
         
         <div class="user-details">
             <h1>My Profile</h1>
@@ -23,8 +32,8 @@
             <h3>My Account</h3>
             <input type="text" value="https://campus-blog.onrender.com" id="refferal-link" hidden/>
             <a href='#5' class="invite-friend" style="background:black;">Invite a friend</a> 
-            <a href='/login' style="background: blueviolet;" class="log-out">Switch to Other Account</a> 
-            <a href='/login' style="background: orange;" class="log-out">Get verified as blogger</a> 
+            <a href='/login' style="background: blueviolet;" class="switch-account">Switch to Other Account</a> 
+            <a href='#9' style="background: orange;" class="get-verified-as-blogger-btn">Get verified as blogger</a> 
             <a href="#3" style="background:red;" class="log-out" title="Log out">Log out</a>
             <a href="#8" style="background: #eee;color: black;" class="delete-account" title="Delete My Account">Delete My Account</a>
         </div>
@@ -60,6 +69,7 @@
             `
         }
         
+        //log out
         const logOutBtn=document.querySelectorAll('.log-out')
         logOutBtn.forEach(i=>{
             if(!localStorage.getItem('token')){
@@ -79,6 +89,16 @@
             })
         })
 
+        //switch account 
+        const switchAccount=document.querySelector('.switch-account')
+        switchAccount.addEventListener('click',()=>{
+            localStorage.removeItem('email')
+            localStorage.removeItem('token')
+            localStorage.removeItem('first-name')
+            localStorage.removeItem('last-name')
+            localStorage.removeItem('university')
+            localStorage.removeItem('user-id')
+        })
         //delete account
         const deleteAccount=document.querySelector('.delete-account');
         deleteAccount.addEventListener('click',async()=>{
@@ -170,6 +190,16 @@
             setTimeout(()=>{
                 notify.innerHTML=''
             },3000)
+        })
+
+        //get-verified-as-blogger-bg
+        const getVerifiedAsBloggerBtn=document.querySelector('.get-verified-as-blogger-btn');
+        const getVerifiedAsBloggerBg=document.querySelector('.get-verified-as-blogger-bg')
+        getVerifiedAsBloggerBtn.addEventListener('click',()=>{
+            getVerifiedAsBloggerBg.style.display='block'
+        })
+        getVerifiedAsBloggerBg.addEventListener('click',()=>{
+            getVerifiedAsBloggerBg.style.display='none'
         })
     </script>
 </body>

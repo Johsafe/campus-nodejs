@@ -71,6 +71,9 @@
     .login form input{
         width: 90vw;
     }
+    .get-verified-as-blogger{
+        width: 80vw;
+    }
 }
 @media screen and (max-width:350px) {
     .user-details{

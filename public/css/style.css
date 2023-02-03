@@ -381,3 +381,29 @@ footer .social-media-links ul li{
     z-index: 200;
     display: none;
   }
+
+  /* get-verified-as-blogger */
+  .get-verified-as-blogger-bg{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 105;
+  }
+  .get-verified-as-blogger-div{
+    display: flex; 
+    justify-content: center;
+  }
+  .get-verified-as-blogger{
+    position: fixed;
+    top: 30vh;
+    background: #eee;
+    padding:10px 20px;
+    border-radius: 20px;
+    z-index: 110;
+    cursor: pointer;
+    box-shadow: 0 5px 20px 0 rgb(11 7 110 / 12%);
+  }
