@@ -21,7 +21,8 @@
             <sub>contact an admin to change your status.</sub>
 
             <h3>My Account</h3>
-            <a href='/login' style="background:black;">Invite a friend</a> 
+            <input type="text" value="https://campus-blog.onrender.com" id="refferal-link" hidden/>
+            <a href='#5' class="invite-friend" style="background:black;">Invite a friend</a> 
             <a href='/login' style="background: blueviolet;" class="log-out">Switch to Other Account</a> 
             <a href='/login' style="background: orange;" class="log-out">Get verified as blogger</a> 
             <a href="#3" style="background:red;" class="log-out" title="Log out">Log out</a>
@@ -146,6 +147,28 @@
                     i.style.display='block'
                 })
             }
+        })
+
+        // invite friend by copy and sharing the blog link
+        const inviteBtn=document.querySelector('.invite-friend')
+        const refferallLink=document.getElementById('refferal-link')
+        inviteBtn.addEventListener('click',()=>{
+            // Select the text field
+            refferallLink.select();
+            refferallLink.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(refferallLink.value);
+
+            // Alert the copied text
+            notify.innerHTML=`
+            <div class="tag-success">
+                <p class="error">Invite link copied!</p>
+            </div>
+            `
+            setTimeout(()=>{
+                notify.innerHTML=''
+            },3000)
         })
     </script>
 </body>
