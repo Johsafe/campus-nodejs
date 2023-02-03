@@ -86,7 +86,7 @@ const verify=async(req,res)=>{
                 if(err){
                     res.send({error:`Cannot sent verification code, try again!`});
                 } else{
-                    res.send({msg:'Email sent',link:'/verify',code});
+                    res.send({msg:'Email sent',email,link:'/verify',code});
                 }
             })
         }
