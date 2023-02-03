@@ -20,6 +20,9 @@
     </div>
     <!-- script -->
     <script>
+        if(!localStorage.getItem('email')){
+            window.location.replace='/register'
+        }
          //preloader
         const preloader=()=>{
             const loader=document.querySelector('.preload');
@@ -36,6 +39,8 @@
                 window.location.href='/'
             } 
         },60000)
+        
+        
         //form submit
         const notify=document.querySelector('.notify')
         const form=document.querySelector('form');
@@ -44,7 +49,7 @@
             try {
                 preloader()
                 const code=form.code.value;
-                if(code.length===4){
+                if(code.length===6&&code==localStorage.getItem("code")){
                     const url=`/api/code`;
                     const response=await fetch(url,{
                         method:"POST",
@@ -66,7 +71,7 @@
                             notify.innerHTML=''
                         },3000)
                     }else{
-                        window.location.href=parseRes.msg
+                        window.location.href=parseRes.link
                     }
                 }else{
                     notify.innerHTML=`

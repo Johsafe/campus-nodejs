@@ -13,7 +13,8 @@ const news=require('../db/blogs.json');
 const User=require('../models/userModel');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
-const mongoose=require('mongoose')
+const nodemailer=require('nodemailer');
+const mongoose=require('mongoose');
 require('dotenv').config();
 
 //gets all blogs
@@ -62,15 +63,31 @@ const blog=(req,res)=>{
 }
 const verify=async(req,res)=>{
     try {
-        const {email}=req.body;
+        const {email,code}=req.body;
         const userExist=await User.findOne({email});
         //check if user exist in the db
         if(userExist){
             res.send({error:"User Exist!"})
         }else{
-            res.send({
-                msg:"/verify",
-                email
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:email,//receiver
+                subject:`Campus Blogs: Verification Code`,
+                text:`Your verification is ${code}`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Cannot sent verification code, try again!`});
+                } else{
+                    res.send({msg:'Email sent',link:'/verify',code});
+                }
             })
         }
     } catch (error) {
@@ -81,8 +98,8 @@ const verify=async(req,res)=>{
 const verifyCode=async(req,res)=>{
     try {
         const {code}=req.body
-        if(code==='5656'){
-            res.send({msg:'/last'})
+        if(code){
+            res.send({msg:'proceed',link:'/last'})
         }else{
             res.status(201).send({error:"Code doesn't match the sent code!"})
         }

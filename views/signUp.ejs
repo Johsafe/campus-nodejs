@@ -35,6 +35,16 @@
             const loader=document.querySelector('.preload');
             loader.style.display='none';
         }
+        //calculating date to form code using month,date,time
+        let today=new Date();
+         let hour=addZero(today.getHours());
+         let min=addZero(today.getMinutes());
+         let sec=addZero(today.getSeconds());
+         function addZero(num){
+            return num <10?`0${num}`:num;
+         }
+
+         const code=`${sec}${hour}${min}`;
         //form submit
         const notify=document.querySelector('.notify')
         const form=document.querySelector('form');
@@ -51,7 +61,8 @@
                             "content-type":'application/json'
                         },
                         body:JSON.stringify({
-                            email
+                            email,
+                            code
                         })
                     })
                     const parseRes=await response.json();
@@ -66,7 +77,8 @@
                         },3000)
                     }else{
                         localStorage.setItem("email",parseRes.email)
-                        window.location.href=parseRes.msg
+                        localStorage.setItem('code',parseRes.code)
+                        window.location.href=parseRes.link
                     }
                     preloaderOff()
                 } else {
