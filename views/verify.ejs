@@ -21,7 +21,7 @@
     <!-- script -->
     <script>
         if(!localStorage.getItem('email')){
-            window.location.replace='/register'
+            window.location.href='/register'
         }
          //preloader
         const preloader=()=>{
@@ -38,7 +38,7 @@
             if (confirm) {
                 window.location.href='/'
             } 
-        },60000)
+        },300000)
         
         
         //form submit
