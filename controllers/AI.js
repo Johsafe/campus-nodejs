@@ -13,6 +13,7 @@ const news=require('../db/blogs.json');
 const User=require('../models/userModel');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
+const mongoose=require('mongoose')
 require('dotenv').config();
 
 //gets all blogs
@@ -94,8 +95,8 @@ const verifyCode=async(req,res)=>{
 
 const register=async(req,res)=>{
     try {
-        const {firstName,lastName,email,password}=req.body
-        if(firstName&&lastName&&email&&password){
+        const {firstName,lastName,email,password,university}=req.body
+        if(firstName&&lastName&&email&&password&&university){
             //hashing the password
             const salt=await bcrypt.genSalt(10);
             const hashedPassword=await bcrypt.hash(password,salt);
@@ -103,6 +104,7 @@ const register=async(req,res)=>{
             const newUser=await User.create({
                 firstName,
                 lastName,
+                university,
                 email,
                 password:hashedPassword
             });
@@ -112,6 +114,7 @@ const register=async(req,res)=>{
                     _id:newUser.id,
                     firstName:newUser.firstName,
                     lastName:newUser.lastName,
+                    university:newUser.university,
                     email:newUser.email,
                     token:generateUserToken(newUser.id)
                 })
@@ -136,6 +139,7 @@ const login=async(req,res)=>{
                     _id:user.id,
                     firstName:user.firstName,
                     lastName:user.lastName,
+                    university:user.university,
                     email:user.email, 
                     token:generateUserToken(user.id)
                 })
@@ -179,11 +183,29 @@ const protectUser=async(req,res,next)=>{
     })
   };
 
+  const deleteUser=async(req,res)=>{
+    try {
+        const {userid}=req.params;
+        if(!mongoose.Types.ObjectId.isValid(userid)){
+            return res.status(404).json({error:'No such User'})
+          } 
+        const userDeleted=await User.findByIdAndDelete({_id:userid})
+        if(userDeleted){
+            res.json({msg:"Account delete successful",userDeleted})
+        }else{
+            res.json({error:"Cannot Delete account!"})
+        }
+    } catch (error) {
+        res.status(500).json({error:'Cannot Delete account, try again!'})
+    }    
+  }
 module.exports={
     register,
     verify,
     login,
     blogs,
     verifyCode,
-    blog
+    blog,
+    deleteUser,
+    protectUser
 }

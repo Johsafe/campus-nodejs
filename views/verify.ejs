@@ -2,6 +2,7 @@
 <%- include('./partials/head.ejs')%>
 <body>
     <%- include('./partials/nav.ejs')%>
+    <div class='preload'></div>
     <div class="login start">
         <div class="notify"></div>
         <form style="border: none;">
@@ -19,6 +20,15 @@
     </div>
     <!-- script -->
     <script>
+         //preloader
+        const preloader=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='block';
+        }
+        const preloaderOff=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='none';
+        }
         //redirect if stays for long (1min)
         setTimeout(()=>{
             const confirm=window.confirm("Redirecting to Homepage")
@@ -32,6 +42,7 @@
         form.addEventListener('submit',async(e)=>{
             e.preventDefault()
             try {
+                preloader()
                 const code=form.code.value;
                 if(code.length===4){
                     const url=`/api/code`;
@@ -68,6 +79,7 @@
                     },3000)
                 }
                 form.reset()
+                preloaderOff()
             } catch (error) {
                 notify.innerHTML=`
                 <div class='tag'>
@@ -77,6 +89,7 @@
                 setTimeout(()=>{
                     notify.innerHTML=''
                 },3000)
+                preloaderOff()
                 form.reset()
             }
         })

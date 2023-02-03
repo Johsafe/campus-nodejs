@@ -68,6 +68,9 @@
         flex-direction: column;
         margin: 0 15px;
     }
+    .login form input{
+        width: 90vw;
+    }
 }
 
 @supports(backdrop-filter: blur(3rem)){

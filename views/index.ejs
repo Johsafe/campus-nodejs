@@ -2,6 +2,7 @@
 <%- include('./partials/head.ejs')%>
 <body>
     <%- include('./partials/nav.ejs')%>
+    <div class='preload'></div>
     <div id="about"></div>
     <div class="index start">
         <header>
@@ -39,6 +40,17 @@
 
     <!-- script -->
     <script>
+         //preloader
+         const preloader=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='block';
+        }
+        const preloaderOff=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='none';
+        }
+        preloader();
+
         //title
         document.querySelector('.title').innerText='For you';
 
@@ -52,6 +64,9 @@
         for(let i=0; i<body.length;i++){
             const bodyContent=`${body[i].dataset.body}`;
             body[i].innerHTML=`${bodyContent}...`;
+            if(bodyContent){
+                preloaderOff()
+            }
         }
 
         const notify=document.querySelector('.notify')

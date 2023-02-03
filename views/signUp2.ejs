@@ -2,6 +2,7 @@
 <%- include('./partials/head.ejs')%>
 <body>
     <%- include('./partials/nav.ejs')%>
+    <div class='preload'></div>
     <div class="login start">
         <div class="notify"></div>
         <form style="border: none;">
@@ -13,6 +14,8 @@
                 <input type="text" name="first" id="first" required/>
                 <label for="last"><b>Last Name</b></label>
                 <input type="text" name="last" id="last" required/>
+                <label for="university"><b>University</b></label>
+                <input type="text" name="university" placeholder="Rongo University" id="university" required/>
             </div>
             <label for="password"><b>Password</b></label>
             <input type="password" name="password" id="password" required/>
@@ -24,11 +27,22 @@
     </div>
     <!-- script -->
     <script>
+         //preloader
+         const preloader=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='block';
+        }
+        const preloaderOff=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='none';
+        }
+
         const notify=document.querySelector('.notify')
         const form=document.querySelector('form');
         form.addEventListener('submit',async(e)=>{
             e.preventDefault()
             try {
+                preloader()
                 const password=form.password.value;
                 const confirm=form.confirm.value;
                 if(confirm===password){
@@ -41,6 +55,7 @@
                         body:JSON.stringify({
                             firstName:form.first.value,
                             lastName:form.last.value,
+                            university:form.university.value,
                             email:localStorage.getItem('email'),
                             password:confirm
                         })
@@ -64,11 +79,13 @@
                         setTimeout(()=>{
                             notify.innerHTML=''
                             window.location.href='/'
-                        },3000)
+                        },2000)
                         localStorage.setItem('token',parseRes.token)
                         localStorage.setItem('first-name',parseRes.firstName)
                         localStorage.setItem('last-name',parseRes.lastName)
+                        localStorage.setItem('university',parseRes.university)
                         localStorage.setItem('email',parseRes.email)
+                        localStorage.setItem('user-id',parseRes._id)
                     }
                 }else{
                     notify.innerHTML=`
@@ -80,6 +97,7 @@
                         notify.innerHTML=''
                     },3000)
                 }
+                preloaderOff()
             } catch (error) {
                 alert(error.message)
                 notify.innerHTML=`
@@ -90,6 +108,7 @@
                 setTimeout(()=>{
                     notify.innerHTML=''
                 },3000)
+                preloaderOff()
             }
         })
             // redirect

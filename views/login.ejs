@@ -2,6 +2,7 @@
 <%- include('./partials/head.ejs')%>
 <body>
     <%- include('./partials/nav.ejs')%>
+    <div class="preload"></div>
     <div class="login start">
         <div class="notify"></div>
         <form>
@@ -26,11 +27,21 @@
     </div>
     <!-- script -->
     <script>
+            //preloader
+            const preloader=()=>{
+                const loader=document.querySelector('.preload');
+                loader.style.display='block';
+            }
+            const preloaderOff=()=>{
+                const loader=document.querySelector('.preload');
+                loader.style.display='none';
+            }
         const notify=document.querySelector('.notify');
         const form=document.querySelector('form');
         form.addEventListener('submit',async(e)=>{
             e.preventDefault()
             try {
+                preloader()
                 const url=`/api/login`
                 const response=await fetch(url,{
                     method:"POST",
@@ -61,14 +72,16 @@
                     setTimeout(()=>{
                         notify.innerHTML=''
                         window.location.href='/'
-                    },2000)
+                    },1000)
                     localStorage.setItem('token',parseRes.token)
                     localStorage.setItem('first-name',parseRes.firstName)
                     localStorage.setItem('last-name',parseRes.lastName)
+                    localStorage.setItem('university',parseRes.university)
                     localStorage.setItem('email',parseRes.email)
+                    localStorage.setItem('user-id',parseRes._id)
                 }
+                preloaderOff()
             } catch (error) {
-                // alert()
                 console.log(error.message)
                 notify.innerHTML=`
                     <div class='tag'>
@@ -78,6 +91,7 @@
                 setTimeout(()=>{
                     notify.innerHTML=''
                 },3000)
+                preloaderOff()
             }
         })
 

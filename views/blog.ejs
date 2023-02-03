@@ -3,6 +3,7 @@
     <%- include('./partials/head.ejs')%>
     <body>
         <%- include('./partials/nav.ejs')%>
+        <div class='preload'></div>
         <div id="about"></div>
         <div class="detail start">
             <%if($new){%>
@@ -30,16 +31,25 @@
         <%- include('./partials/footer.ejs')%>
         <!-- script -->
         <script>
-            //error message
-            setTimeout(()=>{
-                document.querySelector('.notify').innerHTML=''
-            },3000)
+            //preloader
+            const preloader=()=>{
+                const loader=document.querySelector('.preload');
+                loader.style.display='block';
+            }
+            const preloaderOff=()=>{
+                const loader=document.querySelector('.preload');
+                loader.style.display='none';
+            }
+            preloader()
+            
 
             //body
             const body=document.querySelector('.body')
             const bodyContent=`${body.dataset.doc}`;
             body.innerHTML=`${bodyContent}`;
-
+            if(bodyContent){
+                preloaderOff()
+            }
             // redirect
             if(!localStorage.getItem('token')){
                 window.location.href='/'

@@ -4,7 +4,9 @@ const {
     register,
     verify,
     verifyCode,
-    login
+    login,
+    deleteUser,
+    protectUser
 }=require('../controllers/AI');
 
 //api routes
@@ -12,5 +14,6 @@ router.post('/',register);
 router.post('/verify',verify);
 router.post('/code',verifyCode);
 router.post('/login',login);
+router.delete('/:userid',protectUser, deleteUser);
 
 module.exports=router;

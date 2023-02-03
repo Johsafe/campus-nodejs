@@ -1,0 +1,152 @@
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+<body>
+    <%- include('./partials/nav.ejs')%>
+    <div class="dashboard">
+        <div style="display: flex; justify-content: center;">
+            <div class="notify"></div>
+        </div>
+        
+        <div class="user-details">
+            <h1>My Profile</h1>
+            <div class="user-info">
+
+            </div>
+        </div>
+
+        <div class="other" style="display: flex; flex-direction: column;">
+            <h3>My Status</h3>
+            <p>This account is not verified to post blogs or articles on this site.</p> 
+            <p>Account on read only.</p><br/>
+            <sub>contact an admin to change your status.</sub>
+
+            <h3>My Account</h3>
+            <a href='/login' style="background:black;">Invite a friend</a> 
+            <a href='/login' style="background: blueviolet;" class="log-out">Switch to Other Account</a> 
+            <a href='/login' style="background: orange;" class="log-out">Get verified as blogger</a> 
+            <a href="#3" style="background:red;" class="log-out" title="Log out">Log out</a>
+            <a href="#8" style="background: #eee;color: black;" class="delete-account" title="Delete My Account">Delete My Account</a>
+        </div>
+    </div>
+    <!-- script -->
+    <script>
+        const notify=document.querySelector('.notify')
+        if(!localStorage.getItem('token')){
+            window.location.href='/'
+        }
+        if(localStorage.getItem('university')==='undefined'){
+            document.querySelector('.user-info').innerHTML=`
+                <div class='items'>
+                    <a href='/assests/avatar.svg'><img src='/assests/avatar.svg'/></a>
+                    <div class='text'>
+                        <h2>${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}</h2>
+                        <p>${localStorage.getItem('email')}<p>  
+                        <p style='color:red;'>*Please, State your University<p>  
+                    </div> 
+                </div>    
+            `
+        }else{
+            document.querySelector('.user-info').innerHTML=`
+                <div class='items'>
+                    <a href='/assests/avatar.svg'><img src='/assests/avatar.svg'/></a>
+                    <div class='text'>
+                        <h2>${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}</h2>
+                        <p>${localStorage.getItem('email')}<p>  
+                        <p>${localStorage.getItem('university')}<p>  
+                    </div> 
+                </div>    
+            `
+        }
+        
+        const logOutBtn=document.querySelectorAll('.log-out')
+        logOutBtn.forEach(i=>{
+            if(!localStorage.getItem('token')){
+                i.style.display='none'
+            }
+            i.addEventListener('click',()=>{
+                const confirm=window.confirm('You are about to log out!')
+                if(confirm){
+                    window.location.href='/'
+                    localStorage.removeItem('email')
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('first-name')
+                    localStorage.removeItem('last-name')
+                    localStorage.removeItem('university')
+                    localStorage.removeItem('user-id')
+                }
+            })
+        })
+
+        //delete account
+        const deleteAccount=document.querySelector('.delete-account');
+        deleteAccount.addEventListener('click',async()=>{
+            try {
+                const confirm=window.confirm('You are about to delete your account!')
+                if(confirm){
+                    const url=`/api/${localStorage.getItem('user-id')}`
+                    const response=await fetch(url,{
+                        method:"DELETE",
+                        headers:{
+                            "authorization":`Bearer ${localStorage.getItem('token')}`
+                        }
+                    })
+                    const parseRes=await response.json()
+                    if(parseRes.error){
+                        notify.innerHTML=`
+                        <div class="tag">
+                            <p class="error">${parseRes.error}</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    }else{
+                        notify.innerHTML=`
+                        <div class="tag-success">
+                            <p class="error">${parseRes.msg}</p>
+                        </div>
+                        `
+                        console.log(parseRes)
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                            window.location.href='/'
+                            localStorage.removeItem('user-id')
+                            localStorage.removeItem('email')
+                            localStorage.removeItem('token')
+                            localStorage.removeItem('first-name')
+                            localStorage.removeItem('university')
+                            localStorage.removeItem('last-name')
+                        },2000)
+                    }
+                }
+            } catch (error) {
+                notify.innerHTML=`
+                    <div class="tag">
+                        <p class="error">No internet!</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                    notify.innerHTML=''
+                },3000)
+            }
+        })
+
+        //set ui
+        const link=document.querySelectorAll('.link')
+        link.forEach(i=>{
+            const ui=i.dataset.class;
+            if(ui==='out'&&localStorage.getItem('token')){
+                const out=document.querySelectorAll('.out')
+                out.forEach(i=>{
+                    i.style.display='none'
+                })
+            }else{
+                const out=document.querySelectorAll('.out')
+                out.forEach(i=>{
+                    i.style.display='block'
+                })
+            }
+        })
+    </script>
+</body>
+</html>

@@ -2,7 +2,8 @@
 <%- include('./partials/head.ejs')%>
 <body>
     <%- include('./partials/nav.ejs')%>
-    <div class="login start">
+    <div class='preload'></div>
+        <div class="login start">
         <div class="notify"></div>
         <form>
             <header style="margin: 0 0 40px 0;">
@@ -25,12 +26,22 @@
     </div>
     <!-- script -->
     <script>
+        //preloader
+        const preloader=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='block';
+        }
+        const preloaderOff=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='none';
+        }
         //form submit
         const notify=document.querySelector('.notify')
         const form=document.querySelector('form');
         form.addEventListener('submit',async(e)=>{
             e.preventDefault()
             try {
+                preloader()
                 const email=form.email.value;
                 if (email) {
                     const url=`/api/verify`;
@@ -57,6 +68,7 @@
                         localStorage.setItem("email",parseRes.email)
                         window.location.href=parseRes.msg
                     }
+                    preloaderOff()
                 } else {
                     notify.innerHTML=`
                         <div class="tag" >
@@ -69,6 +81,7 @@
                 }
                 form.reset()
             } catch (error) {
+                preloaderOff()
                 notify.innerHTML=`
                         <div class="tag" >
                             <p class="error">No internet!</p>
