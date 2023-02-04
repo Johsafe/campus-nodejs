@@ -25,9 +25,9 @@
 
         <div class="other" style="display: flex; flex-direction: column;">
             <h3>My Status</h3>
-            <p>This account is not verified to post blogs or articles on this site.</p> 
-            <p>Account on read only.</p><br/>
-            <sub>contact an admin to change your status.</sub>
+            <div class="status">
+
+            </div>
 
             <h3>My Account</h3>
             <input type="text" value="https://campus-blog.onrender.com" id="refferal-link" hidden/>
@@ -40,6 +40,32 @@
     </div>
     <!-- script -->
     <script>
+         const owner=`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`
+         const status=document.querySelector('.status');
+         switch(owner){
+            case 'imran matano':
+                status.innerHTML=`
+                <a href='/create'>Post a new blog</a>
+                `
+                break;
+            case 'Imran matano':
+                status.innerHTML=`
+                <a href='/create'>Post a new blog</a>
+                ` 
+                break;
+            case 'Imran Matano':
+                status.innerHTML=`
+                <a href='/create'>Post a new blog</a>
+                ` 
+                break;
+            default:
+                status.innerHTML=`
+                <p>This account is not verified to post blogs or articles on this site.</p> 
+                <p>Account on read only.</p><br/>
+                <sub>contact an admin to change your status.</sub>
+                `
+         }
+
         const notify=document.querySelector('.notify')
         if(!localStorage.getItem('token')){
             window.location.href='/'

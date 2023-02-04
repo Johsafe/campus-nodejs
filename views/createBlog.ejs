@@ -1,0 +1,25 @@
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+<body>
+    <%- include('./partials/nav.ejs')%>
+    <div class="create start">
+        <h1>create a blog</h1>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti obcaecati at quo a fugiat pariatur, vitae commodi neque nostrum quibusdam?</p>
+    </div>
+    <!-- script -->
+    <script>
+        const owner=`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`
+        switch(!owner){
+            case 'imran matano':
+                window.location.href='/';
+                break;
+            case 'Imran matano':
+                window.location.href='/'
+                break;
+            case 'Imran Matano':
+                window.location.href='/'
+                break;
+        }
+    </script>
+</body>
+</html>
