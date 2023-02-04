@@ -10,15 +10,25 @@
                 <h1>Create a blog</h1>
             </header>
             <label for="title"><b>Title</b></label>
-            <input type="type" placeholder="Climate Change" name="title" id="title" required/>
+            <input type="type" placeholder="Blog title here" maxlength="300" name="title" id="title" required/>
             <label for="blog-image"><b>Blog Image</b></label>
-            <input type="file" name="blogImage" id="blog-image" required/>
+            <input type="file" accept="image/*" name="blogImage" id="blog-image" title="Only images are allowed" required/>
             <label for="body"><b>Body</b></label>
-            <textarea placeholder="Write blog's content here" name="body" id="body" multiple required></textarea>
-            <button><b>Submit</b></button>
+            <textarea placeholder="Write blog's content here (html)" name="body" id="body" multiple minlength="100" required></textarea>
+            <button><b>Publish</b></button>
     </div>
     <!-- script -->
     <script>
+        //finds the date
+         const add=(a)=>{
+            return a+1
+         }
+         const d=new Date()
+         const today=d.getDate()
+         const month=d.getMonth()
+         const year=d.getFullYear()
+         const date=`${today}/${add(month)}/${year}`
+         
          //preloader
          const preloader=()=>{
             const loader=document.querySelector('.preload');
@@ -51,7 +61,7 @@
                             image:postHandler.blogImage.value,
                             body,
                             author:`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`,
-                            authorImage,
+                            authorImage:'/assests/avatar.svg',
                             date,
                         })
                     })

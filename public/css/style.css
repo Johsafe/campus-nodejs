@@ -439,6 +439,7 @@ footer .social-media-links ul li{
     padding: 10px;
     margin: 0 0 20px 0;
     font-size: medium;
+    font-family: inherit;
 }
 .create form input::placeholder,.create form textarea::placeholder{
     color:rgb(5, 100, 155);

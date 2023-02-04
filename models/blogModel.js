@@ -22,7 +22,8 @@ const blogSchema=mongoose.Schema({
         require:true
     },
     date:{
-
+        type:String,
+        require:true
     }
 },{
     timestamps:true
