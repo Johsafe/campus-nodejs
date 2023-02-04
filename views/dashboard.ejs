@@ -19,7 +19,7 @@
         <div class="user-details">
             <h1>My Profile</h1>
             <div class="user-info">
-
+                
             </div>
         </div>
 
@@ -45,27 +45,36 @@
          switch(owner){
             case 'imran matano':
                 status.innerHTML=`
-                <a href='/create'>Post a new blog</a>
+                <p style='color:green;'>Account verified.</p> 
+                <p class="post-link" href='/create'>Post a new blog</p>
                 `
                 break;
             case 'Imran matano':
                 status.innerHTML=`
-                <a href='/create'>Post a new blog</a>
+                <p style='color:green;'>Account verified.</p> 
+                <p class="post-link" href='/create'>Post a new blog</p>
                 ` 
                 break;
             case 'Imran Matano':
                 status.innerHTML=`
-                <a href='/create'>Post a new blog</a>
+                <p style='color:green;'>Account verified.</p> 
+                <p class="post-link" href='/create'>Post a new blog</p>
                 ` 
                 break;
             default:
                 status.innerHTML=`
                 <p>This account is not verified to post blogs or articles on this site.</p> 
                 <p>Account on read only.</p><br/>
+                <p class="post-link" style='display:none;' href='/create'>Post a new blog</p>
                 <sub>contact an admin to change your status.</sub>
                 `
          }
 
+         //post link
+         const postLink=document.querySelector('.post-link')
+         postLink.addEventListener('click',()=>{
+            window.location.href='/create'
+         })
         const notify=document.querySelector('.notify')
         if(!localStorage.getItem('token')){
             window.location.href='/'
