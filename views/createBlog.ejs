@@ -3,27 +3,95 @@
 <body>
     <%- include('./partials/nav.ejs')%>
     <div class="create start">
+        <div class="preload"></div>
         <div class="notify"></div>
         <form style="border: none;">
-            <header style="margin: 0 0 40px 0;">
+            <header style="margin: 0 0 10px 0;">
                 <h1>Create a blog</h1>
             </header>
             <label for="title"><b>Title</b></label>
             <input type="type" placeholder="Climate Change" name="title" id="title" required/>
-            <label for="title"><b>Blog Image</b></label>
-            <input type="type" placeholder="Climate Change" name="title" id="title" required/>
-            <label for="title"><b>Body</b></label>
-            <input type="type" placeholder="Climate Change" name="title" id="title" required/>
-            <label for="title"><b>Author</b></label>
-            <input type="type" placeholder="Climate Change" name="title" id="title" required/>
-            <label for="title"><b>author image</b></label>
-            <input type="type" placeholder="Climate Change" name="title" id="title" required/>
-            <label for="title"><b>date</b></label>
-            <input type="type" placeholder="Climate Change" name="title" id="title" required/>
+            <label for="blog-image"><b>Blog Image</b></label>
+            <input type="file" name="blogImage" id="blog-image" required/>
+            <label for="body"><b>Body</b></label>
+            <textarea placeholder="Write blog's content here" name="body" id="body" multiple required></textarea>
             <button><b>Submit</b></button>
     </div>
     <!-- script -->
     <script>
+         //preloader
+         const preloader=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='block';
+        }
+        const preloaderOff=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='none';
+        }
+        //date
+        //notify
+        const notify=document.querySelector('.notify')
+        //post handler
+        const postHandler=document.querySelector('form');
+        postHandler.addEventListener('submit',async(e)=>{
+            e.preventDefault()
+            const title=postHandler.title.value;
+            const body=postHandler.body.value;
+            if (title.lenght<=299&&body.lenght>99) {
+            try {
+                preloader()
+                    const url=`/api/`;
+                    const response=await fetch(url,{
+                        method:"POST",
+                        headers:{
+                            "content-type":"application/json"
+                        },
+                        body:JSON.stringify({
+                            title,
+                            image:postHandler.blogImage.value,
+                            body,
+                            author:`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`,
+                            authorImage,
+                            date,
+                        })
+                    })
+                    const parseRes=await response.json()
+                    preloaderOff()
+
+                    
+                } catch (error) {
+                    console.log(error.message)
+                    preloaderOff()
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class='error'>No internet!</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    }
+                } else if(title.lenght>299){
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class='error'>Title must less than or equal to 300 words</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },3000)
+                }else{
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class='error'>Body must greater than 100 words</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },3000)
+                }
+        })
+
         const owner=`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`
         if(!localStorage.getItem('token')){
             window.location.href='/';

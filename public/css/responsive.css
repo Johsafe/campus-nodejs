@@ -74,6 +74,9 @@
     .get-verified-as-blogger{
         width: 80vw;
     }
+    .create form input,.create form textarea{
+        width: 80vw;
+    }
 }
 @media screen and (max-width:350px) {
     .user-details{

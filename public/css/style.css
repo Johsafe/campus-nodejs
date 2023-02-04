@@ -415,7 +415,40 @@ footer .social-media-links ul li{
   }
 
   /* post blog */
-  .create form{
+.create form{
     display: flex;
     flex-direction: column;
-  }
+    margin:20px 40px;
+    border-bottom: 1px solid var(--body-text);
+    padding: 0 0 30px 0;
+}
+.create form input{
+    width: 500px;
+    height: 45px;
+    border-radius: 5px;
+    border: 1px solid var(--body-text);
+    padding: 10px;
+    margin: 0 0 20px 0;
+    font-size: medium;
+}
+.create form textarea{
+    width: 500px;
+    height: 20vh;
+    border-radius: 5px;
+    border: 1px solid var(--body-text);
+    padding: 10px;
+    margin: 0 0 20px 0;
+    font-size: medium;
+}
+.create form input::placeholder,.create form textarea::placeholder{
+    color:rgb(5, 100, 155);
+}
+.create form button{
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    background: rgb(0, 128, 96);
+    padding: 15px;
+    font-size: medium;
+    cursor: pointer;
+}
