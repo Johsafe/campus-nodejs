@@ -242,7 +242,6 @@ nav{
 footer{
     padding: 10px 20px 30px 30px;
     background: #eee;
-    /* background: var(--body-text); */
 }
 footer .footer-info{
     display: flex;
@@ -413,4 +412,10 @@ footer .social-media-links ul li{
     z-index: 110;
     cursor: pointer;
     box-shadow: 0 5px 20px 0 rgb(11 7 110 / 12%);
+  }
+
+  /* post blog */
+  .create form{
+    display: flex;
+    flex-direction: column;
   }
