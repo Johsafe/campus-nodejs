@@ -3,22 +3,26 @@
 <body>
     <%- include('./partials/nav.ejs')%>
     <div class="create start">
-        <h1>create a blog</h1>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti obcaecati at quo a fugiat pariatur, vitae commodi neque nostrum quibusdam?</p>
+        <h1>Create a blog</h1>
     </div>
     <!-- script -->
     <script>
         const owner=`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`
-        switch(!owner){
+        if(!localStorage.getItem('token')){
+            window.location.href='/';
+        }
+        switch(owner){
             case 'imran matano':
-                window.location.href='/';
+                // window.location.href='/';
                 break;
             case 'Imran matano':
-                window.location.href='/'
+                // window.location.href='/'
                 break;
             case 'Imran Matano':
-                window.location.href='/'
+                // window.location.href='/'
                 break;
+            default:
+                window.location.href='/'
         }
     </script>
 </body>
