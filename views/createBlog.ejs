@@ -15,7 +15,7 @@
             <input type="file" class="file" accept="image/*" name="blogImage" id="blog-image" title="Only images are allowed" required/>
             <label for="body"><b>Body</b></label>
             <textarea placeholder="Write blog's content here (html)" name="body" id="body" multiple minlength="100" required></textarea>
-            <button><b>Publish</b></button>
+            <button disabled="true"><b>Publish</b></button>
     </div>
     <!-- script -->
     <script type="module">
@@ -43,22 +43,31 @@
         }
         
                 //upload image
-                let photoUrl;
                 const types=['image/png', 'image/jpeg']
                 const photo=document.querySelector('.file');
                 photo.addEventListener('change',(e)=>{
                     let photoName=e.target.files[0]
                     let validFile= photoName.name;
-                    photoUrl=validFile
                     if(photoName && types.includes(photoName.type)){
                         //uploading image to storage
                         const storageRef=ref(projectStorage,photoName.name);
                         const uploadTask = uploadBytesResumable(storageRef, photoName);
                         uploadTask.on('state_changed',
                         async()=>{
-                            const url=await getDownloadURL(storageRef).then((url)=>{
-                            photoUrl=url
-                        })})
+                            const url=await getDownloadURL(storageRef)
+                            const photoRes=await url
+                            localStorage.setItem('photo-url',url)
+                            notify.innerHTML=`
+                            <div class='tag-success'>
+                                <p class="error">Image Load 100%</p>
+                            </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                            },1000)
+                        })
+                        const publishBtn=document.querySelector('button')
+                        publishBtn.disabled=false
                     }else{
                         notify.innerHTML=`
                         <div class='tag'>
@@ -78,7 +87,6 @@
             e.preventDefault()
             const title=postHandler.title.value;
             const body=postHandler.body.value;
-            if (title.lenght<=299&&body.lenght>99) {
             try {
                 preloader()
                     const url=`/api/blog`;
@@ -90,13 +98,14 @@
                         },
                         body:JSON.stringify({
                             title,
-                            image:photoUrl,
+                            image:localStorage.getItem('photo-url'),
                             body,
                             author:`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`,
                             authorImage:'/assests/avatar.svg',
                             date,
                         })
                     })
+                    localStorage.removeItem('photo-url')
                     const parseRes=await response.json()
                     if(parseRes.error){
                         notify.innerHTML=`
@@ -109,6 +118,7 @@
                         },3000)
                     }else{
                         window.location.href=parseRes.link
+                        postHandler.reset()
                     }
                     preloaderOff()
                 } catch (error) {
@@ -122,25 +132,7 @@
                             notify.innerHTML=''
                         },3000)
                     }
-                } else if(title.lenght>299){
-                    notify.innerHTML=`
-                    <div class='tag'>
-                        <p class='error'>Title must less than or equal to 300 words</p>
-                    </div>
-                    `
-                    setTimeout(()=>{
-                        notify.innerHTML=''
-                    },3000)
-                }else{
-                    notify.innerHTML=`
-                    <div class='tag'>
-                        <p class='error'>Body must greater than 100 words</p>
-                    </div>
-                    `
-                    setTimeout(()=>{
-                        notify.innerHTML=''
-                    },3000)
-                }
+                
         })
 
         const owner=`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`

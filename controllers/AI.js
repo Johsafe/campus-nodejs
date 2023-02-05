@@ -9,7 +9,6 @@
 // network.train(trainingData,{
 //     iterations:100,
 // });
-const news=require('../db/blogs.json');
 const User=require('../models/userModel');
 const Blog=require('../models/blogModel');
 const bcrypt=require('bcryptjs');
@@ -20,6 +19,7 @@ require('dotenv').config();
 
 //gets all blogs
 const blogs=async(req,res)=>{
+    const news=await Blog.find({})
     res.render('index',{title:'For you',js:'/js/main.js',news,classes:'opened',paths:[
         {
             id:1,
@@ -45,9 +45,10 @@ const blogs=async(req,res)=>{
 }
 
 //gets a single blog
-const blog=(req,res)=>{
-    const {id}=req.params
-    res.render('blog',{title:'Blog',js:'/js/main.js',$new:news[id],classes:'closed',paths:[
+const blog=async(req,res)=>{
+    const {id}=req.params;
+    const $new=await Blog.findById({_id:id})
+    res.render('blog',{title:'Blog',js:'/js/main.js',$new,classes:'closed',paths:[
         {
             id:1,
             name:'Home',
