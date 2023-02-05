@@ -11,6 +11,7 @@
 // });
 const news=require('../db/blogs.json');
 const User=require('../models/userModel');
+const Blog=require('../models/blogModel');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const nodemailer=require('nodemailer');
@@ -216,6 +217,20 @@ const protectUser=async(req,res,next)=>{
         res.status(500).json({error:'Cannot Delete account, try again!'})
     }    
   }
+  //add blog to db
+  const postBlog=async(req,res)=>{
+    try {
+        const {title,image,body,author,authorImage,date}=req.body;
+        const createBlog=await Blog.create({title,image,body,author,authorImage,date})
+        if(createBlog){
+            res.status(200).send({msg:'Blog Posted',link:'/'})
+        }else{
+            res.send({error:'Cannot post blog!'})
+        }
+    } catch (error) {
+        res.status(500).send({error:error.message})
+    }
+  }
 module.exports={
     register,
     verify,
@@ -224,5 +239,6 @@ module.exports={
     verifyCode,
     blog,
     deleteUser,
-    protectUser
+    protectUser,
+    postBlog
 }

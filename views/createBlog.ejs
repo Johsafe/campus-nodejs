@@ -81,11 +81,12 @@
             if (title.lenght<=299&&body.lenght>99) {
             try {
                 preloader()
-                    const url=`/api/`;
+                    const url=`/api/blog`;
                     const response=await fetch(url,{
                         method:"POST",
                         headers:{
-                            "content-type":"application/json"
+                            "content-type":"application/json",
+                            "authorization":`Bearer ${localStorage.getItem('token')}`
                         },
                         body:JSON.stringify({
                             title,
@@ -97,11 +98,20 @@
                         })
                     })
                     const parseRes=await response.json()
+                    if(parseRes.error){
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class='error'>${parseRes.error}</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    }else{
+                        window.location.href=parseRes.link
+                    }
                     preloaderOff()
-
-                    
                 } catch (error) {
-                    console.log(error.message)
                     preloaderOff()
                     notify.innerHTML=`
                     <div class='tag'>
