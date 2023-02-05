@@ -12,13 +12,16 @@
             <label for="title"><b>Title</b></label>
             <input type="type" placeholder="Blog title here" maxlength="300" name="title" id="title" required/>
             <label for="blog-image"><b>Blog Image</b></label>
-            <input type="file" accept="image/*" name="blogImage" id="blog-image" title="Only images are allowed" required/>
+            <input type="file" class="file" accept="image/*" name="blogImage" id="blog-image" title="Only images are allowed" required/>
             <label for="body"><b>Body</b></label>
             <textarea placeholder="Write blog's content here (html)" name="body" id="body" multiple minlength="100" required></textarea>
             <button><b>Publish</b></button>
     </div>
     <!-- script -->
-    <script>
+    <script type="module">
+        import{projectStorage,ref,getDownloadURL,uploadBytesResumable} from '/js/FirebaseConfig.js'
+       
+
         //finds the date
          const add=(a)=>{
             return a+1
@@ -38,7 +41,35 @@
             const loader=document.querySelector('.preload');
             loader.style.display='none';
         }
-        //date
+        
+                //upload image
+                let photoUrl;
+                const types=['image/png', 'image/jpeg']
+                const photo=document.querySelector('.file');
+                photo.addEventListener('change',(e)=>{
+                    let photoName=e.target.files[0]
+                    let validFile= photoName.name;
+                    photoUrl=validFile
+                    if(photoName && types.includes(photoName.type)){
+                        //uploading image to storage
+                        const storageRef=ref(projectStorage,photoName.name);
+                        const uploadTask = uploadBytesResumable(storageRef, photoName);
+                        uploadTask.on('state_changed',
+                        async()=>{
+                            const url=await getDownloadURL(storageRef).then((url)=>{
+                            photoUrl=url
+                        })})
+                    }else{
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class="error">Please select an image file(png or jpeg)</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },5000)
+                    }
+                })
         //notify
         const notify=document.querySelector('.notify')
         //post handler
@@ -58,7 +89,7 @@
                         },
                         body:JSON.stringify({
                             title,
-                            image:postHandler.blogImage.value,
+                            image:photoUrl,
                             body,
                             author:`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`,
                             authorImage:'/assests/avatar.svg',
