@@ -19,7 +19,7 @@ require('dotenv').config();
 
 //gets all blogs
 const blogs=async(req,res)=>{
-    const news=await Blog.find({})
+    const news=await Blog.find({}).sort({createdAt:-1})
     res.render('index',{title:'For you',js:'/js/main.js',news,classes:'opened',paths:[
         {
             id:1,
