@@ -232,6 +232,25 @@ const protectUser=async(req,res,next)=>{
         res.status(500).send({error:error.message})
     }
   }
+
+  //api route for mobile (addition ...not need by the site)
+  const getAllBlogs=async(req,res)=>{
+      try{
+          const blogs=await Blog.find({}).sort({createdAt:-1})
+          res.send(blogs)
+      }catch(error){
+          res.status(500).send({error:error.message})
+      }
+  }
+  const getBlog=async(req,res)=>{
+    try{
+        const {id}=req.params;
+        const blog=await Blog.findById({_id:id})
+        res.send(blog)
+    }catch(error){
+        res.status(500).send({error:error.message})
+    }
+  }
 module.exports={
     register,
     verify,
@@ -241,5 +260,7 @@ module.exports={
     blog,
     deleteUser,
     protectUser,
-    postBlog
+    postBlog,
+    getAllBlogs,
+    getBlog
 }
