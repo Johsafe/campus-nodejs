@@ -48,7 +48,7 @@ const blogs=async(req,res)=>{
 const blog=async(req,res)=>{
     const {id}=req.params;
     const $new=await Blog.findById({_id:id})
-    res.render('blog',{title:'Blog',js:'/js/main.js',$new,classes:'closed',paths:[
+    res.render('blog',{js:'/js/main.js',$new,classes:'closed',paths:[
         {
             id:1,
             name:'Home',
