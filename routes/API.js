@@ -16,7 +16,7 @@ const {
 
 //api routes
 router.post('/',register);
-router.post('/admin',registerAdmin);
+router.post('/admin',protectAdmin,registerAdmin);
 router.post('/verify',verify);
 router.post('/code',verifyCode);
 router.post('/login',login);

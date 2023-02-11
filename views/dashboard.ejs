@@ -40,17 +40,21 @@
     </div>
     <!-- script -->
     <script>
-         const admin=localStorage.getItem('admin-token')
+        if(!localStorage.getItem('admin-token')){
+            if(!localStorage.getItem('token')){
+                window.location.href='/'
+            }
+        }
+
          const status=document.querySelector('.status');
-         switch(admin){
-            case admin:
-                status.innerHTML=`
+         if(localStorage.getItem('admin-token')){
+            status.innerHTML=`
                 <p style='color:green;'>Account verified.</p> 
                 <p class="post-link" href='/create'>Post a new blog</p>
+                <a style="text-decoration:underline; border:none; color:black; margin-left:-20px;" href='/addAdmin'>Register a new administrator</a>
                 `
-                break;
-            default:
-                status.innerHTML=`
+         }else{
+            status.innerHTML=`
                 <p>This account is not verified to post blogs or articles on this site.</p> 
                 <p>Account on read only.</p><br/>
                 <p class="post-link" style='display:none;' href='/create'>Post a new blog</p>
@@ -64,12 +68,6 @@
             window.location.href='/create'
          })
         const notify=document.querySelector('.notify')
-
-        if(!localStorage.getItem('token')){
-            window.location.href='/'
-        }else if(localStorage.removeItem('admin-token')){
-            console.log('welcome')
-        }
 
         if(localStorage.getItem('university')==='undefined'){
             document.querySelector('.user-info').innerHTML=`

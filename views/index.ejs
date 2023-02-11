@@ -10,7 +10,7 @@
          <p class="sub-title">Recommended based your interests</p>
         </header>
         <div class="notify"></div>
-        <div class="blog-tag" data-blogs=`${<%= news%>}`>
+        <div class="blog-tag">
             <%if(news.length>0){%>
                 <%news.forEach(item=>{%>
                     <div class="blog-item" data-link="/blogs/<%=item.id%>">
@@ -77,7 +77,10 @@
                 if (localStorage.getItem('token')) {
                     //goes to blog details
                     window.location.href=`${blogLink}`
-                } else {
+                } else if (localStorage.getItem('admin-token')) {
+                    //goes to blog details
+                    window.location.href=`${blogLink}`
+                } else{
                     notify.innerHTML=`
                         <div class='tag' style="margin-top:50px;">
                             <p class='error'>Please, login or sign up to access more information!</p>

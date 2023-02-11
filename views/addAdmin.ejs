@@ -1,0 +1,110 @@
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+<body>
+    <%- include('./partials/nav.ejs')%>
+    <div class="create start">
+        <div class="preload"></div>
+        <div class="notify"></div>
+        <form style="border: none;">
+            <header style="margin: 0 0 10px 0;">
+                <h1>Create a blog</h1>
+            </header>
+            <label for="first"><b>First Name</b></label>
+            <input type="text" placeholder="Enter first name of the person" maxlength="300" name="first" id="first" required/>
+            <label for="last"><b>Last Name</b></label>
+            <input type="text" name="last" id="last" placeholder="Enter last name of the person" required/>
+            <label for="email"><b>Email</b></label>
+            <input type="email" name="email" id="email" placeholder="Enter email of the person" required/>
+            <button><b>Submit</b></button>
+    </div>
+    <!-- script -->
+    <script type="module">
+         //preloader
+         const preloader=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='block';
+        }
+        const preloaderOff=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='none';
+        }
+        
+               
+        //notify
+        const notify=document.querySelector('.notify')
+        //post handler
+        const postHandler=document.querySelector('form');
+        postHandler.addEventListener('submit',async(e)=>{
+            e.preventDefault()
+            const firstName=postHandler.first.value;
+            const lastName=postHandler.last.value;
+            const email=postHandler.email.value;
+            try {
+                preloader()
+                    const url=`/api/admin`;
+                    const response=await fetch(url,{
+                        method:"POST",
+                        headers:{
+                            "content-type":"application/json",
+                            "authorization":`Bearer ${localStorage.getItem('admin-token')}`
+                        },
+                        body:JSON.stringify({
+                            firstName,
+                            lastName,
+                            email,
+                        })
+                    })
+                    localStorage.removeItem('photo-url')
+                    const parseRes=await response.json()
+                    if(parseRes.error){
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class='error'>${parseRes.error}</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class='error'>${parseRes.error}</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            postHandler.reset()
+                            notify.innerHTML=''
+                        },3000)
+                    }else{
+                        notify.innerHTML=`
+                        <div class='tag-success'>
+                            <p class='error'>${parseRes.msg}</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                            window.location.href='/dashboard'
+                        },3000)
+                        postHandler.reset()
+                    }
+                    preloaderOff()
+                } catch (error) {
+                    preloaderOff()
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class='error'>No internet!</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    }
+                
+        })
+
+        if(!localStorage.getItem('admin-token')){
+            window.location.href='/';
+        }
+       
+    </script>
+</body>
+</html>

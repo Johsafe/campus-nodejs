@@ -149,11 +149,12 @@ const register=async(req,res)=>{
     }
 }
 //register admin
-const registerAdmin =async(res,res)=>{
+const registerAdmin =async(req,res)=>{
     try{
         const {firstName,lastName,email}=req.body;
         const findUser=await User.findOne({email})
-        if(findUser){
+        const findAdmin=await Admin.findOne({email})
+        if(findUser&&!findAdmin){
             const createAdmin=await Admin.create({firstName,lastName,email})
             res.status(200).send({msg:'Admin created'})
         }else{

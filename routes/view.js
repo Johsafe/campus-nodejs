@@ -63,6 +63,22 @@ views.get('/create',(req,res)=>{
         }
     ]})
 });
+views.get('/addAdmin',(req,res)=>{
+    res.render('addAdmin',{title:'Add a new administrator',classes:'closed',js:"/js/main.js",paths:[
+        {
+            id:1,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
+        },
+        {
+            id:2,
+            name:'Home',
+            url:'/',
+            title:"Back Home"
+        }
+    ]})
+});
 views.get('/register',(req,res)=>{
     res.render('signUp',{title:'register',js:'/js/main.js',classes:'closed',paths:[
         {
