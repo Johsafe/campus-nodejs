@@ -11,6 +11,7 @@
 // });
 const User=require('../models/userModel');
 const Blog=require('../models/blogModel');
+const Admin =require('../models/adminModel');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const nodemailer=require('nodemailer');
@@ -147,11 +148,41 @@ const register=async(req,res)=>{
         res.status(500).send({error:error.message})
     }
 }
-
+//register admin
+const registerAdmin =async(res,res)=>{
+    try{
+        const {firstName,lastName,email}=req.body;
+        const findUser=await User.findOne({email})
+        if(findUser){
+            const createAdmin=await Admin.create({firstName,lastName,email})
+            res.status(200).send({msg:'Admin created'})
+        }else{
+            res.status(404).send({error:'This user is not register!'})
+        }
+    }catch(err){
+        res.status(500).send({error:err.message})
+    }
+}
 const login=async(req,res)=>{
     try {
         const {email,password}=req.body
         if(email&&password){
+           const findAdmin=await Admin.findOne({email})
+           if(findAdmin){
+            const user=await User.findOne({email});
+            if(user&&(await bcrypt.compare(password,user.password))){
+                res.status(200).send({admin:`Welcome ${user.firstName} ${user.lastName}`,
+                    _id:user.id,
+                    firstName:user.firstName,
+                    lastName:user.lastName,
+                    university:user.university,
+                    email:user.email, 
+                    adminToken:generateAdminToken(findAdmin.id)
+                })
+            }else{
+                res.status(400).send({error:'Invalid Credentials'})
+            }
+           }else{
             const user=await User.findOne({email});
             if(user&&(await bcrypt.compare(password,user.password))){
                 res.status(200).send({msg:`Welcome ${user.firstName} ${user.lastName}`,
@@ -165,6 +196,7 @@ const login=async(req,res)=>{
             }else{
                 res.status(400).send({error:'Invalid Credentials'})
             }
+           }
         }else{
             res.status(401).send({error:"Enter the required fields!"})
         }
@@ -195,9 +227,35 @@ const protectUser=async(req,res,next)=>{
     }
   };
 
+//admin auth Middlerware
+const protectAdmin=async(req,res,next)=>{
+    let token
+    if(req.headers.authorization&&req.headers.authorization.startsWith('Bearer')){
+        try{
+            //get token from headers
+            token=req.headers.authorization.split(' ')[1]
+            //verify token
+            jwt.verify(token,process.env.JWT_ADMIN_SECRET);
+            next()
+  
+        }catch (error){
+            res.status(401).send({error:'Not Authorised☠'})
+        }
+    }
+    if(!token){
+      res.status(401).send({error:'No Token Available☠'})
+    }
+  };
+
   //generate User token
   const generateUserToken=(id)=>{
     return jwt.sign({id},process.env.JWT_SECRET,{
+        expiresIn:'309d'
+    })
+  };
+  //generate admin token
+  const generateAdminToken=(id)=>{
+    return jwt.sign({id},process.env.JWT_ADMIN_SECRET,{
         expiresIn:'309d'
     })
   };
@@ -262,5 +320,7 @@ module.exports={
     protectUser,
     postBlog,
     getAllBlogs,
-    getBlog
+    getBlog,
+    registerAdmin,
+    protectAdmin
 }

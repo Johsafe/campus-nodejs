@@ -100,7 +100,7 @@
             }
         })
             // redirect
-            if(localStorage.getItem('token')){
+            if(localStorage.getItem('token')||localStorage.getItem('admin-token')){
                 window.location.href='/'
             }
     </script>

@@ -40,26 +40,14 @@
     </div>
     <!-- script -->
     <script>
-         const owner=`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`
+         const admin=localStorage.getItem('admin-token')
          const status=document.querySelector('.status');
-         switch(owner){
-            case 'imran matano':
+         switch(admin){
+            case admin:
                 status.innerHTML=`
                 <p style='color:green;'>Account verified.</p> 
                 <p class="post-link" href='/create'>Post a new blog</p>
                 `
-                break;
-            case 'Imran matano':
-                status.innerHTML=`
-                <p style='color:green;'>Account verified.</p> 
-                <p class="post-link" href='/create'>Post a new blog</p>
-                ` 
-                break;
-            case 'Imran Matano':
-                status.innerHTML=`
-                <p style='color:green;'>Account verified.</p> 
-                <p class="post-link" href='/create'>Post a new blog</p>
-                ` 
                 break;
             default:
                 status.innerHTML=`
@@ -76,9 +64,13 @@
             window.location.href='/create'
          })
         const notify=document.querySelector('.notify')
+
         if(!localStorage.getItem('token')){
             window.location.href='/'
+        }else if(localStorage.removeItem('admin-token')){
+            console.log('welcome')
         }
+
         if(localStorage.getItem('university')==='undefined'){
             document.querySelector('.user-info').innerHTML=`
                 <div class='items'>
@@ -107,7 +99,7 @@
         //log out
         const logOutBtn=document.querySelectorAll('.log-out')
         logOutBtn.forEach(i=>{
-            if(!localStorage.getItem('token')){
+            if(!localStorage.getItem('token')&&!localStorage.getItem('admin-token')){
                 i.style.display='none'
             }
             i.addEventListener('click',()=>{
@@ -120,6 +112,7 @@
                     localStorage.removeItem('last-name')
                     localStorage.removeItem('university')
                     localStorage.removeItem('user-id')
+                    localStorage.removeItem('admin-token')
                 }
             })
         })
@@ -133,6 +126,7 @@
             localStorage.removeItem('last-name')
             localStorage.removeItem('university')
             localStorage.removeItem('user-id')
+            localStorage.removeItem('admin-token')
         })
         //delete account
         const deleteAccount=document.querySelector('.delete-account');
@@ -170,6 +164,7 @@
                             localStorage.removeItem('user-id')
                             localStorage.removeItem('email')
                             localStorage.removeItem('token')
+                            localStorage.removeItem('admin-token')
                             localStorage.removeItem('first-name')
                             localStorage.removeItem('university')
                             localStorage.removeItem('last-name')

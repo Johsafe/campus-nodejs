@@ -94,7 +94,7 @@
                         method:"POST",
                         headers:{
                             "content-type":"application/json",
-                            "authorization":`Bearer ${localStorage.getItem('token')}`
+                            "authorization":`Bearer ${localStorage.getItem('admin-token')}`
                         },
                         body:JSON.stringify({
                             title,
@@ -135,23 +135,10 @@
                 
         })
 
-        const owner=`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`
-        if(!localStorage.getItem('token')){
+        if(!localStorage.getItem('admin-token')){
             window.location.href='/';
         }
-        switch(owner){
-            case 'imran matano':
-                // window.location.href='/';
-                break;
-            case 'Imran matano':
-                // window.location.href='/'
-                break;
-            case 'Imran Matano':
-                // window.location.href='/'
-                break;
-            default:
-                window.location.href='/'
-        }
+       
     </script>
 </body>
 </html>

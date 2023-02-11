@@ -10,7 +10,7 @@
          <p class="sub-title">Recommended based your interests</p>
         </header>
         <div class="notify"></div>
-        <div class="blog-tag" data-blogs="<%= news%>">
+        <div class="blog-tag" data-blogs=`${<%= news%>}`>
             <%if(news.length>0){%>
                 <%news.forEach(item=>{%>
                     <div class="blog-item" data-link="/blogs/<%=item.id%>">

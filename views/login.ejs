@@ -63,6 +63,22 @@
                     setTimeout(()=>{
                         notify.innerHTML=''
                     },3000)
+                }else if(parseRes.admin){
+                    notify.innerHTML=`
+                    <div class='tag-success'>
+                        <p class="error">${parseRes.admin}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                        window.location.href='/'
+                    },1000)
+                    localStorage.setItem('admin-token',parseRes.adminToken)
+                    localStorage.setItem('first-name',parseRes.firstName)
+                    localStorage.setItem('last-name',parseRes.lastName)
+                    localStorage.setItem('university',parseRes.university)
+                    localStorage.setItem('email',parseRes.email)
+                    localStorage.setItem('user-id',parseRes._id)
                 }else{
                     notify.innerHTML=`
                     <div class='tag-success'>
@@ -96,7 +112,7 @@
         })
 
             // redirect
-            if(localStorage.getItem('token')){
+            if(localStorage.getItem('token')||localStorage.getItem('admin-token')){
                 window.location.href='/'
             }
     </script>
