@@ -329,14 +329,14 @@ footer .social-media-links ul li{
     color: rgb(121, 120, 120);
     margin-top: 20px;
 }
-.dashboard .other a{
+.dashboard .other .btn-link{
     margin: 15px 0;
     color: #eee;
     width: fit-content;
     padding: 10px 20px;
     border-radius: 50px;
 }
-.dashboard .other a:hover{
+.dashboard .other .btn-link:hover{
     box-shadow: 0 5px 20px 0 rgb(11 7 110 / 30%);
 }
 .user-details{
@@ -374,6 +374,11 @@ footer .social-media-links ul li{
 .post-link{
     text-decoration: underline;
     cursor: pointer;
+}
+.admin-see-users{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    row-gap: 50px;
 }
 /* //preloader */
 .preload{

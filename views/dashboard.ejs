@@ -29,13 +29,18 @@
 
             </div>
 
+            <h3 class="admin-see-users-header">All Registered Users</h3><br/>
+            <div class="admin-see-users">
+
+            </div>
+
             <h3>My Account</h3>
             <input type="text" value="https://campus-blog.onrender.com" id="refferal-link" hidden/>
-            <a href='#5' class="invite-friend" style="background:black;">Invite a friend</a> 
-            <a href='/login' style="background: blueviolet;" class="switch-account">Switch to Other Account</a> 
-            <a href='#9' style="background: orange;" class="get-verified-as-blogger-btn">Get verified as blogger</a> 
-            <a href="#3" style="background:red;" class="log-out" title="Log out">Log out</a>
-            <a href="#8" style="background: #eee;color: black;" class="delete-account" title="Delete My Account">Delete My Account</a>
+            <a href='#5' class="invite-friend btn-link" style="background:black;">Invite a friend</a> 
+            <a href='/login' style="background: blueviolet;" class="switch-account btn-link">Switch to Other Account</a> 
+            <a href='#9' style="background: orange;" class="get-verified-as-blogger-btn btn-link">Get verified as blogger</a> 
+            <a href="#3" style="background:red;" class="log-out btn-link" title="Log out">Log out</a>
+            <a href="#8" style="background: #eee;color: black;" class="delete-account btn-link" title="Delete My Account">Delete My Account</a>
         </div>
     </div>
     <!-- script -->
@@ -51,7 +56,7 @@
             status.innerHTML=`
                 <p style='color:green;'>Account verified.</p> 
                 <p class="post-link" href='/create'>Post a new blog</p>
-                <a style="text-decoration:underline; border:none; color:black; margin-left:-20px;" href='/addAdmin'>Register a new administrator</a>
+                <a style="text-decoration:underline; color:black;" href='/addAdmin'>Register a new administrator</a>
                 `
          }else{
             status.innerHTML=`
@@ -229,6 +234,59 @@
         getVerifiedAsBloggerBg.addEventListener('click',()=>{
             getVerifiedAsBloggerBg.style.display='none'
         })
+
+
+        //get all registered users as an admin
+        const seeUsers=document.querySelector('.admin-see-users')
+        async function getUsers() {
+            try {
+                const url=`/api/get-users`
+                const response=await fetch(url,{
+                    method:"GET",
+                    headers:{
+                        authorization:`Bearer ${localStorage.getItem('admin-token')}`
+                    }
+                })
+                const parseRes=await response.json()
+                if(parseRes.error){
+                    notify.innerHTML=`
+                    <div class="tag">
+                        <p class="error">${parseRes.error}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },3000)
+                }else{
+                    let li=''
+                    parseRes.forEach((i,n)=>{
+                    li=`
+                        <div>
+                            <p>Name: ${i.firstName} ${i.lastName}</p>
+                            <p>Email: <a style="text-decoration:underline;color:purple;" href="mailto:${i.email}">${i.email}</a></p>
+                            <p>University: ${i.university}</p>
+                        </div>
+                    `
+                    seeUsers.innerHTML+=li
+                })
+                }
+            } catch (error) {
+            notify.innerHTML=`
+            <div class="tag">
+                <p class="error">${error.message}</p>
+            </div>
+            `
+            setTimeout(()=>{
+                notify.innerHTML=''
+            },3000)
+            }
+        }
+        if(localStorage.getItem('admin-token')){
+            getUsers()
+        }else{
+            seeUsers.style.display="none"
+            document.querySelector('.admin-see-users-header').style.display="none"
+        }
     </script>
 </body>
 </html>

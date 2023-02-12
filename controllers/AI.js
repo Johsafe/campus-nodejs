@@ -310,6 +310,14 @@ const protectAdmin=async(req,res,next)=>{
         res.status(500).send({error:error.message})
     }
   }
+  const getUser=async(req,res)=>{
+    try {
+        const users=await User.find({})
+        res.send(users)
+    } catch (error) {
+        res.status(500).send({error:error.message})
+    }
+  }
 module.exports={
     register,
     verify,
@@ -323,5 +331,6 @@ module.exports={
     getAllBlogs,
     getBlog,
     registerAdmin,
-    protectAdmin
+    protectAdmin,
+    getUser
 }

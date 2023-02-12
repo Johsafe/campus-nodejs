@@ -11,7 +11,8 @@ const {
     getAllBlogs,
     getBlog,
     registerAdmin,
-    protectAdmin
+    protectAdmin,
+    getUser
 }=require('../controllers/AI');
 
 //api routes
@@ -22,6 +23,7 @@ router.post('/code',verifyCode);
 router.post('/login',login);
 router.post('/blog',protectAdmin,postBlog)
 router.get('/blogs',getAllBlogs)
+router.get('/get-users',protectAdmin,getUser)
 router.get('/getblogs/:id',getBlog)
 router.delete('/:userid',protectUser, deleteUser);
 
