@@ -380,6 +380,12 @@ footer .social-media-links ul li{
     grid-template-columns: repeat(4,1fr);
     row-gap: 50px;
 }
+.account{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 20px 0;
+}
 /* //preloader */
 .preload{
     background: white url('/assests/Loading_icon.gif') no-repeat center;
