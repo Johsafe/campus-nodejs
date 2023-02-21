@@ -15,7 +15,13 @@
                 <label for="last"><b>Last Name</b></label>
                 <input type="text" minlength="2" maxlength="20" name="last" id="last" required/>
                 <label for="university"><b>University</b></label>
-                <input type="text" minlength="2" maxlength="30" name="university" placeholder="University" id="university" required/>
+                <select name="university" id="university" required>
+                    <option value="Select your University" >Select your University</option>
+                    <option value="Rongo University">Rongo University</option>
+                    <option value="Kisii University">Kisii University</option>
+                    <option value="Maseno University">Maseno University</option>
+                    <option value="University of Nairobi">University of Nairobi</option>
+                </select>
             </div>
             <label for="password"><b>Password</b></label>
             <input type="password" maxlength="10" title="Enter a 10 alphanumeric password" name="password" id="password" required/>
@@ -39,79 +45,99 @@
 
         const notify=document.querySelector('.notify')
         const form=document.querySelector('form');
-        form.addEventListener('submit',async(e)=>{
-            e.preventDefault()
-            try {
-                preloader()
-                const password=form.password.value;
-                const confirm=form.confirm.value;
-                if(confirm===password){
-                    const url='/api/';
-                    const response=await fetch(url,{
-                        method:"POST",
-                        headers:{
-                            'content-type':'application/json'
-                        },
-                        body:JSON.stringify({
-                            firstName:form.first.value,
-                            lastName:form.last.value,
-                            university:form.university.value,
-                            email:localStorage.getItem('email'),
-                            password:confirm
-                        })
-                    })
-                    const parseRes=await response.json();
-                    if(parseRes.error){
-                        notify.innerHTML=`
-                        <div class="tag">
-                            <p class="error">${parseRes.error}</p>
-                        </div>
-                        `
-                        setTimeout(()=>{
-                            notify.innerHTML=''
-                        },3000)
-                    }else{
-                        notify.innerHTML=`
-                            <div class='tag-success'>
-                                <p class='error'>${parseRes.msg}<p>
-                            </div>
-                        `
-                        setTimeout(()=>{
-                            notify.innerHTML=''
-                            window.location.href='/'
-                        },2000)
-                        localStorage.setItem('token',parseRes.token)
-                        localStorage.setItem('first-name',parseRes.firstName)
-                        localStorage.setItem('last-name',parseRes.lastName)
-                        localStorage.setItem('university',parseRes.university)
-                        localStorage.setItem('email',parseRes.email)
-                        localStorage.setItem('user-id',parseRes._id)
-                    }
-                }else{
-                    notify.innerHTML=`
-                        <div class='tag'>
-                            <p class='error'>Your passwords does not match!<p>
-                        </div>
+        function handleSubmit(university) {
+            if(university==='Select your University'){
+                notify.innerHTML=`
+                    <div class="tag">
+                        <p class="error">Please select your university!</p>
+                    </div>
                     `
                     setTimeout(()=>{
                         notify.innerHTML=''
                     },3000)
-                }
-                preloaderOff()
-            } catch (error) {
-                alert(error.message)
-                notify.innerHTML=`
-                    <div class='tag'>
-                        <p class='error'>No internet!<p>
-                    </div>
-                `
-                setTimeout(()=>{
-                    notify.innerHTML=''
-                },3000)
-                preloaderOff()
+                    form.reset()
+            }else if(university){
+                form.addEventListener('submit',async(e)=>{
+                    e.preventDefault()
+                    try {
+                        preloader()
+                        const password=form.password.value;
+                        const confirm=form.confirm.value;
+                        if(confirm===password){
+                            const url='/api/';
+                            const response=await fetch(url,{
+                                method:"POST",
+                                headers:{
+                                    'content-type':'application/json'
+                                },
+                                body:JSON.stringify({
+                                    firstName:form.first.value,
+                                    lastName:form.last.value,
+                                    email:localStorage.getItem('email'),
+                                    password:confirm,
+                                    university
+                                })
+                            })
+                            console.log(university)
+                            const parseRes=await response.json();
+                            if(parseRes.error){
+                                notify.innerHTML=`
+                                <div class="tag">
+                                    <p class="error">${parseRes.error}</p>
+                                </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },3000)
+                            }else{
+                                notify.innerHTML=`
+                                    <div class='tag-success'>
+                                        <p class='error'>${parseRes.msg}<p>
+                                    </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                    window.location.href='/'
+                                },2000)
+                                localStorage.setItem('token',parseRes.token)
+                                localStorage.setItem('first-name',parseRes.firstName)
+                                localStorage.setItem('last-name',parseRes.lastName)
+                                localStorage.setItem('university',parseRes.university)
+                                localStorage.setItem('email',parseRes.email)
+                                localStorage.setItem('user-id',parseRes._id)
+                            }
+                        }else{
+                            notify.innerHTML=`
+                                <div class='tag'>
+                                    <p class='error'>Your passwords does not match!<p>
+                                </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                            },3000)
+                        }
+                        preloaderOff()
+                    } catch (error) {
+                        alert(error.message)
+                        notify.innerHTML=`
+                            <div class='tag'>
+                                <p class='error'>No internet!<p>
+                            </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                        preloaderOff()
+                    }
+                })
             }
+        }
+        const universitySelection=document.querySelector('select')
+        universitySelection.addEventListener('change',()=>{
+            const selectedOption=universitySelection.value;
+            handleSubmit(selectedOption)
         })
-            // redirect
+        // redirect
             if(localStorage.getItem('token')||localStorage.getItem('admin-token')||localStorage.getItem('blogger-token')){
                 window.location.href='/'
             }
