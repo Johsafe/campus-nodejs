@@ -20,7 +20,13 @@
     <!-- script -->
     <script type="module">
         import{projectStorage,ref,getDownloadURL,uploadBytesResumable} from '/js/FirebaseConfig.js'
-       
+
+        //redict
+        if(!localStorage.getItem('admin-token')){
+            if(!localStorage.getItem('blogger-token')){
+                window.location.href='/';
+            }
+        }
 
         //finds the date
          const add=(a)=>{
@@ -134,11 +140,8 @@
                     }
                 
         })
-
-        if(!localStorage.getItem('admin-token')){
-            window.location.href='/';
-        }
-       
+        
+      
     </script>
 </body>
 </html>

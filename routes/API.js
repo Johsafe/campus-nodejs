@@ -27,6 +27,6 @@ router.post('/blog',protectAdmin,postBlog)
 router.get('/blogs',getAllBlogs)
 router.get('/get-users',protectAdmin,getUser)
 router.get('/getblogs/:id',getBlog)
-router.delete('/:userid',protectUser, deleteUser);
+router.delete('/:email',protectUser, deleteUser);
 
 module.exports=router;

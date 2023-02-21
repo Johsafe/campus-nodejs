@@ -79,6 +79,22 @@
                     localStorage.setItem('university',parseRes.university)
                     localStorage.setItem('email',parseRes.email)
                     localStorage.setItem('user-id',parseRes._id)
+                }else if(parseRes.blogger){
+                    notify.innerHTML=`
+                    <div class='tag-success'>
+                        <p class="error">${parseRes.blogger}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                        window.location.href='/'
+                    },1000)
+                    localStorage.setItem('blogger-token',parseRes.bloggerToken)
+                    localStorage.setItem('first-name',parseRes.firstName)
+                    localStorage.setItem('last-name',parseRes.lastName)
+                    localStorage.setItem('university',parseRes.university)
+                    localStorage.setItem('email',parseRes.email)
+                    localStorage.setItem('user-id',parseRes._id)
                 }else{
                     notify.innerHTML=`
                     <div class='tag-success'>
@@ -112,7 +128,7 @@
         })
 
             // redirect
-            if(localStorage.getItem('token')||localStorage.getItem('admin-token')){
+            if(localStorage.getItem('token')||localStorage.getItem('admin-token')||localStorage.getItem('blogger-token')){
                 window.location.href='/'
             }
     </script>

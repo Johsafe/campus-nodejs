@@ -152,14 +152,20 @@ const register=async(req,res)=>{
         res.status(500).send({error:error.message})
     }
 }
+
 //register admin
 const registerAdmin =async(req,res)=>{
     try{
         const {firstName,lastName,email}=req.body;
         const findUser=await User.findOne({email})
+        const findBlogger=await Blogger.findOne({email})
         const findAdmin=await Admin.findOne({email})
-        if(findUser&&!findAdmin){
-            const createAdmin=await Admin.create({firstName,lastName,email})
+        if(findUser&&findBlogger&&!findAdmin){
+            await Blogger.findOneAndDelete({email})
+            await Admin.create({firstName,lastName,email})
+            res.status(200).send({msg:'Admin created'})
+        }else if(findUser&&!findBlogger&&!findAdmin){
+            await Admin.create({firstName,lastName,email})
             res.status(200).send({msg:'Admin created'})
         }else{
             res.status(404).send({error:'This user is not register!'})
@@ -168,6 +174,7 @@ const registerAdmin =async(req,res)=>{
         res.status(500).send({error:err.message})
     }
 }
+
 //user login
 const login=async(req,res)=>{
     try {
@@ -175,10 +182,10 @@ const login=async(req,res)=>{
         if(email&&password){
            const findAdmin=await Admin.findOne({email})
            const findBlogger=await Blogger.findOne({email})
-           if(findAdmin){
+           if(findAdmin&&!findBlogger){
             const user=await User.findOne({email});
             if(user&&(await bcrypt.compare(password,user.password))){
-                res.status(200).send({admin:`Welcome ${user.firstName} ${user.lastName}`,
+                res.status(200).send({admin:`Admin: ${user.firstName} ${user.lastName}`,
                     _id:user.id,
                     firstName:user.firstName,
                     lastName:user.lastName,
@@ -189,10 +196,10 @@ const login=async(req,res)=>{
             }else{
                 res.status(400).send({error:'Invalid Credentials'})
             }
-           }else if(findBlogger){
+           }else if(findBlogger&&!findAdmin){
             const user=await User.findOne({email});
             if(user&&(await bcrypt.compare(password,user.password))){
-                res.status(200).send({admin:`Welcome ${user.firstName} ${user.lastName}`,
+                res.status(200).send({blogger:`Blogger: ${user.firstName} ${user.lastName}`,
                     _id:user.id,
                     firstName:user.firstName,
                     lastName:user.lastName,
@@ -233,7 +240,12 @@ const registerBlogger=async(req,res)=>{
         const findUser=await User.findOne({email})
         const findAdmin=await Admin.findOne({email})
         const findBlogger=await Blogger.findOne({email})
-        if(findUser&&!findAdmin&&!findBlogger){
+        //if user is an admin then admin account get del and blogger account created bcoz admins have all permissions
+        if(findUser&&findAdmin&&!findBlogger){
+            await Admin.findOneAndDelete({email})
+            await Blogger.create({firstName,lastName,email})
+            res.status(200).send({msg:'Blogger created'})
+        }else if(findUser&&!findAdmin&&!findBlogger){
             await Blogger.create({firstName,lastName,email})
             res.status(200).send({msg:'Blogger created'})
         }else if(findBlogger){
@@ -309,15 +321,28 @@ const protectAdmin=async(req,res,next)=>{
     })
   };
 
+  //delete user
   const deleteUser=async(req,res)=>{
     try {
-        const {userid}=req.params;
-        if(!mongoose.Types.ObjectId.isValid(userid)){
+        const {email}=req.params;
+        if(!User.findOne({email})){
             return res.status(404).json({error:'No such User'})
           } 
-        const userDeleted=await User.findByIdAndDelete({_id:userid})
-        if(userDeleted){
-            res.json({msg:"Account delete successful",userDeleted})
+
+        const user=await User.findOne({email})
+        const admin=await Admin.findOne({email})
+        const blogger=await Blogger.findOne({email})
+        if(user&&admin){
+            await User.findOneAndDelete({email})
+            await Admin.findOneAndDelete({email})
+            res.json({msg:"Admin account delete successful"})
+        }else if(user&&blogger){
+            await User.findOneAndDelete({email})
+            await Blogger.findOneAndDelete({email})
+            res.json({msg:"Blogger account delete successful"})
+        }else if(user){
+            await User.findOneAndDelete({email})
+            res.json({msg:"User account delete successful"})
         }else{
             res.json({error:"Cannot Delete account!"})
         }
@@ -325,6 +350,7 @@ const protectAdmin=async(req,res,next)=>{
         res.status(500).json({error:'Cannot Delete account, try again!'})
     }    
   }
+
   //add blog to db
   const postBlog=async(req,res)=>{
     try {

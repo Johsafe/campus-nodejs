@@ -279,7 +279,6 @@ footer .social-media-links ul li{
     padding: 0 0 30px 0;
 }
 .login form input{
-    width: 500px;
     height: 45px;
     border-radius: 5px;
     border: 1px solid var(--body-text);
@@ -471,7 +470,6 @@ footer .social-media-links ul li{
 }
 
 select{
-    width: 500px;
     height: 45px;
     border-radius: 5px;
     border: 1px solid var(--body-text);

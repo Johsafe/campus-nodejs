@@ -10,7 +10,8 @@ const bloggerSchema=mongoose.Schema({
     },
     email:{
         type:String,
-        require:true
+        require:true,
+        unique:true
     }
 },{
     timestamps:true

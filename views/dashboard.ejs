@@ -49,18 +49,25 @@
     <script>
         if(!localStorage.getItem('admin-token')){
             if(!localStorage.getItem('token')){
-                window.location.href='/'
+                if(!localStorage.getItem('blogger-token')){
+                    window.location.href='/'
+                }
             }
         }
 
          const status=document.querySelector('.status');
          if(localStorage.getItem('admin-token')){
             status.innerHTML=`
-                <p style='color:green;'>Account verified.</p> 
+                <p style='color:green;'>Role: You are an administrator.</p> 
                 <p class="post-link" href='/create'>Post a new blog</p>
                 <a style="text-decoration:underline; color:black;" href='/addAdmin'>Register a new official</a>
                 `
-         }else{
+            }if(localStorage.getItem('blogger-token')){
+             status.innerHTML=`
+                 <p style='color:green;'>Role: You are a blogger.</p> 
+                 <p class="post-link" href='/create'>Post a new blog</p>
+                 `
+         }else if(localStorage.getItem('token')){
             status.innerHTML=`
                 <p>This account is not verified to post blogs or articles on this site.</p> 
                 <p>Account on read only.</p><br/>
@@ -69,10 +76,12 @@
          }
 
          //post link
-         const postLink=document.querySelector('.post-link')
-         postLink.addEventListener('click',()=>{
-            window.location.href='/create'
-         })
+        if(localStorage.getItem('blogger-token')||localStorage.getItem('admin-token')){
+            const postLink=document.querySelector('.post-link')
+            postLink.addEventListener('click',()=>{
+                window.location.href='/create'
+            })
+        }
         const notify=document.querySelector('.notify')
 
         if(localStorage.getItem('university')==='undefined'){
@@ -103,7 +112,7 @@
         //log out
         const logOutBtn=document.querySelectorAll('.log-out')
         logOutBtn.forEach(i=>{
-            if(!localStorage.getItem('token')&&!localStorage.getItem('admin-token')){
+            if(!localStorage.getItem('token')&&!localStorage.getItem('admin-token')&&!localStorage.getItem('blogger-token')){
                 i.style.display='none'
             }
             i.addEventListener('click',()=>{
@@ -116,6 +125,7 @@
                     localStorage.removeItem('last-name')
                     localStorage.removeItem('university')
                     localStorage.removeItem('user-id')
+                    localStorage.removeItem('blogger-token')
                     localStorage.removeItem('admin-token')
                 }
             })
@@ -130,6 +140,7 @@
             localStorage.removeItem('last-name')
             localStorage.removeItem('university')
             localStorage.removeItem('user-id')
+            localStorage.removeItem('blogger-token')
             localStorage.removeItem('admin-token')
         })
         //delete account
@@ -138,7 +149,7 @@
             try {
                 const confirm=window.confirm('You are about to delete your account!')
                 if(confirm){
-                    const url=`/api/${localStorage.getItem('user-id')}`
+                    const url=`/api/${localStorage.getItem('email')}`
                     const response=await fetch(url,{
                         method:"DELETE",
                         headers:{
@@ -169,6 +180,7 @@
                             localStorage.removeItem('email')
                             localStorage.removeItem('token')
                             localStorage.removeItem('admin-token')
+                            localStorage.removeItem('blogger-token')
                             localStorage.removeItem('first-name')
                             localStorage.removeItem('university')
                             localStorage.removeItem('last-name')
