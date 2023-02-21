@@ -464,3 +464,21 @@ footer .social-media-links ul li{
     font-size: medium;
     cursor: pointer;
 }
+
+.checkbox{
+    border: none;
+    width: 1px;
+}
+
+select{
+    width: 500px;
+    height: 45px;
+    border-radius: 5px;
+    border: 1px solid var(--body-text);
+    padding: 10px;
+    margin: 0 0 20px 0;
+    font-size: medium;
+}
+select::placeholder{
+    color:rgb(5, 100, 155);
+}

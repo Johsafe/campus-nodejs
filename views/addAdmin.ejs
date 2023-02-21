@@ -15,6 +15,12 @@
             <input type="text" name="last" id="last" placeholder="Enter last name of the person" required/>
             <label for="email"><b>Email</b></label>
             <input type="email" name="email" id="email" placeholder="Enter email of the person" required/>
+            <label for="select"><b>Specify User's access:</b></label>
+            <select name="selection" id="select" required>
+                <option disabled>Options</option>
+                <option value="admin">As an Admin</option>
+                <option value="blogger">As a Blogger</option>
+            </select>
             <button><b>Submit</b></button>
     </div>
     <!-- script -->
@@ -101,6 +107,11 @@
                 
         })
 
+        //selection
+        const selection=document.querySelector('#select')
+        selection.addEventListener('change',()=>{
+            alert(selection.value)
+        })
         if(!localStorage.getItem('admin-token')){
             window.location.href='/';
         }

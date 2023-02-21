@@ -11,6 +11,7 @@
 // });
 const User=require('../models/userModel');
 const Blog=require('../models/blogModel');
+const Blogger=require('../models/Bloggers/blogger')
 const Admin =require('../models/adminModel');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
@@ -206,6 +207,28 @@ const login=async(req,res)=>{
     }
 }
 
+//register a blogger
+const registerBlogger=async(req,res)=>{
+    try{
+        const {firstName,lastName,email}=req.body;
+        const findUser=await User.findOne({email})
+        const findAdmin=await Admin.findOne({email})
+        const findBlogger=await Blogger.findOne({email})
+        if(findUser&&!findAdmin&&!findBlogger){
+            await Blogger.create({firstName,lastName,email})
+            res.status(200).send({msg:'Blogger created'})
+        }else if(findBlogger){
+            res.status(201).send({error:'This blogger is already register!'})
+        }else if(findAdmin){
+            res.status(201).send({error:'You cannot add an admin as a blogger!'})
+        }else{
+            res.status(404).send({error:'This user is not register!'})
+        }
+    }catch(error){
+        res.status(500).send({error:error.message})
+    }
+}
+
 //User auth Middlerware
 const protectUser=async(req,res,next)=>{
     let token
@@ -318,6 +341,8 @@ const protectAdmin=async(req,res,next)=>{
         res.status(500).send({error:error.message})
     }
   }
+
+
 module.exports={
     register,
     verify,
@@ -332,5 +357,6 @@ module.exports={
     getBlog,
     registerAdmin,
     protectAdmin,
-    getUser
+    getUser,
+    registerBlogger
 }
