@@ -1,0 +1,110 @@
+<html lang="en">
+<%- include('../partials/head.ejs')%>
+<body>
+    <%- include('../partials/nav.ejs')%>
+    <div class='preload'></div>
+    <div id="about"></div>
+    <div class="index start">
+        <header>
+         <h1 class="title"><%= title%></h1>
+         <p class="sub-title">Recommended based your interests</p>
+        </header>
+        <div class="notify"></div>
+        <div class="blog-tag">
+            <%if(news.length>0){%>
+                <%news.forEach(item=>{%>
+                    <div class="blog-item" data-link="/blogs/<%=item.id%>">
+                        <div class="blog-title">
+                            <a href='<%=item.image%>'><img src='<%=item.image%>' alt="blog image"/></a>
+                            <p><%=item.title%></p>
+                        </div>
+                        <div class="snippet">
+                            <p data-body="<%=item.body.slice(0,260)%>" class="body"></p>
+                            <a class="anchor-tag" data-link="/blogs/<%=item.id%>">Find out more</a>
+                            <sub>Written on: <%=item.date%></sub>
+                        </div>    
+                    </div>
+        
+                <%})%>
+            <%}else{%>
+                <div class="notify">
+                    <div class="tag">
+                        <p class="error">No internet!</p>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+     </div>
+    <%- include('../partials/float.ejs')%>
+    <%- include('../partials/footer.ejs')%>
+
+    <!-- script -->
+    <script>
+         //preloader
+         const preloader=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='block';
+        }
+        const preloaderOff=()=>{
+            const loader=document.querySelector('.preload');
+            loader.style.display='none';
+        }
+        preloader();
+
+        //error tag
+        setTimeout(()=>{
+           document.querySelector('.notify').innerHTML=''
+       },3000)
+
+       //body
+        const body=document.querySelectorAll('.body')
+        for(let i=0; i<body.length;i++){
+            const bodyContent=`${body[i].dataset.body}`;
+            body[i].innerHTML=`${bodyContent}...`;
+            if(bodyContent){
+                preloaderOff()
+            }
+        }
+
+        const notify=document.querySelector('.notify')
+        const blogItem=document.querySelectorAll('.blog-item')
+        blogItem.forEach(i=>{
+            const blogLink=i.dataset.link
+            i.addEventListener('click',()=>{
+                if (localStorage.getItem('token')) {
+                    //goes to blog details
+                    window.location.href=`${blogLink}`
+                } else if (localStorage.getItem('admin-token')) {
+                    //goes to blog details
+                    window.location.href=`${blogLink}`
+                } else{
+                    notify.innerHTML=`
+                        <div class='tag' style="margin-top:50px;">
+                            <p class='error'>Please, login or sign up to access more information!</p>
+                        </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },5000)
+                }
+            })
+        })
+        
+        //searching for blogs
+        // const handleSearch=document.querySelector('.opened');
+        // const blogsTag=document.querySelector('.blog-tag');
+        // const blogs=blogsTag.dataset.blogs
+        // console.log(blogs)
+        
+        // handleSearch.addEventListener('keypress',(e)=>{
+        //     let search=e.target.value;
+        //     let result = [];
+        //     result = blogs.filter;
+        //     result = blogs.filter((i) => {
+        //     return blogs.search(search) !==-1; //filter
+        //     });
+        //     console.log(result)
+        // });
+    </script>
+</body>
+</html>

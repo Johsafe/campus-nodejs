@@ -31,13 +31,52 @@ const blogs=async(req,res)=>{
         },
         {
             id:2,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
+        },
+        {
+            id:3,
             name:'Login',
             class:'out',
             url:'/login',
             title:"Go to login page"
         },
         {
+            id:4,
+            name:'Sign up',
+            url:'/register',
+            class:'out',
+            title:"Go to Sign up page"
+        }
+    ]})
+}
+//gets blog category
+const blogCategory=async(req,res)=>{
+    const {cat}=req.params;
+    const news=await Blog.find({category:cat}).sort({createdAt:-1})
+    res.render('category/cat',{title:cat,js:'/js/main.js',news,classes:'opened',paths:[
+        {
+            id:1,
+            name:'Home',
+            url:'/',
+            title:"Back Home"
+        },
+        {
+            id:2,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
+        },
+        {
             id:3,
+            name:'Login',
+            class:'out',
+            url:'/login',
+            title:"Go to login page"
+        },
+        {
+            id:4,
             name:'Sign up',
             url:'/register',
             class:'out',
@@ -62,6 +101,12 @@ const blog=async(req,res)=>{
             name:'For you',
             url:'/',
             title:"Lastest Feeds"
+        },
+        {
+            id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
         }
     ]})
 }
@@ -354,8 +399,8 @@ const protectAdmin=async(req,res,next)=>{
   //add blog to db
   const postBlog=async(req,res)=>{
     try {
-        const {title,image,body,author,authorImage,date}=req.body;
-        const createBlog=await Blog.create({title,image,body,author,authorImage,date})
+        const {title,image,body,author,authorImage,category,date}=req.body;
+        const createBlog=await Blog.create({title,image,body,category,author,authorImage,date})
         if(createBlog){
             res.status(200).send({msg:'Blog Posted',link:'/'})
         }else{
@@ -409,5 +454,6 @@ module.exports={
     registerAdmin,
     protectAdmin,
     getUser,
-    registerBlogger
+    registerBlogger,
+    blogCategory
 }

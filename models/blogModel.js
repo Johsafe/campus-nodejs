@@ -21,6 +21,9 @@ const blogSchema=mongoose.Schema({
         type:String,
         require:true
     },
+    category:{
+        type:String,
+    },
     date:{
         type:String,
         require:true

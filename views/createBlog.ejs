@@ -11,6 +11,16 @@
             </header>
             <label for="title"><b>Title</b></label>
             <input type="text" placeholder="Blog title here" maxlength="300" name="title" id="title" required/>
+            <label for="category"><b>Blog category</b></label>
+            <select name="category" id="category" required>
+                <option value="Select blog category" >Select blog category</option>
+                <option value="polities">Polities</option>
+                <option value="news">News</option>
+                <option value="technology">Technology</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="fashion">Fashion</option>
+                <option value="general">General</option>
+            </select>
             <label for="blog-image"><b>Blog Image</b></label>
             <input type="file" class="file" accept="image/*" name="blogImage" id="blog-image" title="Only images are allowed" required/>
             <label for="body"><b>Body</b></label>
@@ -89,58 +99,78 @@
         const notify=document.querySelector('.notify')
         //post handler
         const postHandler=document.querySelector('form');
-        postHandler.addEventListener('submit',async(e)=>{
-            e.preventDefault()
-            const title=postHandler.title.value;
-            const body=postHandler.body.value;
-            try {
-                preloader()
-                    const url=`/api/blog`;
-                    const response=await fetch(url,{
-                        method:"POST",
-                        headers:{
-                            "content-type":"application/json",
-                            "authorization":`Bearer ${localStorage.getItem('admin-token')}`
-                        },
-                        body:JSON.stringify({
-                            title,
-                            image:localStorage.getItem('photo-url'),
-                            body,
-                            author:`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`,
-                            authorImage:'/assests/avatar.svg',
-                            date,
-                        })
-                    })
-                    localStorage.removeItem('photo-url')
-                    const parseRes=await response.json()
-                    if(parseRes.error){
-                        notify.innerHTML=`
-                        <div class='tag'>
-                            <p class='error'>${parseRes.error}</p>
-                        </div>
-                        `
-                        setTimeout(()=>{
-                            notify.innerHTML=''
-                        },3000)
-                    }else{
-                        window.location.href=parseRes.link
-                        postHandler.reset()
-                    }
-                    preloaderOff()
-                } catch (error) {
-                    preloaderOff()
-                    notify.innerHTML=`
-                    <div class='tag'>
-                        <p class='error'>No internet!</p>
-                        </div>
-                        `
-                        setTimeout(()=>{
-                            notify.innerHTML=''
-                        },3000)
-                    }
-                
+        function handleSubmit(category){
+            if(category==='Select blog category'){
+                notify.innerHTML=`
+                    <div class="tag">
+                        <p class="error">Please select the blog category!</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },3000)
+                    postHandler.reset()
+            }else if(category){
+                postHandler.addEventListener('submit',async(e)=>{
+                    e.preventDefault()
+                    const title=postHandler.title.value;
+                    const body=postHandler.body.value;
+                    try {
+                        preloader()
+                            const url=`/api/blog`;
+                            const response=await fetch(url,{
+                                method:"POST",
+                                headers:{
+                                    "content-type":"application/json",
+                                    "authorization":`Bearer ${localStorage.getItem('admin-token')}`
+                                },
+                                body:JSON.stringify({
+                                    title,
+                                    image:localStorage.getItem('photo-url'),
+                                    body,
+                                    category,
+                                    author:`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`,
+                                    authorImage:'/assests/avatar.svg',
+                                    date,
+                                })
+                            })
+                            localStorage.removeItem('photo-url')
+                            const parseRes=await response.json()
+                            if(parseRes.error){
+                                notify.innerHTML=`
+                                <div class='tag'>
+                                    <p class='error'>${parseRes.error}</p>
+                                </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },3000)
+                            }else{
+                                window.location.href=parseRes.link
+                                postHandler.reset()
+                            }
+                            preloaderOff()
+                        } catch (error) {
+                            preloaderOff()
+                            notify.innerHTML=`
+                            <div class='tag'>
+                                <p class='error'>No internet!</p>
+                                </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },3000)
+                            }
+                        
+                })
+            }
+        }
+        //select blog catergory
+        const categorySelection=document.querySelector('select')
+        categorySelection.addEventListener('change',()=>{
+            const selectedOption=categorySelection.value;
+            handleSubmit(selectedOption)
         })
-        
       
     </script>
 </body>

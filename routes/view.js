@@ -2,10 +2,13 @@ const express=require('express'),
 views=express.Router();
 const {
     blog,
-    blogs
+    blogs,
+    blogCategory
 }=require('../controllers/AI')
 //view routes
 views.get('/',blogs);
+
+views.get('/categories/:cat',blogCategory);
 
 views.get('/home',(req,res)=>{
     res.render('home',{title:'Home',classes:'closed',js:"/js/main.js",paths:[
@@ -24,6 +27,12 @@ views.get('/home',(req,res)=>{
         },
         {
             id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
+        },
+        {
+            id:4,
             name:'Sign up',
             url:'/register',
             class:'out',
@@ -44,6 +53,12 @@ views.get('/dashboard',(req,res)=>{
             name:'Home',
             url:'/',
             title:"Back Home"
+        },
+        {
+            id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
         }
     ]})
 });
@@ -95,6 +110,12 @@ views.get('/register',(req,res)=>{
         },
         {
             id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
+        },
+        {
+            id:4,
             name:'Login',
             url:'/login',
             class:'out',
@@ -118,6 +139,12 @@ views.get('/verify',(req,res)=>{
         },
         {
             id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
+        },
+        {
+            id:4,
             name:'Login',
             url:'/login',
             class:'out',
@@ -141,6 +168,12 @@ views.get('/last',(req,res)=>{
         },
         {
             id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
+        },
+        {
+            id:4,
             name:'Login',
             url:'/login',
             class:'out',
@@ -163,7 +196,13 @@ views.get('/login',(req,res)=>{
             title:"Lastest Feeds"
         },
         {
-            id:2,
+            id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
+        },
+        {
+            id:4,
             name:'Sign Up',
             url:'/register',
             class:'out',
@@ -189,6 +228,12 @@ views.use((req,res)=>{
             name:'For you',
             url:'/',
             title:"Lastest Feeds"
+        },
+        {
+            id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
         }
     ]})
 })
