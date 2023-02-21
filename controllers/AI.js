@@ -65,6 +65,8 @@ const blog=async(req,res)=>{
         }
     ]})
 }
+
+//user verification
 const verify=async(req,res)=>{
     try {
         const {email,code}=req.body;
@@ -99,6 +101,7 @@ const verify=async(req,res)=>{
     }
 }
 
+//verify code
 const verifyCode=async(req,res)=>{
     try {
         const {code}=req.body
@@ -113,7 +116,7 @@ const verifyCode=async(req,res)=>{
     }
 }
 
-
+//user register
 const register=async(req,res)=>{
     try {
         const {firstName,lastName,email,password,university}=req.body
@@ -165,11 +168,13 @@ const registerAdmin =async(req,res)=>{
         res.status(500).send({error:err.message})
     }
 }
+//user login
 const login=async(req,res)=>{
     try {
         const {email,password}=req.body
         if(email&&password){
            const findAdmin=await Admin.findOne({email})
+           const findBlogger=await Blogger.findOne({email})
            if(findAdmin){
             const user=await User.findOne({email});
             if(user&&(await bcrypt.compare(password,user.password))){
@@ -180,6 +185,20 @@ const login=async(req,res)=>{
                     university:user.university,
                     email:user.email, 
                     adminToken:generateAdminToken(findAdmin.id)
+                })
+            }else{
+                res.status(400).send({error:'Invalid Credentials'})
+            }
+           }else if(findBlogger){
+            const user=await User.findOne({email});
+            if(user&&(await bcrypt.compare(password,user.password))){
+                res.status(200).send({admin:`Welcome ${user.firstName} ${user.lastName}`,
+                    _id:user.id,
+                    firstName:user.firstName,
+                    lastName:user.lastName,
+                    university:user.university,
+                    email:user.email, 
+                    bloggerToken:generateBloggerToken(findBlogger.id)
                 })
             }else{
                 res.status(400).send({error:'Invalid Credentials'})
@@ -280,6 +299,12 @@ const protectAdmin=async(req,res,next)=>{
   //generate admin token
   const generateAdminToken=(id)=>{
     return jwt.sign({id},process.env.JWT_ADMIN_SECRET,{
+        expiresIn:'309d'
+    })
+  };
+  //generate blogger token
+  const generateBloggerToken=(id)=>{
+    return jwt.sign({id},process.env.JWT_BLOGGER_SECRET,{
         expiresIn:'309d'
     })
   };

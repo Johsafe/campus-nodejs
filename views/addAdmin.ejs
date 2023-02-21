@@ -39,15 +39,16 @@
         //notify
         const notify=document.querySelector('.notify')
         //post handler
-        const postHandler=document.querySelector('form');
-        postHandler.addEventListener('submit',async(e)=>{
+        function formSubmit(endpoint){
+            const postHandler=document.querySelector('form');
+            postHandler.addEventListener('submit',async(e)=>{
             e.preventDefault()
             const firstName=postHandler.first.value;
             const lastName=postHandler.last.value;
             const email=postHandler.email.value;
             try {
                 preloader()
-                    const url=`/api/admin`;
+                    const url=`/api/${endpoint}`;
                     const response=await fetch(url,{
                         method:"POST",
                         headers:{
@@ -60,7 +61,6 @@
                             email,
                         })
                     })
-                    localStorage.removeItem('photo-url')
                     const parseRes=await response.json()
                     if(parseRes.error){
                         notify.innerHTML=`
@@ -71,15 +71,7 @@
                         setTimeout(()=>{
                             notify.innerHTML=''
                         },3000)
-                        notify.innerHTML=`
-                        <div class='tag'>
-                            <p class='error'>${parseRes.error}</p>
-                        </div>
-                        `
-                        setTimeout(()=>{
-                            postHandler.reset()
-                            notify.innerHTML=''
-                        },3000)
+                       
                     }else{
                         notify.innerHTML=`
                         <div class='tag-success'>
@@ -107,10 +99,30 @@
                 
         })
 
+        }
         //selection
         const selection=document.querySelector('#select')
         selection.addEventListener('change',()=>{
-            alert(selection.value)
+            const selectedOption=selection.value
+            switch (selectedOption) {
+                case 'admin':
+                    formSubmit(selectedOption)
+                    break;
+                case 'blogger':
+                    formSubmit(selectedOption)
+                    break;
+            
+                default:
+                    notify.innerHTML=` 
+                        <div class='tag'>
+                                <p class='error'>Please specify this user's access!</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    break;
+            }
         })
         if(!localStorage.getItem('admin-token')){
             window.location.href='/';
