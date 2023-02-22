@@ -298,7 +298,6 @@ footer .social-media-links ul li{
     padding: 15px;
     font-size: medium;
     cursor: pointer;
-    width: 50vw;
 }
 .login form p{
     color: var(--body-text);
@@ -466,7 +465,6 @@ footer .social-media-links ul li{
     background: rgb(0, 128, 96);
     padding: 15px;
     font-size: medium;
-    width: 50vw;
     cursor: pointer;
 }
 

@@ -220,7 +220,7 @@ const registerAdmin =async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Account upgrade`,
-                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. View https://campus-blog.onrender.com/dashboard`
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. \nView https://campus-blog.onrender.com/dashboard`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
@@ -243,7 +243,7 @@ const registerAdmin =async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Account upgrade`,
-                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. View https://campus-blog.onrender.com/dashboard`
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. \nView https://campus-blog.onrender.com/dashboard`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
@@ -364,7 +364,7 @@ const registerBlogger=async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Account upgrade`,
-                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade, you are now a blogger on campus blog.\n You can now enjoy posting and editing blogs, article , news feeds and political news on campus blog. View https://campus-blog.onrender.com/dashboard`
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade, you are now a blogger on campus blog.\n You can now enjoy posting and editing blogs, article , news feeds and political news on campus blog. \nView https://campus-blog.onrender.com/dashboard`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
