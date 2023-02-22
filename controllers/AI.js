@@ -518,7 +518,47 @@ const protectAdmin=async(req,res,next)=>{
     }
   }
 
-
+//update your password (forgot password)
+const changePassword=async(req,res)=>{
+    try{
+        const {email}=req.params
+        const {password}=req.body;
+        //hashing the password
+        const salt=await bcrypt.genSalt(10);
+        const hashedPassword=await bcrypt.hash(password,salt);
+        //updating the hashed password to db
+        const updatePassword=await User.findOneAndUpdate({email},{
+            password:hashedPassword
+        })
+        if(updatePassword){
+            //send email after password change
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:email,//receiver
+                subject:`Campus Blogs: Your password was changed`,
+                text:`We've sent your the email to inform you that your password has been changed successfully.\n Your new password is ${password} .\nView your dashbord details at https://campus-blog.onrender.com/dashboard`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Cannot sent email, try again!`});
+                } else{
+                    res.status(200).send({msg:'Password Changed, try login again',link:'/login'});
+                }
+            })
+        }else{
+            res.status(404).send({error:'This user doesnt exist, try again!'})
+        }
+    }catch(error){
+        res.status(500).send({error:error.message})
+    }
+}
 module.exports={
     register,
     verify,
@@ -535,5 +575,6 @@ module.exports={
     protectAdmin,
     getUser,
     registerBlogger,
-    blogCategory
+    blogCategory,
+    changePassword
 }

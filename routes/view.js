@@ -152,6 +152,35 @@ views.get('/verify',(req,res)=>{
         }
     ]})
 });
+views.get('/change-password',(req,res)=>{
+    res.render('changePassword',{title:'Change password',js:'/js/main.js',classes:'closed',paths:[
+        {
+            id:1,
+            name:'Home',
+            url:'/',
+            title:"Back Home"
+        },
+        {
+            id:2,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
+        },
+        {
+            id:3,
+            name:'Polities',
+            url:'/categories/polities',
+            title:"Polities"
+        },
+        {
+            id:4,
+            name:'Login',
+            url:'/login',
+            class:'out',
+            title:"Go to login page"
+        }
+    ]})
+});
 views.get('/last',(req,res)=>{
     res.render('signUp2',{title:'Last step',js:'/js/main.js',classes:'closed',paths:[
         {
