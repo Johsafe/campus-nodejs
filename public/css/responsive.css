@@ -78,8 +78,8 @@
         flex-direction: column;
         margin: 0 15px;
     }
-    .login form input{
-        width: 90vw;
+    .login form input,select{
+        width: 80vw;
     }
     .get-verified-as-blogger{
         width: 80vw;
