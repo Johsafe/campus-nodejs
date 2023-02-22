@@ -432,7 +432,7 @@ const protectAdmin=async(req,res,next)=>{
   const getUser=async(req,res)=>{
     try {
         const users=await User.find({})
-        res.send({users})
+        res.send(users)
     } catch (error) {
         res.status(500).send({error:error.message})
     }
