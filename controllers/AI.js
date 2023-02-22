@@ -208,10 +208,50 @@ const registerAdmin =async(req,res)=>{
         if(findUser&&findBlogger&&!findAdmin){
             await Blogger.findOneAndDelete({email})
             await Admin.create({firstName,lastName,email})
-            res.status(200).send({msg:'Admin created'})
+            //send email to the registered user after registration succeeds
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:email,//receiver
+                subject:`Campus Blogs: Account upgrade`,
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. View https://campus-blog.onrender.com/dashboard`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Cannot sent email, try again!`});
+                } else{
+                    res.status(200).send({msg:'Admin created ,Email sent'});
+                }
+            })
         }else if(findUser&&!findBlogger&&!findAdmin){
             await Admin.create({firstName,lastName,email})
-            res.status(200).send({msg:'Admin created'})
+            //send email to the registered user after registration succeeds
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:email,//receiver
+                subject:`Campus Blogs: Account upgrade`,
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. View https://campus-blog.onrender.com/dashboard`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Cannot sent email, try again!`});
+                } else{
+                    res.status(200).send({msg:'Admin created ,Email sent'});
+                }
+            })
         }else{
             res.status(404).send({error:'This user is not register!'})
         }
@@ -289,10 +329,50 @@ const registerBlogger=async(req,res)=>{
         if(findUser&&findAdmin&&!findBlogger){
             await Admin.findOneAndDelete({email})
             await Blogger.create({firstName,lastName,email})
-            res.status(200).send({msg:'Blogger created'})
+            //send email to the registered user after registration succeeds
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:email,//receiver
+                subject:`Campus Blogs: Account upgrade`,
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade, you are now a blogger on campus blog.\n You can now enjoy posting and editing blogs, article , news feeds and political news on campus blog. View https://campus-blog.onrender.com/dashboard`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Cannot sent email, try again!`});
+                } else{
+                    res.status(200).send({msg:'Blogger created ,Email sent'});
+                }
+            })
         }else if(findUser&&!findAdmin&&!findBlogger){
             await Blogger.create({firstName,lastName,email})
-            res.status(200).send({msg:'Blogger created'})
+            //send email to the registered user after registration succeeds
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:email,//receiver
+                subject:`Campus Blogs: Account upgrade`,
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade, you are now a blogger on campus blog.\n You can now enjoy posting and editing blogs, article , news feeds and political news on campus blog. View https://campus-blog.onrender.com/dashboard`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Cannot sent email, try again!`});
+                } else{
+                    res.status(200).send({msg:'Blogger created ,Email sent'});
+                }
+            })
         }else if(findBlogger){
             res.status(201).send({error:'This blogger is already register!'})
         }else if(findAdmin){
