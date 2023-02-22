@@ -25,7 +25,7 @@ router.post('/verify',verify);
 router.patch('/changePassword/:email',changePassword);
 router.post('/code',verifyCode);
 router.post('/login',login);
-router.post('/blog',protectAdmin,postBlog)
+router.post('/blog',postBlog)
 router.get('/blogs',getAllBlogs)
 router.get('/get-users',protectAdmin,getUser)
 router.get('/getblogs/:id',getBlog)
