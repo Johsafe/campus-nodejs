@@ -31,9 +31,9 @@ const blogs=async(req,res)=>{
         },
         {
             id:2,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         },
         {
             id:3,
@@ -104,9 +104,9 @@ const blog=async(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         }
     ]})
 }
@@ -481,8 +481,31 @@ const protectAdmin=async(req,res,next)=>{
     try {
         const {title,image,body,author,authorImage,category,date}=req.body;
         const createBlog=await Blog.create({title,image,body,category,author,authorImage,date})
+        const userEmails=await User.find({})
         if(createBlog){
-            res.status(200).send({msg:'Blog Posted',link:'/'})
+            userEmails.map(i=>{
+                //send post email to all users when add is added
+                let mailTranporter=nodemailer.createTransport({
+                    service:'gmail',
+                    auth:{
+                        user:process.env.TRANSPORTER,
+                        pass:process.env.PASSWORD
+                    }
+                });
+                let details={
+                    from:process.env.TRANSPORTER,
+                    to:i.email,//receiver
+                    subject:`Campus Blogs: A new blog post was added`,
+                    text:`Hey, would you like to get recent updates on Campus blog. A new post blog was added, get updated at https://campus-blog.onrender.com/`
+                }
+                mailTranporter.sendMail(details,(err)=>{
+                    if(err){
+                        res.send({error:`Cannot post blog, try again!`});
+                    } else{
+                        res.status(200).send({msg:'Blog Posted',link:'/'})
+                    }
+                })
+            })
         }else{
             res.send({error:'Cannot post blog!'})
         }

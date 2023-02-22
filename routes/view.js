@@ -27,9 +27,9 @@ views.get('/home',(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         },
         {
             id:4,
@@ -56,9 +56,9 @@ views.get('/dashboard',(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         }
     ]})
 });
@@ -110,8 +110,8 @@ views.get('/register',(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
+            name:'Politics',
+            url:'/categories/politics',
             title:"Polities"
         },
         {
@@ -139,9 +139,9 @@ views.get('/verify',(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         },
         {
             id:4,
@@ -168,9 +168,9 @@ views.get('/change-password',(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         },
         {
             id:4,
@@ -197,9 +197,9 @@ views.get('/last',(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         },
         {
             id:4,
@@ -226,9 +226,9 @@ views.get('/login',(req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         },
         {
             id:4,
@@ -260,9 +260,9 @@ views.use((req,res)=>{
         },
         {
             id:3,
-            name:'Polities',
-            url:'/categories/polities',
-            title:"Polities"
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
         }
     ]})
 })

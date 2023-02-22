@@ -80,6 +80,9 @@
                 } else if (localStorage.getItem('admin-token')) {
                     //goes to blog details
                     window.location.href=`${blogLink}`
+                }else if(localStorage.getItem('blogger-token')){
+                    //goes to blog details
+                    window.location.href=`${blogLink}`
                 } else{
                     notify.innerHTML=`
                         <div class='tag' style="margin-top:50px;">
