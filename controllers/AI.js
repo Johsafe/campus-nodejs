@@ -494,9 +494,9 @@ const protectAdmin=async(req,res,next)=>{
                 });
                 let details={
                     from:process.env.TRANSPORTER,
-                    to:i.email,//receiver
+                    to:i.email,//receivers
                     subject:`Campus Blogs: A new blog post was added`,
-                    text:`Hey, would you like to get recent updates on Campus blog. A new post blog was added, get updated at https://campus-blog.onrender.com/`
+                    text:`Hey, would you like to get recent updates on Campus blog.\n A new post blog was added, get updated at https://campus-blog.onrender.com/blogs/${createBlog._id}`
                 }
                 mailTranporter.sendMail(details,(err)=>{
                     if(err){
