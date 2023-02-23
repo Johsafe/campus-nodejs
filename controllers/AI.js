@@ -463,14 +463,74 @@ const protectAdmin=async(req,res,next)=>{
         if(user&&admin){
             await User.findOneAndDelete({email})
             await Admin.findOneAndDelete({email})
-            res.json({msg:"Admin account delete successful"})
+            //send email to the admin after account deleted
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:user.email,//receiver
+                subject:`Campus Blogs: Your Account Was Deleted`,
+                text:`Dear ${user.firstName} ${user.lastName},\n It's sad to see you leave. Send us your feedback and help us improve at https://chat.whatsapp.com/GyQ1aVOjILvDbtn95kwmVl.`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Try again!`});
+                } else{
+                    res.status(200).send({msg:'Admin account delete successful'});
+                }
+            })
         }else if(user&&blogger){
             await User.findOneAndDelete({email})
             await Blogger.findOneAndDelete({email})
-            res.json({msg:"Blogger account delete successful"})
+            //send email to the blogger after account deleted
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:user.email,//receiver
+                subject:`Campus Blogs: Your Account Was Deleted`,
+                text:`Dear ${user.firstName} ${user.lastName},\n It's sad to see you leave. Send us your feedback and help us improve at https://chat.whatsapp.com/GyQ1aVOjILvDbtn95kwmVl.`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Try again!`});
+                } else{
+                    res.status(200).send({msg:'Blogger account delete successful'});
+                }
+            })
         }else if(user){
             await User.findOneAndDelete({email})
-            res.json({msg:"User account delete successful"})
+            //send email to the user after account deleted
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:user.email,//receiver
+                subject:`Campus Blogs: Your Account Was Deleted`,
+                text:`Dear ${user.firstName} ${user.lastName},\n It's sad to see you leave. Send us your feedback and help us improve at https://chat.whatsapp.com/GyQ1aVOjILvDbtn95kwmVl.`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Try again!`});
+                } else{
+                    res.status(200).send({msg:'User account delete successful'});
+                }
+            })
         }else{
             res.json({error:"Cannot Delete account!"})
         }
