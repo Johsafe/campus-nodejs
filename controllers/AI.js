@@ -701,6 +701,46 @@ const deleteBlog=async(req,res)=>{
         res.status(500).send({error:error.message})
     }
 }
+
+//get user details
+const userDetail=async(req,res)=>{
+    try{
+        const {email}=req.params
+        const findUser=await User.findOne({email})
+        if(findUser){
+            res.render('dashboard',{title:`${findUser.firstName} ${findUser.lastName}`,user:{
+                firstName:findUser.firstName,
+                lastName:findUser.lastName,
+                email:findUser.email,
+                university:findUser.university,
+                photo:findUser.photo
+            },classes:'closed',js:"/js/main.js",paths:[
+                {
+                    id:1,
+                    name:'For you',
+                    url:'/',
+                    title:"Lastest Feeds"
+                },
+                {
+                    id:2,
+                    name:'Home',
+                    url:'/',
+                    title:"Back Home"
+                },
+                {
+                    id:3,
+                    name:'Politics',
+                    url:'/categories/politics',
+                    title:"Politics"
+                }
+            ]})
+        }else{
+            res.status(404).send({error:`User not found!`});
+        }
+    }catch(error){
+        res.status(500).send({error:error.message})
+    }
+}
 module.exports={
     register,
     verify,
@@ -720,5 +760,6 @@ module.exports={
     blogCategory,
     changePassword,
     updateUserPic,
-    deleteBlog
+    deleteBlog,
+    userDetail
 }

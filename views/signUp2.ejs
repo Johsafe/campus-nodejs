@@ -100,9 +100,9 @@
                                     window.location.href='/'
                                 },2000)
                                 localStorage.setItem('token',parseRes.token)
-                                localStorage.setItem('first-name',parseRes.firstName)
-                                localStorage.setItem('last-name',parseRes.lastName)
-                                localStorage.setItem('university',parseRes.university)
+                                localStorage.getItem('first-name',parseRes.firstName),
+                                localStorage.setItem('last-name',parseRes.lastName),
+                                localStorage.setItem('user-photo',parseRes.photo),
                                 localStorage.setItem('email',parseRes.email)
                                 localStorage.setItem('user-id',parseRes._id)
                             }

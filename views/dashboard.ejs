@@ -2,7 +2,7 @@
 <%- include('./partials/head.ejs')%>
 <body>
     <%- include('./partials/nav.ejs')%>
-    <div class="dashboard">
+    <div class="dashboard" data-user="<%=user%>">
         <div style="display: flex; justify-content: center;">
             <div class="notify"></div>
         </div>
@@ -56,6 +56,10 @@
                 }
             }
         }
+         
+        if(!localStorage.getItem('email')){
+            window.location.href='/'
+        }
 
          const status=document.querySelector('.status');
          if(localStorage.getItem('admin-token')){
@@ -86,25 +90,25 @@
         }
         const notify=document.querySelector('.notify')
 
-        if(localStorage.getItem('university')==='undefined'){
+        if(`<%=user.university%>`==='undefined'){
             document.querySelector('.user-info').innerHTML=`
                 <div class='items'>
                     <a href='/assests/avatar.svg'><img src='/assests/avatar.svg'/></a>
                     <div class='text'>
-                        <h2>${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}</h2>
-                        <p>${localStorage.getItem('email')}<p>  
+                        <h2><%= user.firstName%> <%=user.lastName%></h2>
+                        <p><%=user.email%><p>  
                         <p style='color:red;'>*Please, State your University<p>  
                     </div> 
                 </div>    
             `
-        }else if(localStorage.getItem('user-photo')){
+        }else if(`<%=user.photo%>`){
             document.querySelector('.user-info').innerHTML=`
                 <div class='items'>
-                    <a href='${localStorage.getItem('user-photo')}'><img src='${localStorage.getItem('user-photo')}'/></a>
+                    <a href='<%=user.photo%>'><img src='<%=user.photo%>'/></a>
                     <div class='text'>
-                        <h2>${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}</h2>
-                        <p>${localStorage.getItem('email')}<p>  
-                        <p>${localStorage.getItem('university')}<p> <br/> 
+                        <h2><%=user.firstName%> <%=user.lastName%></h2>
+                        <p><%=user.email%><p>  
+                        <p><%=user.university%><p> <br/> 
                         <form>
                             <label>
                                 <span class="update-pic" style="color:purple; cursor:pointer; text-decoration:underline;" title="Upload you profile photo">
@@ -122,9 +126,9 @@
                 <div class='items'>
                     <a href='/assests/avatar.svg'><img src='/assests/avatar.svg'/></a>
                     <div class='text'>
-                        <h2>${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}</h2>
-                        <p>${localStorage.getItem('email')}<p>  
-                        <p>${localStorage.getItem('university')}<p> <br/> 
+                        <h2><%=user.firstName%> <%=user.lastName%></h2>
+                        <p><%=user.email%><p>  
+                        <p><%=user.university%><p> <br/> 
                         <form>
                             <label>
                                 <span style="color:purple; cursor:pointer; text-decoration:underline;" title="Upload you profile photo">
@@ -142,19 +146,19 @@
         //delete user image firebase
         const updatePic=document.querySelector('.update-pic')
         updatePic.addEventListener('click',()=>{
-           if(localStorage.getItem('user-photo')){
+           if(`<%=user.photo%>`){
             const deletePrompt=window.confirm('You are about to change your profile picture, should i proceed?')
             if(deletePrompt){
                 // Create a reference to the file to delete
-                const desertRef = ref(projectStorage, localStorage.getItem('user-photo'));
+                const desertRef = ref(projectStorage, `<%=user.photo%>`);
 
                 // Delete the file
                 deleteObject(desertRef).then(() => {
                 // File deleted successfully
                 //now uploading the new updated user photo to firebase
                 uploadUpdatedPic()
-                localStorage.removeItem('user-photo')
                 }).catch((error) => {
+                    uploadUpdatedPic()
                     // Uh-oh, an error occurred!
                     notify.innerHTML=`
                     <div class='tag'>
@@ -245,7 +249,8 @@
                                     notify.innerHTML=''
                                 },3000)
                             }
-                    } catch (error) {
+                            localStorage.removeItem('user-photo')
+                        } catch (error) {
                         notify.innerHTML=`
                         <div class='tag'>
                             <p class='error'>No internet!</p>
@@ -268,12 +273,8 @@
                 if(confirm){
                     window.location.href='/'
                     localStorage.removeItem('email')
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('first-name')
-                    localStorage.removeItem('user-photo')
-                    localStorage.removeItem('last-name')
-                    localStorage.removeItem('university')
                     localStorage.removeItem('user-id')
+                    localStorage.removeItem('token')
                     localStorage.removeItem('blogger-token')
                     localStorage.removeItem('admin-token')
                 }
@@ -285,12 +286,8 @@
         switchAccount.addEventListener('click',()=>{
             localStorage.removeItem('email')
             localStorage.removeItem('token')
-            localStorage.removeItem('first-name')
-            localStorage.removeItem('last-name')
-            localStorage.removeItem('university')
             localStorage.removeItem('user-id')
             localStorage.removeItem('blogger-token')
-            localStorage.removeItem('user-photo')
             localStorage.removeItem('admin-token')
         })
         
@@ -300,9 +297,9 @@
             try {
                 const confirm=window.confirm('You are about to delete your account!')
                 if(confirm){
-                    if(localStorage.getItem('user-photo')){
+                    if(userDetail.photo){
                         // Create a reference to the file to delete
-                        const desertRef = ref(projectStorage, localStorage.getItem('user-photo'));
+                        const desertRef = ref(projectStorage, userDetail.photo);
                         // Delete the file
                         deleteObject(desertRef).then(() => {
                         // File deleted successfully
@@ -355,10 +352,6 @@
                                 localStorage.removeItem('token')
                                 localStorage.removeItem('admin-token')
                                 localStorage.removeItem('blogger-token')
-                                localStorage.removeItem('first-name')
-                                localStorage.removeItem('university')
-                                localStorage.removeItem('last-name')
-                                localStorage.removeItem('user-photo')
                             },2000)
                         }
                     }

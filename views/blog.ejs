@@ -8,7 +8,7 @@
         <div id="about"></div>
         <div class="detail start">
             <%if($new){%>
-                <a href='<%= $new.image%>'><img src='<%=$new.image%>' data-image="<%=$new.image%>" class="blog-image" alt="blog image"/></a>
+                <a href='<%= $new.image%>'><img src='<%= $new.image%>' data-image="<%=$new.image%>" class="blog-image" alt="blog image"/></a>
                 <div class="content">
                     <div class="author">Author: 
                         <%if($new.authorImage){%>
@@ -105,6 +105,7 @@
                     const deletePrompt=window.confirm('You are about to delete this blog, should i proceed?')
                     if(deletePrompt){
                         deleteFirebaseBlogImage()
+                        // deleteBlogOnDb()
                     }
                 })
             }

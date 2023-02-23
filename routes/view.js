@@ -3,7 +3,8 @@ views=express.Router();
 const {
     blog,
     blogs,
-    blogCategory
+    blogCategory,
+    userDetail
 }=require('../controllers/AI')
 //view routes
 views.get('/',blogs);
@@ -40,28 +41,9 @@ views.get('/home',(req,res)=>{
         }
     ]})
 });
-views.get('/dashboard',(req,res)=>{
-    res.render('dashboard',{title:'Dashboard',classes:'closed',js:"/js/main.js",paths:[
-        {
-            id:1,
-            name:'For you',
-            url:'/',
-            title:"Lastest Feeds"
-        },
-        {
-            id:2,
-            name:'Home',
-            url:'/',
-            title:"Back Home"
-        },
-        {
-            id:3,
-            name:'Politics',
-            url:'/categories/politics',
-            title:"Politics"
-        }
-    ]})
-});
+
+views.get('/dashboard/:email',userDetail);
+
 views.get('/create',(req,res)=>{
     res.render('createBlog',{title:'Add a new blog',classes:'closed',js:"/js/main.js",paths:[
         {

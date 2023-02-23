@@ -8,7 +8,7 @@
             <div class="menu-bg" onclick="closeMenu()">
                 <div class="menu-list">
                     <ul role="navigation">
-                        <li onclick="closeMenu()"><a href="/dashboard" class="username" title="Username"></a></li>
+                        <li onclick="closeMenu()"><a class="username" title="Username"></a></li>
                         <%paths.map(path=>{%>
                             <li onclick="closeMenu()" class="link <%= path.class%>" data-class="<%= path.class%>" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
                         <%})%>
@@ -18,7 +18,7 @@
         </div>
         <div class="nav-links">
             <ul role="navigation">
-                <li onclick="closeMenu()"><a href="/dashboard" class="username" title="Username"></a></li>
+                <li onclick="closeMenu()"><a class="username" title="Username"></a></li>
                 <%paths.map(path=>{%>
                     <li onclick="closeMenu()" class="link <%= path.class%>" data-class="<%= path.class%>" key="<%= path.name%>"><a href="<%= path.url%>" title="<%= path.title%>"><%= path.name%></a></li>
                 <%})%>
@@ -30,9 +30,10 @@
 <script>
     const username=document.querySelectorAll('.username');
     username.forEach(i=>{
-        const user=`${localStorage.getItem('first-name')}`
+        const user=`${localStorage.getItem('email')}`
         if (user!== 'null') {
             i.innerText=`Dashboard`
+            i.href=`/dashboard/${localStorage.getItem('email')}`
         } else {
             i.innerText=``
         }
