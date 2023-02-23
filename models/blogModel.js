@@ -13,6 +13,10 @@ const blogSchema=mongoose.Schema({
         type:String,
         require:true
     },
+    email:{
+        type:String,
+        require:true
+    },
     author:{
         type:String,
         require:true

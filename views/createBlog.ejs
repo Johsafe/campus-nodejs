@@ -127,10 +127,11 @@
                                 body:JSON.stringify({
                                     title,
                                     image:localStorage.getItem('photo-url'),
+                                    email:localStorage.getItem('email'),
                                     body,
                                     category,
                                     author:`${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}`,
-                                    authorImage:'/assests/avatar.svg',
+                                    authorImage:localStorage.getItem('user-photo'),
                                     date,
                                 })
                             })

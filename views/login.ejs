@@ -80,6 +80,7 @@
                     localStorage.setItem('university',parseRes.university)
                     localStorage.setItem('email',parseRes.email)
                     localStorage.setItem('user-id',parseRes._id)
+                    localStorage.setItem('user-photo',parseRes.photo)
                 }else if(parseRes.blogger){
                     notify.innerHTML=`
                     <div class='tag-success'>
@@ -96,6 +97,7 @@
                     localStorage.setItem('university',parseRes.university)
                     localStorage.setItem('email',parseRes.email)
                     localStorage.setItem('user-id',parseRes._id)
+                    localStorage.setItem('user-photo',parseRes.photo)
                 }else{
                     notify.innerHTML=`
                     <div class='tag-success'>
@@ -112,6 +114,7 @@
                     localStorage.setItem('university',parseRes.university)
                     localStorage.setItem('email',parseRes.email)
                     localStorage.setItem('user-id',parseRes._id)
+                    localStorage.setItem('user-photo',parseRes.photo)
                 }
                 preloaderOff()
             } catch (error) {

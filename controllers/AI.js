@@ -276,6 +276,7 @@ const login=async(req,res)=>{
                     lastName:user.lastName,
                     university:user.university,
                     email:user.email, 
+                    photo:user.photo,
                     adminToken:generateAdminToken(findAdmin.id)
                 })
             }else{
@@ -290,6 +291,7 @@ const login=async(req,res)=>{
                     lastName:user.lastName,
                     university:user.university,
                     email:user.email, 
+                    photo:user.photo,
                     bloggerToken:generateBloggerToken(findBlogger.id)
                 })
             }else{
@@ -304,6 +306,7 @@ const login=async(req,res)=>{
                     lastName:user.lastName,
                     university:user.university,
                     email:user.email, 
+                    photo:user.photo,
                     token:generateUserToken(user.id)
                 })
             }else{
@@ -582,6 +585,47 @@ const changePassword=async(req,res)=>{
         res.status(500).send({error:error.message})
     }
 }
+
+//update user profile pic /information
+const updateUserPic=async(req,res)=>{
+    try{
+        const {email}=req.params
+        const updateUserInfo=await User.findOneAndUpdate({email},{
+            ...req.body
+        })
+        //will also update all blogs author image if the user is an author
+       await Blog.updateMany({email},{$set:{
+            authorImage:req.body.photo
+       }})
+        if(updateUserInfo){
+            //send email after user info is changed
+            let mailTranporter=nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:process.env.TRANSPORTER,
+                    pass:process.env.PASSWORD
+                }
+            });
+            let details={
+                from:process.env.TRANSPORTER,
+                to:email,//receiver
+                subject:`Campus Blogs: Your User Profile was changed`,
+                text:`Your user profile was changed.\nView your dashbord details at https://campus-blog.onrender.com/dashboard`
+            }
+            mailTranporter.sendMail(details,(err)=>{
+                if(err){
+                    res.send({error:`Cannot update profile, try again!`});
+                } else{
+                    res.status(200).send({msg:'Profile Changed'});
+                }
+            })
+        }else{
+            res.status(404).send({error:'Cannot update profile, user does not exist, try again!'})
+        }
+    }catch(error){
+        res.status(500).send({error:error.message})
+    }
+}
 module.exports={
     register,
     verify,
@@ -599,5 +643,6 @@ module.exports={
     getUser,
     registerBlogger,
     blogCategory,
-    changePassword
+    changePassword,
+    updateUserPic
 }

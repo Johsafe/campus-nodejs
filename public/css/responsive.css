@@ -92,6 +92,14 @@
         grid-template-columns: repeat(1,1fr);
         row-gap: 20px;
     }
+    .user-details {
+        text-align: center;
+    }
+    .user-info .items {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 @media screen and (max-width:350px) {
     .user-details{
@@ -99,10 +107,6 @@
         flex-direction: column;
         align-items: center;
         padding: 100px 50px 10px 50px;
-    }
-    .user-info .items{
-        display: flex;
-        flex-direction: column;
     }
 }
 @supports(backdrop-filter: blur(3rem)){

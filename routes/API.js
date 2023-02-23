@@ -14,13 +14,15 @@ const {
     protectAdmin,
     getUser,
     registerBlogger,
-    changePassword
+    changePassword,
+    updateUserPic
 }=require('../controllers/AI');
 
 //api routes
 router.post('/',register);
 router.post('/admin',protectAdmin,registerAdmin);
 router.post('/blogger',protectAdmin,registerBlogger);
+router.patch('/user/updatePic/:email',updateUserPic)
 router.post('/verify',verify);
 router.patch('/changePassword/:email',changePassword);
 router.post('/code',verifyCode);

@@ -10,6 +10,10 @@ const userSchema=new schema({
         type:String,
         require:true
     },
+    photo:{
+        type:String,
+        require:true
+    },
     university:{
         type:String,
         require:true

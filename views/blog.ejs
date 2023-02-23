@@ -10,7 +10,11 @@
                 <a href='<%= $new.image%>'><img src='<%=$new.image%>' alt="blog image"/></a>
                 <div class="content">
                     <div class="author">Author: 
-                        <div class="info"><a href='<%= $new.authorImage%>'><img src='<%=$new.authorImage%>' alt='.'/></a> <b><%=$new.author%></b></div> 
+                        <%if($new.authorImage){%>
+                            <div class="info"><a href='<%= $new.authorImage%>'><img src='<%=$new.authorImage%>' alt='.'/></a> <b><%=$new.author%></b></div> 
+                        <%}else{%>
+                            <div class="info"><a href='/assests/avatar.svg'><img src='/assests/avatar.svg' alt='.'/></a> <b><%=$new.author%></b></div> 
+                        <%}%>
                     </div>
                     <h1><%= $new.title%></h1>
                     <p class="body" data-doc="<%=$new.body%>"></p><br/>

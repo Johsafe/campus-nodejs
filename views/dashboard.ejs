@@ -46,7 +46,9 @@
         </div>
     </div>
     <!-- script -->
-    <script>
+    <script type='module'>
+        import{projectStorage,ref,getDownloadURL,uploadBytesResumable} from '/js/FirebaseConfig.js'
+
         if(!localStorage.getItem('admin-token')){
             if(!localStorage.getItem('token')){
                 if(!localStorage.getItem('blogger-token')){
@@ -95,6 +97,26 @@
                     </div> 
                 </div>    
             `
+        }else if(localStorage.getItem('user-photo')){
+            document.querySelector('.user-info').innerHTML=`
+                <div class='items'>
+                    <a href='${localStorage.getItem('user-photo')}'><img src='${localStorage.getItem('user-photo')}'/></a>
+                    <div class='text'>
+                        <h2>${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}</h2>
+                        <p>${localStorage.getItem('email')}<p>  
+                        <p>${localStorage.getItem('university')}<p> <br/> 
+                        <form>
+                            <label>
+                                <span class="update-pic" style="color:purple; cursor:pointer; text-decoration:underline;" title="Upload you profile photo">
+                                    Update your profile picture
+                                    <input class='file' style="display:none;" accept="image/*" type="file" name='pic' required/>
+                                </span>
+                            </label>
+                        </form>
+                    </div> 
+                </div>    
+                <a style='color:green;' href="https://chat.whatsapp.com/GyQ1aVOjILvDbtn95kwmVl" target="_blank" title="Whatsapp group" rel="noreferrer"><i class='fa fa-whatsapp'></i> Join Our Whatsapp Group</a>
+            `
         }else{
             document.querySelector('.user-info').innerHTML=`
                 <div class='items'>
@@ -102,13 +124,104 @@
                     <div class='text'>
                         <h2>${localStorage.getItem('first-name')} ${localStorage.getItem('last-name')}</h2>
                         <p>${localStorage.getItem('email')}<p>  
-                        <p>${localStorage.getItem('university')}<p>  
+                        <p>${localStorage.getItem('university')}<p> <br/> 
+                        <form>
+                            <label>
+                                <span class="update-pic" style="color:purple; cursor:pointer; text-decoration:underline;" title="Upload you profile photo">
+                                    Update your profile picture
+                                    <input class='file' style="display:none;" accept="image/*" type="file" name='pic' required/>
+                                </span>
+                            </label>
+                        </form>
                     </div> 
                 </div>    
                 <a style='color:green;' href="https://chat.whatsapp.com/GyQ1aVOjILvDbtn95kwmVl" target="_blank" title="Whatsapp group" rel="noreferrer"><i class='fa fa-whatsapp'></i> Join Our Whatsapp Group</a>
             `
         }
-        
+
+        //upload image
+        const types=['image/png', 'image/jpeg']
+                const photo=document.querySelector('.file');
+                photo.addEventListener('change',(e)=>{
+                    let photoName=e.target.files[0]
+                    let validFile= photoName.name;
+                    if(photoName && types.includes(photoName.type)){
+                        //uploading image to storage
+                        const storageRef=ref(projectStorage,photoName.name);
+                        const uploadTask = uploadBytesResumable(storageRef, photoName);
+                        uploadTask.on('state_changed',
+                        async()=>{
+                            const url=await getDownloadURL(storageRef)
+                            const photoRes=await url
+                            localStorage.setItem('user-photo',url)
+                            notify.innerHTML=`
+                            <div class='tag-success'>
+                                <p class="error">Your pic got uploaded succefully</p>
+                            </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                                window.location.reload()
+                            },1000)
+                            uploadToDb()
+                        })
+                    }else{
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class="error">Please select an image file(png or jpeg)</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },5000)
+                    }
+                })
+
+        //post handler update 
+        async function uploadToDb(){
+                    try {
+                            const url=`/api/user/updatePic/${localStorage.getItem('email')}`;
+                            const response=await fetch(url,{
+                                method:"PATCH",
+                                headers:{
+                                    "content-type":"application/json",
+                                },
+                                body:JSON.stringify({
+                                    photo: localStorage.getItem('user-photo')
+                                })
+                            })
+                            const parseRes=await response.json()
+                            if(parseRes.error){
+                                notify.innerHTML=`
+                                <div class='tag'>
+                                    <p class='error'>${parseRes.error}</p>
+                                </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },3000)
+                            }else{
+                                notify.innerHTML=`
+                                <div class='tag-success'>
+                                    <p class='error'>${parseRes.msg}</p>
+                                </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },3000)
+                            }
+                        } catch (error) {
+                            notify.innerHTML=`
+                            <div class='tag'>
+                                <p class='error'>No internet!</p>
+                            </div>
+                             `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },3000)
+                            }
+        }
+
         //log out
         const logOutBtn=document.querySelectorAll('.log-out')
         logOutBtn.forEach(i=>{
@@ -122,6 +235,7 @@
                     localStorage.removeItem('email')
                     localStorage.removeItem('token')
                     localStorage.removeItem('first-name')
+                    localStorage.removeItem('user-photo')
                     localStorage.removeItem('last-name')
                     localStorage.removeItem('university')
                     localStorage.removeItem('user-id')
@@ -141,6 +255,7 @@
             localStorage.removeItem('university')
             localStorage.removeItem('user-id')
             localStorage.removeItem('blogger-token')
+            localStorage.removeItem('user-photo')
             localStorage.removeItem('admin-token')
         })
         //delete account
@@ -184,6 +299,7 @@
                             localStorage.removeItem('first-name')
                             localStorage.removeItem('university')
                             localStorage.removeItem('last-name')
+                            localStorage.removeItem('user-photo')
                         },2000)
                     }
                 }
