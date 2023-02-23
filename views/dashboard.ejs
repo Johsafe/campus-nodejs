@@ -293,49 +293,74 @@
             localStorage.removeItem('user-photo')
             localStorage.removeItem('admin-token')
         })
+        
         //delete account
         const deleteAccount=document.querySelector('.delete-account');
         deleteAccount.addEventListener('click',async()=>{
             try {
                 const confirm=window.confirm('You are about to delete your account!')
                 if(confirm){
-                    const url=`/api/${localStorage.getItem('email')}`
-                    const response=await fetch(url,{
-                        method:"DELETE",
-                        headers:{
-                            "authorization":`Bearer ${localStorage.getItem('token')}`
-                        }
-                    })
-                    const parseRes=await response.json()
-                    if(parseRes.error){
-                        notify.innerHTML=`
-                        <div class="tag">
-                            <p class="error">${parseRes.error}</p>
-                        </div>
-                        `
-                        setTimeout(()=>{
-                            notify.innerHTML=''
-                        },3000)
+                    if(localStorage.getItem('user-photo')){
+                        // Create a reference to the file to delete
+                        const desertRef = ref(projectStorage, localStorage.getItem('user-photo'));
+                        // Delete the file
+                        deleteObject(desertRef).then(() => {
+                        // File deleted successfully
+                        //now deletes user on db
+                        deleteAccountOnDb()
+                        }).catch((error) => {
+                            // Uh-oh, an error occurred!
+                            notify.innerHTML=`
+                            <div class='tag'>
+                                <p class="error">${error.message}</p>
+                            </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                            },5000)
+                        });
                     }else{
-                        notify.innerHTML=`
-                        <div class="tag-success">
-                            <p class="error">${parseRes.msg}</p>
-                        </div>
-                        `
-                        console.log(parseRes)
-                        setTimeout(()=>{
-                            notify.innerHTML=''
-                            window.location.href='/'
-                            localStorage.removeItem('user-id')
-                            localStorage.removeItem('email')
-                            localStorage.removeItem('token')
-                            localStorage.removeItem('admin-token')
-                            localStorage.removeItem('blogger-token')
-                            localStorage.removeItem('first-name')
-                            localStorage.removeItem('university')
-                            localStorage.removeItem('last-name')
-                            localStorage.removeItem('user-photo')
-                        },2000)
+                        //now deletes user on db
+                        deleteAccountOnDb()
+                    }
+                    
+                    async function deleteAccountOnDb(){
+                        //delete user detail on db
+                        const url=`/api/${localStorage.getItem('email')}`
+                        const response=await fetch(url,{
+                            method:"DELETE",
+                        })
+                        const parseRes=await response.json()
+                        if(parseRes.error){
+                            notify.innerHTML=`
+                            <div class="tag">
+                                <p class="error">${parseRes.error}</p>
+                            </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                            },3000)
+                        }else{
+                            notify.innerHTML=`
+                            <div class="tag-success">
+                                <p class="error">${parseRes.msg}</p>
+                            </div>
+                            `
+                            console.log(parseRes)
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                                window.location.href='/'
+                                localStorage.removeItem('user-id')
+                                localStorage.removeItem('email')
+                                localStorage.removeItem('token')
+                                localStorage.removeItem('admin-token')
+                                localStorage.removeItem('blogger-token')
+                                localStorage.removeItem('first-name')
+                                localStorage.removeItem('university')
+                                localStorage.removeItem('last-name')
+                                localStorage.removeItem('user-photo')
+                            },2000)
+                        }
                     }
                 }
             } catch (error) {
