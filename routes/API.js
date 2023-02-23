@@ -15,7 +15,8 @@ const {
     getUser,
     registerBlogger,
     changePassword,
-    updateUserPic
+    updateUserPic,
+    deleteBlog
 }=require('../controllers/AI');
 
 //api routes
@@ -32,6 +33,7 @@ router.get('/blogs',getAllBlogs)
 router.get('/get-users',protectAdmin,getUser)
 router.get('/getblogs/:id',getBlog)
 router.delete('/:email', deleteUser);
+router.delete('/blogs/blog/:id',protectAdmin, deleteBlog);
 // router.delete('/:email',protectUser||protectAdmin, deleteUser);
 
 module.exports=router;

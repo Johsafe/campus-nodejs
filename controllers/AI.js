@@ -686,6 +686,21 @@ const updateUserPic=async(req,res)=>{
         res.status(500).send({error:error.message})
     }
 }
+
+//delete blog
+const deleteBlog=async(req,res)=>{
+    try{
+        const {id}=req.params
+        const deleteBlogOnDb=await Blog.findByIdAndDelete({_id:id})
+        if(deleteBlogOnDb){
+            res.send({msg:`Blog was delete successfully`});
+        }else{
+            res.send({error:`Cannot delete this blog!`});
+        }
+    }catch(error){
+        res.status(500).send({error:error.message})
+    }
+}
 module.exports={
     register,
     verify,
@@ -704,5 +719,6 @@ module.exports={
     registerBlogger,
     blogCategory,
     changePassword,
-    updateUserPic
+    updateUserPic,
+    deleteBlog
 }

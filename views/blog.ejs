@@ -7,7 +7,7 @@
         <div id="about"></div>
         <div class="detail start">
             <%if($new){%>
-                <a href='<%= $new.image%>'><img src='<%=$new.image%>' alt="blog image"/></a>
+                <a href='<%= $new.image%>'><img src='<%=$new.image%>' data-blogImage="<%=$new.image%>" id="blog-image" alt="blog image"/></a>
                 <div class="content">
                     <div class="author">Author: 
                         <%if($new.authorImage){%>
@@ -19,6 +19,8 @@
                     <h1><%= $new.title%></h1>
                     <p class="body" data-doc="<%=$new.body%>"></p><br/>
                     <sub>Article written on: <%=$new.date%></sub>
+
+                    <div class="delete-blog" data-id="<%=$new._id%>"></div>
                 </div>
                 <%}else{%>
                    <div class="notify">
@@ -34,7 +36,8 @@
         <%- include('./partials/float.ejs')%>
         <%- include('./partials/footer.ejs')%>
         <!-- script -->
-        <script>
+        <script type="module">
+            import{projectStorage,ref,getDownloadURL,uploadBytesResumable, deleteObject} from '/js/FirebaseConfig.js'
             //preloader
             const preloader=()=>{
                 const loader=document.querySelector('.preload');
@@ -54,6 +57,88 @@
             if(bodyContent){
                 preloaderOff()
             }
+
+            //delete blog
+            const deleteBtn=document.querySelector('.delete-blog');
+            const blogImageHolder=document.querySelector('.blog-image');
+            const blogId=deleteBtn.dataset.id;
+            const blogImage=blogImageHolder.dataset.blogImage;
+            if(localStorage.getItem('admin-token')){
+                deleteBtn.innerHTML=`
+                    <button id='del' style="padding:10px 20px; color:white; background:red; border:none; border-radius:10px; cursor:pointer;">Delete Blog</button>
+                `
+            }
+             function deleteBlog(){
+                const delBtn=document.getElementById('del')
+                delBtn.addEventListener('click',()=>{
+                    const deletePrompt=window.confirm('You are about to delete this blog, should i proceed?')
+                    if(deletePrompt){
+                        preloader()
+                        // Create a reference to the file to delete
+                        const desertRef = ref(projectStorage, blogImage);
+                        // Delete the file
+                        deleteObject(desertRef).then(() => {
+                        // File deleted successfully
+                        //now deletes the blog from db
+                        deleteBlogOnDb()
+                        }).catch((error) => {
+                            // Uh-oh, an error occurred!
+                            notify.innerHTML=`
+                            <div class='tag'>
+                                <p class="error">${error.message}</p>
+                            </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                            },5000)
+                        });
+                    }
+                    
+                    async function deleteBlogOnDb(){
+                        try {
+                            const url=`/api/blogs/blog/${blogId}`
+                            const response=await fetch(url,{
+                                method:'DELETE',
+                                headers:{
+                                    'authorization':`Bearer ${localStorage.getItem('admin-token')}`
+                                }
+                            })
+                            const parseRes=await response.json()
+                            preloaderOff()
+                            if(parseRes.error){
+                                notify.innerHTML=`
+                                <div class='tag'>
+                                    <p class="error">${parseRes.error}</p>
+                                </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },5000) 
+                            }else{
+                                notify.innerHTML=`
+                                <div class='tag-success'>
+                                    <p class="error">${parseRes.msg}</p>
+                                </div>
+                                `
+                                setTimeout(()=>{
+                                    notify.innerHTML=''
+                                },5000) 
+                            }
+                        } catch (error) {
+                            preloaderOff()
+                            notify.innerHTML=`
+                            <div class='tag'>
+                                <p class="error">No Internet!</p>
+                            </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                            },5000) 
+                        }   
+                    }
+                })
+            }
+
             // redirect
             // if(!localStorage.getItem('token')){
             //     window.location.href='/'
