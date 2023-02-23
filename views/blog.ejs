@@ -4,7 +4,7 @@
     <body>
         <%- include('./partials/nav.ejs')%>
         <div class='preload'></div>
-        <div class="notify"></div>
+        <div class="notify" style="display:flex; justify-content: center; align-items: center;"></div>
         <div id="about"></div>
         <div class="detail start">
             <%if($new){%>
@@ -129,6 +129,7 @@
                                     notify.innerHTML=''
                                 },5000) 
                             }else{
+                                window.location.href='/'
                                 notify.innerHTML=`
                                 <div class='tag-success'>
                                     <p class="error">${parseRes.msg}</p>
@@ -136,7 +137,6 @@
                                 `
                                 setTimeout(()=>{
                                     notify.innerHTML=''
-                                    window.location.href='/'
                                 },5000) 
                             }
                         } catch (error) {
