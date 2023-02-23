@@ -4,10 +4,11 @@
     <body>
         <%- include('./partials/nav.ejs')%>
         <div class='preload'></div>
+        <div class="notify"></div>
         <div id="about"></div>
         <div class="detail start">
             <%if($new){%>
-                <a href='<%= $new.image%>'><img src='<%=$new.image%>' data-blogImage="<%=$new.image%>" id="blog-image" alt="blog image"/></a>
+                <a href='<%= $new.image%>'><img src='<%=$new.image%>' data-image="<%=$new.image%>" class="blog-image" alt="blog image"/></a>
                 <div class="content">
                     <div class="author">Author: 
                         <%if($new.authorImage){%>
@@ -38,6 +39,9 @@
         <!-- script -->
         <script type="module">
             import{projectStorage,ref,getDownloadURL,uploadBytesResumable, deleteObject} from '/js/FirebaseConfig.js'
+            //notify
+            const notify=document.querySelector('.notify')
+
             //preloader
             const preloader=()=>{
                 const loader=document.querySelector('.preload');
@@ -60,42 +64,52 @@
 
             //delete blog
             const deleteBtn=document.querySelector('.delete-blog');
-            const blogImageHolder=document.querySelector('.blog-image');
             const blogId=deleteBtn.dataset.id;
-            const blogImage=blogImageHolder.dataset.blogImage;
+            const blogImageHolder=document.querySelector('.blog-image');
+            const blogImage=blogImageHolder.dataset.image;
+
+            //delete firebase blog image
+            function deleteFirebaseBlogImage(){
+                // preloader()
+                // Create a reference to the file to delete
+                const desertRef = ref(projectStorage, blogImage);
+                // Delete the file
+                deleteObject(desertRef).then(() => {
+                // File deleted successfully
+                //now deletes the blog from db
+                deleteBlogOnDb()
+                }).catch((error) => {
+                    // Uh-oh, an error occurred!
+                    deleteBlogOnDb()
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class="error">${error.message}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },5000)
+                });
+            }
+
+            //show delete button if admin token is present
             if(localStorage.getItem('admin-token')){
                 deleteBtn.innerHTML=`
-                    <button id='del' style="padding:10px 20px; color:white; background:red; border:none; border-radius:10px; cursor:pointer;">Delete Blog</button>
+                    <button id='del' style="margin:50px 0 0 0; padding:10px 20px; color:white; background:red; border:none; border-radius:10px; cursor:pointer;">Delete Blog</button>
                 `
+                deleteBlog()
             }
              function deleteBlog(){
                 const delBtn=document.getElementById('del')
                 delBtn.addEventListener('click',()=>{
                     const deletePrompt=window.confirm('You are about to delete this blog, should i proceed?')
                     if(deletePrompt){
-                        preloader()
-                        // Create a reference to the file to delete
-                        const desertRef = ref(projectStorage, blogImage);
-                        // Delete the file
-                        deleteObject(desertRef).then(() => {
-                        // File deleted successfully
-                        //now deletes the blog from db
-                        deleteBlogOnDb()
-                        }).catch((error) => {
-                            // Uh-oh, an error occurred!
-                            notify.innerHTML=`
-                            <div class='tag'>
-                                <p class="error">${error.message}</p>
-                            </div>
-                            `
-                            setTimeout(()=>{
-                                notify.innerHTML=''
-                            },5000)
-                        });
+                        deleteFirebaseBlogImage()
                     }
-                    
-                    async function deleteBlogOnDb(){
-                        try {
+                })
+            }
+            async function deleteBlogOnDb(){
+                try {
                             const url=`/api/blogs/blog/${blogId}`
                             const response=await fetch(url,{
                                 method:'DELETE',
@@ -122,6 +136,7 @@
                                 `
                                 setTimeout(()=>{
                                     notify.innerHTML=''
+                                    window.location.href='/'
                                 },5000) 
                             }
                         } catch (error) {
@@ -135,10 +150,7 @@
                                 notify.innerHTML=''
                             },5000) 
                         }   
-                    }
-                })
             }
-
             // redirect
             // if(!localStorage.getItem('token')){
             //     window.location.href='/'
