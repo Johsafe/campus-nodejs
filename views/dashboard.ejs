@@ -47,7 +47,7 @@
     </div>
     <!-- script -->
     <script type='module'>
-        import{projectStorage,ref,getDownloadURL,uploadBytesResumable} from '/js/FirebaseConfig.js'
+        import{projectStorage,ref,getDownloadURL,uploadBytesResumable, deleteObject} from '/js/FirebaseConfig.js'
 
         if(!localStorage.getItem('admin-token')){
             if(!localStorage.getItem('token')){
@@ -127,9 +127,9 @@
                         <p>${localStorage.getItem('university')}<p> <br/> 
                         <form>
                             <label>
-                                <span class="update-pic" style="color:purple; cursor:pointer; text-decoration:underline;" title="Upload you profile photo">
+                                <span style="color:purple; cursor:pointer; text-decoration:underline;" title="Upload you profile photo">
                                     Update your profile picture
-                                    <input class='file' style="display:none;" accept="image/*" type="file" name='pic' required/>
+                                    <input class='file update-pic' style="display:none;" accept="image/*" type="file" name='pic' required/>
                                 </span>
                             </label>
                         </form>
@@ -139,8 +139,42 @@
             `
         }
 
-        //upload image
-        const types=['image/png', 'image/jpeg']
+        //delete user image firebase
+        const updatePic=document.querySelector('.update-pic')
+        updatePic.addEventListener('click',()=>{
+           if(localStorage.getItem('user-photo')){
+            const deletePrompt=window.confirm('You are about to change your profile picture, should i proceed?')
+            if(deletePrompt){
+                // Create a reference to the file to delete
+                const desertRef = ref(projectStorage, localStorage.getItem('user-photo'));
+
+                // Delete the file
+                deleteObject(desertRef).then(() => {
+                // File deleted successfully
+                //now uploading the new updated user photo to firebase
+                uploadUpdatedPic()
+                localStorage.removeItem('user-photo')
+                }).catch((error) => {
+                    // Uh-oh, an error occurred!
+                    notify.innerHTML=`
+                    <div class='tag'>
+                        <p class="error">${error.message}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },5000)
+                });
+            }
+           }else{
+            //uploading new photo
+            uploadUpdatedPic()
+           }
+        })
+        
+            function uploadUpdatedPic(){
+                //upload image
+                const types=['image/png', 'image/jpeg']
                 const photo=document.querySelector('.file');
                 photo.addEventListener('change',(e)=>{
                     let photoName=e.target.files[0]
@@ -176,9 +210,10 @@
                         },5000)
                     }
                 })
+            }
 
-        //post handler update 
-        async function uploadToDb(){
+                //post handler update 
+                async function uploadToDb(){
                     try {
                             const url=`/api/user/updatePic/${localStorage.getItem('email')}`;
                             const response=await fetch(url,{
@@ -210,17 +245,17 @@
                                     notify.innerHTML=''
                                 },3000)
                             }
-                        } catch (error) {
-                            notify.innerHTML=`
-                            <div class='tag'>
-                                <p class='error'>No internet!</p>
-                            </div>
-                             `
-                                setTimeout(()=>{
-                                    notify.innerHTML=''
-                                },3000)
-                            }
-        }
+                    } catch (error) {
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class='error'>No internet!</p>
+                        </div>
+                            `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },3000)
+                    }
+                }
 
         //log out
         const logOutBtn=document.querySelectorAll('.log-out')
