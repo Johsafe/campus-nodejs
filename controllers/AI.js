@@ -807,32 +807,32 @@ const getChats=async(req,res)=>{
     const chats=await Chat.find({})
     res.render('chats/index',{title:'Friends',js:'/js/main.js',chats,classes:'opened',paths:[
         {
-            id:0,
+            id:1,
             name:'Home',
             url:'/',
             title:"Back Home"
         },
         {
-            id:1,
+            id:2,
             name:'For you',
             url:'/',
             title:"Lastest Feeds"
         },
         {
-            id:2,
+            id:3,
             name:'Politics',
             url:'/categories/politics',
             title:"Politics"
         },
         {
-            id:3,
+            id:4,
             name:'Login',
             class:'out',
             url:'/login',
             title:"Go to login page"
         },
         {
-            id:4,
+            id:5,
             name:'Sign up',
             url:'/register',
             class:'out',
