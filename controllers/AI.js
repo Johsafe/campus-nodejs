@@ -38,13 +38,19 @@ const blogs=async(req,res)=>{
         },
         {
             id:3,
+            name:'Friends',
+            url:'/friends',
+            title:"Find your friends"
+        },
+        {
+            id:4,
             name:'Login',
             class:'out',
             url:'/login',
             title:"Go to login page"
         },
         {
-            id:4,
+            id:5,
             name:'Sign up',
             url:'/register',
             class:'out',
@@ -71,13 +77,19 @@ const blogCategory=async(req,res)=>{
         },
         {
             id:3,
+            name:'Friends',
+            url:'/friends',
+            title:"Find your friends"
+        },
+        {
+            id:4,
             name:'Login',
             class:'out',
             url:'/login',
             title:"Go to login page"
         },
         {
-            id:4,
+            id:5,
             name:'Sign up',
             url:'/register',
             class:'out',
@@ -108,6 +120,12 @@ const blog=async(req,res)=>{
             name:'Politics',
             url:'/categories/politics',
             title:"Politics"
+        },
+        {
+            id:4,
+            name:'Friends',
+            url:'/friends',
+            title:"Find your friends"
         }
     ]})
 }
@@ -221,7 +239,7 @@ const registerAdmin =async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Account upgrade`,
-                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. \nYou are required to log out f your account and log in to update your dashboard. \nView https://campus-blog.onrender.com/dashboard`
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. \nYou are required to log out f your account and log in to update your dashboard. \nView https://campus-blog.onrender.com/dashboard/${email}`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
@@ -244,7 +262,7 @@ const registerAdmin =async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Account upgrade`,
-                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. \nYou are required to log out f your account and log in to update your dashboard. \nView https://campus-blog.onrender.com/dashboard`
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade to admin access, you can now enjoy our administrative roles. \nYou are required to log out f your account and log in to update your dashboard. \nView https://campus-blog.onrender.com/dashboard/${email}`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
@@ -345,7 +363,7 @@ const registerBlogger=async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Account upgrade`,
-                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade, you are now a blogger on campus blog.\n You can now enjoy posting and editing blogs, article , news feeds and political news on campus blog. \nYou are required to log out f your account and log in to update your dashboard.\n View https://campus-blog.onrender.com/dashboard`
+                text:`Dear ${firstName} ${lastName},\n Your account has been upgrade, you are now a blogger on campus blog.\n You can now enjoy posting and editing blogs, article , news feeds and political news on campus blog. \nYou are required to log out f your account and log in to update your dashboard.\n View https://campus-blog.onrender.com/dashboard/${email}`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
@@ -630,7 +648,7 @@ const changePassword=async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Your password was changed`,
-                text:`We've sent your the email to inform you that your password has been changed successfully.\n Your new password is ${password} .\nView your dashbord details at https://campus-blog.onrender.com/dashboard`
+                text:`We've sent your the email to inform you that your password has been changed successfully.\n Your new password is ${password} .\nView your dashbord details at https://campus-blog.onrender.com/dashboard/${email}`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
@@ -671,7 +689,7 @@ const updateUserPic=async(req,res)=>{
                 from:process.env.TRANSPORTER,
                 to:email,//receiver
                 subject:`Campus Blogs: Your User Profile was changed`,
-                text:`Your user profile was changed.\nView your dashbord details at https://campus-blog.onrender.com/dashboard`
+                text:`Your user profile was changed.\nView your dashbord details at https://campus-blog.onrender.com/dashboard/${email}`
             }
             mailTranporter.sendMail(details,(err)=>{
                 if(err){
@@ -733,7 +751,13 @@ const userDetail=async(req,res)=>{
                     name:'Politics',
                     url:'/categories/politics',
                     title:"Politics"
-                }
+                },
+                {
+                    id:4,
+                    name:'Friends',
+                    url:'/friends',
+                    title:"Find your friends"
+                },
             ]})
         }else{
             res.status(404).send({error:`User not found!`});
@@ -747,18 +771,19 @@ const userDetail=async(req,res)=>{
 const postChat=async(req,res)=>{    
     try{
         const {email}=req.params
-        const user=User.findOne({email})
+        const user=await User.findOne({email})
         if(user){
             const {message,date,time}=req.body
-            const addChat=Chat.create({
+            const addChat= await Chat.create({
                 firstName:user.firstName,
                 lastName:user.lastName,
                 message,
                 photo:user.photo,
-                email:user.email,
+                email,
                 date,
                 time
             })
+            res.status(200).send({msg:`Sent`});
             if(!addChat){
                 res.status(201).send({error:`Try again!`});
             }
@@ -775,10 +800,16 @@ const getChats=async(req,res)=>{
     const chats=await Chat.find({})
     res.render('chats/index',{title:'Friends',js:'/js/main.js',chats,classes:'opened',paths:[
         {
-            id:1,
+            id:0,
             name:'Home',
             url:'/',
             title:"Back Home"
+        },
+        {
+            id:1,
+            name:'For you',
+            url:'/',
+            title:"Lastest Feeds"
         },
         {
             id:2,

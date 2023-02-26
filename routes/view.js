@@ -37,6 +37,12 @@ views.get('/home',(req,res)=>{
         },
         {
             id:4,
+            name:'Friends',
+            url:'/friends',
+            title:"Find your friends"
+        },
+        {
+            id:5,
             name:'Sign up',
             url:'/register',
             class:'out',

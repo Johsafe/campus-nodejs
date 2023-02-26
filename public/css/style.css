@@ -485,3 +485,57 @@ select{
 select::selection{
     color:rgb(5, 100, 155);
 }
+
+/* page css */
+.chat{
+    margin: 100px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.chat-window{
+    margin-bottom: 30px;
+}
+.chat-window .chat-box{
+    width: 70vw;
+    display: flex;
+    cursor: pointer;
+    border-bottom: 1px solid #f2f2f2;
+}
+.chat-window .content{
+    padding: 20px 30px;
+    line-height: 25px;
+}
+.chat-window img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+}
+.chat form{
+    position: fixed;
+    bottom: 30px;
+}
+.chat form input{
+    width: 65vw;
+    height: 40px;
+    padding: 0 20px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--body-text);
+}
+.chat form button{
+    height: 40px;
+    color: var(--white);
+    background: var(--green);
+    padding: 0 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: medium;
+    cursor: pointer;
+}
+.chat form button:hover{
+    color: var(--green);
+    background: none;
+    border: 1px solid var(--body-text);
+}

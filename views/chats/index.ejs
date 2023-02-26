@@ -1,0 +1,151 @@
+<html lang="en">
+<%- include('../partials/head.ejs')%>
+<body>
+    <%- include('../partials/nav.ejs')%>
+    <div class="chat">
+        <div class="notify"></div>
+        <%if(chats.length>0){%>
+        <div class="chat-window">
+                <%chats.forEach(item=>{%>
+                    <div class="chat-box" title="Sent on <%= item.date%>">
+                        <a href="<%=item.photo%>">
+                            <img src="<%=item.photo%>"/>
+                        </a>
+                        <div class="content">
+                            <div class="title" style="display: flex;">
+                                <strong><%=item.firstName%> <%=item.lastName%></strong> , 
+                                <div class="date" style="margin:0 5px;" data-date="<%=item.date%>"></div> 
+                                <%=item.time%>
+                            </div>
+                            <p><%=item.message%></p>
+                        </div>
+                    </div>
+                <%})%>
+        </div>
+            <form style="display:none;">
+                <input type="text" name="message" placeholder="Message" required/>
+                <button><i class="fa fa-send"></i></button>
+            </form>
+        <%}else{%>
+            <div class="notify">
+                <div class="tag">
+                    <p class="error">No internet!</p>
+                </div>
+            </div>
+        <%}%>
+    </div>
+    <div class="bottom"></div>
+
+     <!-- script -->
+    <script>
+        //date
+        const add=(a)=>{
+            return a+1
+         }
+         const d=new Date()
+         const today=d.getDate()
+         const month=d.getMonth()
+         const year=d.getFullYear()
+         const date=`${today}/${add(month)}/${year}`
+        //time
+         let time=``
+         if(d.getHours()>12){
+            time=`${d.getHours()}:${d.getMinutes()}pm`
+        }else{
+             time=`${d.getHours()}:${d.getMinutes()}am`
+        }
+
+        //relative date displayed
+        const dateHolder=document.querySelectorAll('.date')
+        dateHolder.forEach(i => {
+            const resDate=i.dataset.date
+            const relativeDate=date.slice(0,1)-resDate.slice(0,1)
+            let day=''
+            if( relativeDate>1){
+                day='days'
+            }else{
+                day='day'
+            }
+            i.innerHTML=`${relativeDate} ${day} ago`
+        });
+
+
+         const notify=document.querySelector('.notify');
+         const handleSubmit=document.querySelector('form')
+         function submit(){
+             handleSubmit.addEventListener('submit',async(e)=>{
+                 e.preventDefault()
+                 try {
+                const url=`/api/chat/${localStorage.getItem('email')}`
+                const response=await fetch(url,{
+                    method:'POST',
+                    headers:{
+                        'content-type':'application/json'
+                    },
+                    body:JSON.stringify({
+                        message:handleSubmit.message.value,
+                        date,
+                        time
+                    })
+                })
+               const parseRes=await response.json()
+               if(parseRes.msg){
+                handleSubmit.reset()
+                window.location.reload()
+                document.querySelector('.bottom').scrollIntoView()
+               }else{
+                document.querySelector('.bottom').scrollIntoView()
+                handleSubmit.reset()
+                notify.innerHTML=`
+                    <div class='tag'>
+                        <p class="error">${parseRes.error}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },1000)
+               }
+            } catch (error) {
+                document.querySelector('.bottom').scrollIntoView()
+                handleSubmit.reset()
+                notify.innerHTML=`
+                    <div class='tag'>
+                        <p class="error">${error.message}</p>
+                    </div>
+                    `
+                    setTimeout(()=>{
+                        notify.innerHTML=''
+                    },1000)
+            }
+         })
+         }
+
+        if(localStorage.getItem('token')){
+            handleSubmit.style.display='flex'
+            submit()
+        }else if(localStorage.getItem('admin-token')){
+             handleSubmit.style.display='flex'
+             submit()
+        }else if(localStorage.getItem('blogger-token')){
+             handleSubmit.style.display='flex'
+             submit()
+         }
+
+         if(!localStorage.getItem('token')){
+            if(!localStorage.getItem('admin-token')){
+                if(!localStorage.getItem('blogger-token')){
+                    handleSubmit.style.display='none'
+                }else{
+                    handleSubmit.style.display='flex'
+                }
+            }else{
+                handleSubmit.style.display='flex'
+            }
+         }else{
+            handleSubmit.style.display='flex'
+         }
+            
+        
+    </script>
+</body>
+</html>
