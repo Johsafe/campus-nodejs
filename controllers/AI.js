@@ -676,6 +676,10 @@ const updateUserPic=async(req,res)=>{
        await Blog.updateMany({email},{$set:{
             authorImage:req.body.photo
        }})
+        //will also update user chats image
+       await Chat.updateMany({email},{$set:{
+            photo:req.body.photo
+       }})
         if(updateUserInfo){
             //send email after user info is changed
             let mailTranporter=nodemailer.createTransport({
