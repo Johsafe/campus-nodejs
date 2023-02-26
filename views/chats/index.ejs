@@ -8,9 +8,15 @@
         <div class="chat-window">
                 <%chats.forEach(item=>{%>
                     <div class="chat-box" title="Sent on <%= item.date%>">
-                        <a href="<%=item.photo%>">
-                            <img src="<%=item.photo%>"/>
-                        </a>
+                        <%if(<%=item.photo%>){%>
+                            <a href="<%=item.photo%>">
+                                <img src="<%=item.photo%>"/>
+                            </a>
+                        <%}else{%>
+                            <a href="/assests/avatar.svg">
+                                <img src="/assests/avatar.svg"/>
+                            </a>
+                        <%}%>
                         <div class="content">
                             <div class="title" style="display: flex;">
                                 <strong><%=item.firstName%> <%=item.lastName%></strong> , 
