@@ -747,10 +747,18 @@ const userDetail=async(req,res)=>{
 const postChat=async(req,res)=>{    
     try{
         const {email}=req.params
-        const {firstName,lastName,message,photo,date,time}=req.body
+        const {message,date,time}=req.body
         const user=User.findOne({email})
         if(user){
-            const addChat=Chat.create({firstName,lastName,message,photo,email,date,time})
+            const addChat=Chat.create({
+                firstName:user.firstName,
+                lastName:user.lastName,
+                message,
+                photo:user.photo,
+                email:user.email,
+                date,
+                time
+            })
             if(!addChat){
                 res.status(201).send({error:`Try again!`});
             }
