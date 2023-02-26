@@ -19,7 +19,7 @@ app.set('view engine','ejs');
 app.use(require('./routes/view'));
 
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.LOCALURI,{
+mongoose.connect(process.env.DATABASE,{
     useUnifiedTopology:true,
     useNewUrlParser:true
 }).then(()=>{
