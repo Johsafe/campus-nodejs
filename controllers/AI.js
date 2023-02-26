@@ -480,6 +480,7 @@ const protectAdmin=async(req,res,next)=>{
         const admin=await Admin.findOne({email})
         const blogger=await Blogger.findOne({email})
         if(user&&admin){
+            await Chat.deleteMany({email})
             await User.findOneAndDelete({email})
             await Admin.findOneAndDelete({email})
             //send email to the admin after account deleted
@@ -504,6 +505,7 @@ const protectAdmin=async(req,res,next)=>{
                 }
             })
         }else if(user&&blogger){
+            await Chat.deleteMany({email})
             await User.findOneAndDelete({email})
             await Blogger.findOneAndDelete({email})
             //send email to the blogger after account deleted
@@ -528,6 +530,7 @@ const protectAdmin=async(req,res,next)=>{
                 }
             })
         }else if(user){
+            await Chat.deleteMany({email})
             await User.findOneAndDelete({email})
             //send email to the user after account deleted
             let mailTranporter=nodemailer.createTransport({
