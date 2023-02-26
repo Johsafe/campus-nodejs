@@ -4,12 +4,15 @@ const {
     blog,
     blogs,
     blogCategory,
-    userDetail
+    userDetail,
+    getChats
 }=require('../controllers/AI')
 //view routes
 views.get('/',blogs);
 
 views.get('/categories/:cat',blogCategory);
+
+views.get('/friends',getChats);
 
 views.get('/home',(req,res)=>{
     res.render('home',{title:'Home',classes:'closed',js:"/js/main.js",paths:[

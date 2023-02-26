@@ -747,9 +747,9 @@ const userDetail=async(req,res)=>{
 const postChat=async(req,res)=>{    
     try{
         const {email}=req.params
-        const {message,date,time}=req.body
         const user=User.findOne({email})
         if(user){
+            const {message,date,time}=req.body
             const addChat=Chat.create({
                 firstName:user.firstName,
                 lastName:user.lastName,
@@ -768,6 +768,39 @@ const postChat=async(req,res)=>{
     }catch(error){
         res.status(500).send({error:error.message})
     }
+}
+
+//get all chats
+const getChats=async(req,res)=>{
+    const chats=await Chat.find({})
+    res.render('chats/index',{title:'Friends',js:'/js/main.js',chats,classes:'opened',paths:[
+        {
+            id:1,
+            name:'Home',
+            url:'/',
+            title:"Back Home"
+        },
+        {
+            id:2,
+            name:'Politics',
+            url:'/categories/politics',
+            title:"Politics"
+        },
+        {
+            id:3,
+            name:'Login',
+            class:'out',
+            url:'/login',
+            title:"Go to login page"
+        },
+        {
+            id:4,
+            name:'Sign up',
+            url:'/register',
+            class:'out',
+            title:"Go to Sign up page"
+        }
+    ]})
 }
 
 module.exports={
@@ -791,5 +824,6 @@ module.exports={
     updateUserPic,
     deleteBlog,
     userDetail,
-    postChat
+    postChat,
+    getChats
 }
