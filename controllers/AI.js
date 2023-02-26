@@ -12,6 +12,7 @@
 const User=require('../models/userModel');
 const Blog=require('../models/blogModel');
 const Blogger=require('../models/Bloggers/blogger')
+const Chat=require('../models/chat/chat')
 const Admin =require('../models/adminModel');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
@@ -741,6 +742,26 @@ const userDetail=async(req,res)=>{
         res.status(500).send({error:error.message})
     }
 }
+
+//post chat
+const postChat=async(req,res)=>{    
+    try{
+        const {email}=req.params
+        const {firstName,lastName,message,photo,date,time}=req.body
+        const user=User.findOne({email})
+        if(user){
+            const addChat=Chat.create({firstName,lastName,message,photo,email,date,time})
+            if(!addChat){
+                res.status(201).send({error:`Try again!`});
+            }
+        }else{
+            res.status(404).send({error:`User not found!`});
+        }
+    }catch(error){
+        res.status(500).send({error:error.message})
+    }
+}
+
 module.exports={
     register,
     verify,
@@ -761,5 +782,6 @@ module.exports={
     changePassword,
     updateUserPic,
     deleteBlog,
-    userDetail
+    userDetail,
+    postChat
 }
