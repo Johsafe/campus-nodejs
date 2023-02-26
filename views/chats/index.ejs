@@ -63,10 +63,10 @@
             let day=''
             if( relativeDate>1){
                 day='days'
+                i.innerHTML=`${relativeDate} ${day} ago`
             }else{
-                day='day'
+                i.innerHTML=``
             }
-            i.innerHTML=`${relativeDate} ${day} ago`
         });
 
 
