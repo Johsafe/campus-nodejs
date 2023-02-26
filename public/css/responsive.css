@@ -100,6 +100,22 @@
         flex-direction: column;
         align-items: center;
     }
+    .chat {
+        margin: 100px 20px;
+        width: 90vw;
+        display: block;
+    }
+    .chat-window .chat-box{
+        width: 100%;
+    }
+    .chat-window img {
+        width: 60px;
+        height: 60px;
+    }
+    .chat-window .content {
+        padding: 10px 5px;
+        font-size: small;
+    }
 }
 @media screen and (max-width:350px) {
     .user-details{
