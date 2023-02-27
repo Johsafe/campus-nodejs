@@ -116,6 +116,12 @@
         padding: 10px 5px;
         font-size: small;
     }
+    .multi-file img{
+        margin-left: -10px;
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+    }
 }
 @media screen and (max-width:350px) {
     .user-details{

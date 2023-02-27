@@ -502,6 +502,9 @@ select::selection{
     cursor: pointer;
     border-bottom: 1px solid #f2f2f2;
 }
+.chat-box a{
+    height: fit-content;
+}
 .chat-window .content{
     padding: 20px 30px;
     line-height: 25px;
@@ -538,4 +541,12 @@ select::selection{
     color: var(--green);
     background: none;
     border: 1px solid var(--body-text);
+}
+.multi-file{
+    margin: 20px 0;
+}
+.multi-file img{
+    width: 280px;
+    height: 280px;
+    border-radius: 10px;
 }
