@@ -36,13 +36,13 @@
                 <%})%>
         </div>
             <form style="display:none;">
-                <input type="text" name="message" placeholder="Type a message" required/>
                 <label>
                     <span  title="Attach an image">
-                        <i style="background: none; color: var(--body-text); padding: 10px 15px; margin:0 5px; cursor: pointer; border-radius: 10px; border: 1px solid gray;" class="fa fa-file"></i>
+                        <i style="background: none; color: var(--body-text); border-right: none; padding: 11px 15px; cursor: pointer; border-bottom-left-radius: 10px; border-top-left-radius: 10px; border: 1px solid gray;" class="fa fa-file"></i>
                         <input class='file' style="display:none;" accept="image/*" type="file" name='pic' required/>
                     </span>
                 </label>
+                <input type="text" name="message" placeholder="Type a message" required/>
                 <button><i class="fa fa-send"></i></button>
             </form>
         <%}else{%>
@@ -58,7 +58,7 @@
      <!-- script -->
     <script type="module">
         import{projectStorage,ref,getDownloadURL,uploadBytesResumable, deleteObject} from '/js/FirebaseConfig.js'
-
+        
         //date
         const add=(a)=>{
             return a+1
@@ -93,6 +93,42 @@
 
          const notify=document.querySelector('.notify');
          const handleSubmit=document.querySelector('form')
+         //upload image
+         const types=['image/png', 'image/jpeg']
+                const photo=document.querySelector('.file');
+                photo.addEventListener('change',(e)=>{
+                    let photoName=e.target.files[0]
+                    let validFile= photoName.name;
+                    if(photoName && types.includes(photoName.type)){
+                        //uploading image to storage
+                        const storageRef=ref(projectStorage,photoName.name);
+                        const uploadTask = uploadBytesResumable(storageRef, photoName);
+                        uploadTask.on('state_changed',
+                        async()=>{
+                            const url=await getDownloadURL(storageRef)
+                            const photoRes=await url
+                            localStorage.setItem('image-url',url)
+                            notify.innerHTML=`
+                            <div class='tag-success'>
+                                <p class="error">Image Load 100%</p>
+                            </div>
+                            `
+                            setTimeout(()=>{
+                                notify.innerHTML=''
+                            },1000)
+                        })
+                    }else{
+                        notify.innerHTML=`
+                        <div class='tag'>
+                            <p class="error">Please select an image file(png or jpeg)</p>
+                        </div>
+                        `
+                        setTimeout(()=>{
+                            notify.innerHTML=''
+                        },5000)
+                    }
+                })
+
          function submit(){
              handleSubmit.addEventListener('submit',async(e)=>{
                  e.preventDefault()
@@ -106,7 +142,8 @@
                     body:JSON.stringify({
                         message:handleSubmit.message.value,
                         date,
-                        time
+                        time,
+                        file:localStorage.getItem('image-url')
                     })
                 })
                const parseRes=await response.json()
