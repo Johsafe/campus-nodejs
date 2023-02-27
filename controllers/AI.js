@@ -608,6 +608,7 @@ const protectAdmin=async(req,res,next)=>{
           res.status(500).send({error:error.message})
       }
   }
+  
   const getBlog=async(req,res)=>{
     try{
         const {id}=req.params;
@@ -617,10 +618,14 @@ const protectAdmin=async(req,res,next)=>{
         res.status(500).send({error:error.message})
     }
   }
+
+  //admin seeing all register user
   const getUser=async(req,res)=>{
     try {
         const users=await User.find({})
-        res.send(users)
+        const admins=await Admin.find({})
+        const bloggers=await Blogger.find({})
+        res.send({users,admins,bloggers})
     } catch (error) {
         res.status(500).send({error:error.message})
     }

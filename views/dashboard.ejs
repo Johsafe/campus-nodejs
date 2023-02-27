@@ -29,8 +29,18 @@
 
             </div>
 
+            <h3 class="admin-see-users-header">All Registered Admin</h3><br/>
+            <div class="admin-see-users admins">
+
+            </div>
+
+            <h3 class="admin-see-users-header">All Registered Bloggers</h3><br/>
+            <div class="admin-see-users bloggers">
+
+            </div>
+
             <h3 class="admin-see-users-header">All Registered Users</h3><br/>
-            <div class="admin-see-users">
+            <div class="admin-see-users users">
 
             </div>
 
@@ -419,7 +429,9 @@
 
 
         //get all registered users as an admin
-        const seeUsers=document.querySelector('.admin-see-users')
+        const seeAdmins=document.querySelector('.admins')
+        const seeBloggers=document.querySelector('.bloggers')
+        const seeUsers=document.querySelector('.users')
         async function getUsers() {
             try {
                 const url=`/api/get-users`
@@ -440,8 +452,34 @@
                         notify.innerHTML=''
                     },3000)
                 }else{
+                    console.log(parseRes)
+                    //all admins
+                    let admin=''
+                    parseRes.admins.map(i=>{
+                    admin=`
+                        <div>
+                            <p>Name: ${i.firstName} ${i.lastName}</p>
+                            <p>Email: <a style="text-decoration:underline;color:purple;" href="mailto:${i.email}">${i.email}</a></p>
+                        </div>
+                    `
+                    seeAdmins.innerHTML+=admin
+                    })
+
+                    //all bloggers
+                    let bloggers=''
+                    parseRes.bloggers.map(i=>{
+                    bloggers=`
+                        <div>
+                            <p>Name: ${i.firstName} ${i.lastName}</p>
+                            <p>Email: <a style="text-decoration:underline;color:purple;" href="mailto:${i.email}">${i.email}</a></p>
+                        </div>
+                    `
+                    seeBloggers.innerHTML+=bloggers
+                    })
+                    
+                    //all registered user
                     let li=''
-                    parseRes.forEach((i,n)=>{
+                    parseRes.users.forEach((i,n)=>{
                     li=`
                         <div>
                             <p>Name: ${i.firstName} ${i.lastName}</p>
@@ -450,7 +488,8 @@
                         </div>
                     `
                     seeUsers.innerHTML+=li
-                })
+                    })
+                    
                 }
             } catch (error) {
             notify.innerHTML=`
