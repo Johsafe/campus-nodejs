@@ -780,10 +780,11 @@ const postChat=async(req,res)=>{
         const {email}=req.params
         const user=await User.findOne({email})
         if(user){
-            const {message,date,time}=req.body
+            const {message,date,time,file}=req.body
             const addChat= await Chat.create({
                 firstName:user.firstName,
                 lastName:user.lastName,
+                file,
                 message,
                 photo:user.photo,
                 email,
