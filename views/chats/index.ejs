@@ -56,7 +56,7 @@
     <div class="bottom"></div>
 
      <!-- script -->
-    <script>
+    <script type="module">
         import{projectStorage,ref,getDownloadURL,uploadBytesResumable, deleteObject} from '/js/FirebaseConfig.js'
 
         //date
@@ -80,11 +80,11 @@
         const dateHolder=document.querySelectorAll('.date')
         dateHolder.forEach(i => {
             const resDate=i.dataset.date
-            const relativeDate=date.slice(0,1)-resDate.slice(0,1)
-            let day=''
-            if( relativeDate>1){
-                day='days'
-                i.innerHTML=`${relativeDate} ${day} ago`
+            const relativeDate=date.slice(0,2)-resDate.slice(0,2)
+            if( relativeDate>0){
+                i.innerHTML=`${relativeDate} day ago`
+            }else if(relativeDate>1){
+                i.innerHTML=`${relativeDate} days ago`
             }else{
                 i.innerHTML=``
             }
