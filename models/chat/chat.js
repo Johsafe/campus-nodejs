@@ -16,6 +16,9 @@ const chatSchema=mongoose.Schema({
         type:String,
         require:true,
     },
+    file:{
+        type:String
+    },
     message:{
         type:String,
         require:true
