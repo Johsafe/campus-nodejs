@@ -24,12 +24,25 @@
                                 <%=item.time%>
                             </div>
                             <p><%=item.message%></p>
+                            <%if(item.file){%>
+                                <div class="multi-file">
+                                    <a href="<%=item.file%>">
+                                        <img src="<%=item.file%>"/>
+                                    </a>
+                                </div>
+                            <%}%>
                         </div>
                     </div>
                 <%})%>
         </div>
             <form style="display:none;">
-                <input type="text" name="message" placeholder="Message" required/>
+                <input type="text" name="message" placeholder="Type a message" required/>
+                <label>
+                    <span  title="Attach an image">
+                        <i style="background: none; color: var(--body-text); padding: 10px 15px; margin:0 5px; cursor: pointer; border-radius: 10px; border: 1px solid gray;" class="fa fa-file"></i>
+                        <input class='file' style="display:none;" accept="image/*" type="file" name='pic' required/>
+                    </span>
+                </label>
                 <button><i class="fa fa-send"></i></button>
             </form>
         <%}else{%>
@@ -44,6 +57,8 @@
 
      <!-- script -->
     <script>
+        import{projectStorage,ref,getDownloadURL,uploadBytesResumable, deleteObject} from '/js/FirebaseConfig.js'
+
         //date
         const add=(a)=>{
             return a+1
