@@ -90,7 +90,7 @@
             }
         });
 
-
+         let file=''
          const notify=document.querySelector('.notify');
          const handleSubmit=document.querySelector('form')
          //upload image
@@ -107,7 +107,7 @@
                         async()=>{
                             const url=await getDownloadURL(storageRef)
                             const photoRes=await url
-                            localStorage.setItem('image-url',url)
+                            file=url
                             notify.innerHTML=`
                             <div class='tag-success'>
                                 <p class="error">Image Load 100%</p>
@@ -143,7 +143,7 @@
                         message:handleSubmit.message.value,
                         date,
                         time,
-                        file:localStorage.getItem('image-url')
+                        file
                     })
                 })
                const parseRes=await response.json()
