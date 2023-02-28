@@ -122,6 +122,17 @@
         height: 200px;
         border-radius: 10px;
     }
+   
+    .swiper {
+        width: 90vw;
+        height: 100vh;
+    }
+    .swiper-slide img{
+        margin: 50px 0;
+        width:90vw;
+        height: 550px;
+        border-radius: 10px;
+    }
 }
 @media screen and (max-width:350px) {
     .user-details{

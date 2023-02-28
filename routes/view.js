@@ -5,10 +5,13 @@ const {
     blogs,
     blogCategory,
     userDetail,
-    getChats
+    getChats,
+    tinder
 }=require('../controllers/AI')
 //view routes
 views.get('/',blogs);
+
+views.get('/tinder',tinder);
 
 views.get('/categories/:cat',blogCategory);
 
@@ -47,6 +50,12 @@ views.get('/home',(req,res)=>{
             url:'/register',
             class:'out',
             title:"Go to Sign up page"
+        },
+        {
+            id:6,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 });
@@ -111,6 +120,12 @@ views.get('/register',(req,res)=>{
             url:'/login',
             class:'out',
             title:"Go to login page"
+        },
+        {
+            id:5,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 });
@@ -140,6 +155,12 @@ views.get('/verify',(req,res)=>{
             url:'/login',
             class:'out',
             title:"Go to login page"
+        },
+        {
+            id:5,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 });
@@ -169,6 +190,12 @@ views.get('/change-password',(req,res)=>{
             url:'/login',
             class:'out',
             title:"Go to login page"
+        },
+        {
+            id:5,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 });
@@ -198,6 +225,12 @@ views.get('/last',(req,res)=>{
             url:'/login',
             class:'out',
             title:"Go to login page"
+        },
+        {
+            id:5,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 });
@@ -227,6 +260,12 @@ views.get('/login',(req,res)=>{
             url:'/register',
             class:'out',
             title:"Go to sign up page"
+        },
+        {
+            id:5,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 });
@@ -254,6 +293,12 @@ views.use((req,res)=>{
             name:'Politics',
             url:'/categories/politics',
             title:"Politics"
+        },
+        {
+            id:5,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 })

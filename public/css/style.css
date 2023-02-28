@@ -553,3 +553,29 @@ select::selection{
     height: 280px;
     border-radius: 10px;
 }
+
+/* tinder */
+.tinder{
+    background: rgb(9, 2, 51);
+}
+.swiper {
+    width: 80vw;
+    height: 100vh;
+}
+.swiper-slide {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+}
+.swiper-slide img{
+    margin: 50px 0;
+    width:80vw;
+    height: 550px;
+    border-radius: 10px;
+}
+.swiper-slide .content{
+    margin-top: -200px;
+    margin-left: 50px;
+    font-size:25px;
+    color: var(--white-grey);
+}

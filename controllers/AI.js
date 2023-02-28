@@ -55,6 +55,12 @@ const blogs=async(req,res)=>{
             url:'/register',
             class:'out',
             title:"Go to Sign up page"
+        },
+        {
+            id:6,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 }
@@ -94,6 +100,12 @@ const blogCategory=async(req,res)=>{
             url:'/register',
             class:'out',
             title:"Go to Sign up page"
+        },
+        {
+            id:6,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 }
@@ -126,6 +138,12 @@ const blog=async(req,res)=>{
             name:'Friends',
             url:'/friends',
             title:"Find your friends"
+        },
+        {
+            id:5,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
 }
@@ -770,6 +788,12 @@ const userDetail=async(req,res)=>{
                     url:'/friends',
                     title:"Find your friends"
                 },
+                {
+                    id:5,
+                    name:'Tinder',
+                    url:'/tinder',
+                    title:"Find someone new"
+                }
             ]})
         }else{
             res.status(404).send({error:`User not found!`});
@@ -843,8 +867,19 @@ const getChats=async(req,res)=>{
             url:'/register',
             class:'out',
             title:"Go to Sign up page"
+        },
+        {
+            id:6,
+            name:'Tinder',
+            url:'/tinder',
+            title:"Find someone new"
         }
     ]})
+}
+
+const tinder=async(req,res)=>{
+    const users=await User.find({})
+    res.render('tinder/index',{title:'tinder',js:'/js/main.js',users})
 }
 
 module.exports={
@@ -869,5 +904,6 @@ module.exports={
     deleteBlog,
     userDetail,
     postChat,
-    getChats
+    getChats,
+    tinder
 }

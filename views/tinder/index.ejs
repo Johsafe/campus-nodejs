@@ -1,0 +1,68 @@
+<html lang="en">
+<%- include('../partials/head.ejs')%>
+<body>
+        <%if(users.length>0){%>
+        <div class="tinder">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <%users.forEach(item=>{%>
+                        <div data-image="" class="swiper-slide">
+                            <%if(item.photo){%>
+                                    <a href="<%=item.photo%>">
+                                        <img  src="<%=item.photo%>"/>
+                                    </a>
+                                <%}else{%>
+                                    <a href="/assests/cool.jpg">
+                                        <img  src="/assests/cool.jpg"/>
+                                    </a>
+                            <%}%>
+                            <div class="content">
+                                <strong><%= item.firstName%> <%= item.lastName%></strong>
+                                <p><%= item.university%></p>
+                            </div>
+                        </div>
+                    <%})%>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <%}else{%>
+            <div class="notify">
+                <div class="tag">
+                    <p class="error">No internet!</p>
+                </div>
+            </div>
+        <%}%>
+    <!-- script -->
+    <script type="module">
+        import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.esm.browser.min.js'
+
+        const swiper = new Swiper('.swiper', {
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+            dynamicBullets: true,
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // And if we need scrollbar
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+        });
+        //slider image
+        // const slider=document.querySelectorAll('.swiper-slide')
+        // slider.forEach(i=>{
+        //     const bg=i.dataset.image
+        //     i.style.background=`url(${bg})`
+        //     console.log(bg)
+        // })
+    </script>
+</body>
+</html>
