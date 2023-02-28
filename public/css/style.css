@@ -556,7 +556,9 @@ select::selection{
 
 /* tinder */
 .tinder{
-    background: rgb(9, 2, 51);
+    background: #f2f2f2;
+    width: 100%;
+    height: 100%;
 }
 .swiper {
     width: 80vw;
